@@ -2,11 +2,11 @@
     "includes": ["src/**/*"],
     "exclude": ["tests/**/*"],
     "compilerOptions": {
+        "baseUrl": ".",
         "lib":["es2022"],
         "outDir":"dest",
         "rootDir":"src",
-        "moduleResolution": "nodeNext",
-        "module": "es2022"
-    },
-    "esModuleInterop": true
+        "module": "es2022",
+        "moduleResolution":"nodenext"
+    }
 }
