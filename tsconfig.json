@@ -1,5 +1,4 @@
 {
-    "files": [ "src/choose.ts"],
     "includes": ["src/**/*", "tests/**/*"],
     "compilerOptions": {
         "lib":["es2021"],
