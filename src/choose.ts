@@ -37,5 +37,8 @@ export class ChooseCache {
 }
 
 var DefaultCache:ChooseCache = new ChooseCache(52);
+for (var k = 0; k<=26; k++) {
+    DefaultCache.choose(52,k)
+}
 
 export var choose = (n:number, k:number):bigint => DefaultCache.choose(n,k);
