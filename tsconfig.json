@@ -4,6 +4,7 @@
     "compilerOptions": {
         "lib":["es2021"],
         "outDir":"dest",
+        "rootDir":"src",
         "moduleResolution": "nodeNext",
         "module": "es2022"
     },
