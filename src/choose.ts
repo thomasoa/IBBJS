@@ -1,10 +1,11 @@
+/*
+ * Basic code to compute binomial coefficients. 
+ *
+ * Caches in a Pascal Triangle of size 52 by default
+ */
 
 type PascalRow = Array<bigint|undefined>
 type OptPascalRow = PascalRow | undefined 
-
-interface Choose {
-    choose(n:number, k:number):bigint;
-}
 
 export class ChooseCache {
     size: number;
@@ -15,10 +16,10 @@ export class ChooseCache {
         this.rows = Array<PascalRow>(size) 
     }
 
-    choose = (n:number,k:number):bigint => {
+    choose(n:number,k:number):bigint {
        if (2*k>n) { k = n-k }
        if (k<0) { return BigInt(0) }
-       const lazy = (c:Choose):bigint => c.choose(n-1,k-1) + c.choose(n-1,k)
+       const lazy = (c:ChooseCache):bigint => c.choose(n-1,k-1) + c.choose(n-1,k)
 
        if (n>this.size) {
         return lazy(this)
@@ -33,5 +34,8 @@ export class ChooseCache {
        }
        return row[k] as bigint
     }
-
 }
+
+var DefaultCache:ChooseCache = new ChooseCache(52);
+
+export var choose = (n:number, k:number):bigint => DefaultCache.choose(n,k);
