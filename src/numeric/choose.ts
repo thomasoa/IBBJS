@@ -42,3 +42,13 @@ for (var k = 0; k<=26; k++) {
 }
 
 export var choose = (n:number, k:number):bigint => DefaultCache.choose(n,k);
+
+export var multinomial = (parts: number[]):bigint => {
+    var sum = 0
+    var product:bigint = BigInt(1)
+    parts.forEach((k:number):void =>  {
+        sum += k
+        product *=  choose(sum,k)
+    })
+    return product
+}
