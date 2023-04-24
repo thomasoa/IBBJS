@@ -1,0 +1,8 @@
+{
+    "files": [ "src/choose.ts"],
+    "includes": ["src/**/*", "tests/**/*"],
+    "compilerOptions": {
+        "lib":["es2020"],
+        "outDir":"js"
+    }
+}
