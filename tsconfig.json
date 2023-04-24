@@ -1,8 +1,10 @@
 {
-    "includes": ["src/**/*", "tests/**/*"],
+    "includes": ["src/**/*"],
     "compilerOptions": {
         "lib":["es2021"],
-        "outDir":"js",
+        "outDir":"dest",
+        "moduleResolution": "nodeNext",
         "module": "es2022"
-    }
+    },
+    "esModuleInterop": true
 }
