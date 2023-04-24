@@ -1,5 +1,6 @@
 {
     "includes": ["src/**/*"],
+    "exclude": ["tests/**/*"],
     "compilerOptions": {
         "lib":["es2021"],
         "outDir":"dest",
