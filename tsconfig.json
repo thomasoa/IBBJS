@@ -3,6 +3,7 @@
     "includes": ["src/**/*", "tests/**/*"],
     "compilerOptions": {
         "lib":["es2021"],
-        "outDir":"js"
+        "outDir":"js",
+        "module": "es2022"
     }
 }
