@@ -11,7 +11,7 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
-        "test": "jest",
+        "test": "tsc && jest",
         "build": "tsc && tsc-alias"
     },
     "babel": {
