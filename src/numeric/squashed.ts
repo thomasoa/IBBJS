@@ -11,7 +11,7 @@ function encode(sortedValues: number[]):bigint {
 
 function largestLessThan(index:bigint, n:number): number {
     var k:number = n-1
-    while (choose(k+1,n)<index) {
+    while (choose(k+1,n)<=index) {
         k = k+1
     }
     return k
@@ -21,6 +21,7 @@ function decode(index:bigint, n:number): number[] {
     const result = Array(n)
     while (n>0) {
         result[n-1]=largestLessThan(index, n)
+        index -= choose(result[n-1],n)
         n = n-1
     }
     return result
