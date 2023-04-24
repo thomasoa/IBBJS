@@ -12,3 +12,7 @@ test('encode 0,1,2,3,5', () => {
 test('encode 8,9,10', () => {
   expect(squashed.encode([8,9,10])).toBe(choose.choose(11,3)-BigInt(1));
 });
+
+test('decode 0n, 5', () => {
+  expect(squashed.decode(BigInt(0),5)).toEqual([0,1,2,3,4])
+});
