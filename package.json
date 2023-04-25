@@ -3,6 +3,7 @@
     "outDir": "dest",
     "devDependencies": {
         "@babel/core": "^7.21.4",
+        "@babel/plugin-transform-modules-commonjs": "^7.21.2",
         "@babel/types": "^7.21.4",
         "@jest/globals": "^29.5.0",
         "@types/jest": "^29.5.1",
@@ -12,6 +13,7 @@
     },
     "scripts": {
         "test": "tsc && jest --silent=false",
+        "test-coverage": "tsc && jest --silent=false --collect-coverage", 
         "build": "tsc && tsc-alias"
     },
     "babel": {

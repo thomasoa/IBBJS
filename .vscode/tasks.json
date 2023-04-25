@@ -16,6 +16,13 @@
 			"problemMatcher": [],
 			"label": "npm: build",
 			"detail": "tsc && tsc-alias"
+		},
+		{
+			"type": "npm",
+			"script": "test-coverage",
+			"problemMatcher": [],
+			"label": "npm: test-coverage",
+			"detail": "tsc && jest --silent=false --collect-coverage"
 		}
 	]
 }

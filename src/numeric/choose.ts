@@ -8,8 +8,8 @@ type PascalRow = Array<bigint|undefined>
 type OptPascalRow = PascalRow | undefined 
 
 export class ChooseCache {
-    size: number;
-    rows: Array<PascalRow>;
+    readonly size: number;
+    readonly rows: Array<PascalRow>;
 
     constructor(size:number) {
         this.size = size
