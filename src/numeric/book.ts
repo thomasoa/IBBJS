@@ -21,6 +21,11 @@ class DealSignature {
         return this.pages-BigInt(1)
     }
 
+    assertValidPageNo(pageNo:bigint):void {
+        if (pageNo>=this.pages || pageNo<BigInt(0)) {
+            throw new Error("Invalid page number pageNo outside range <="+this.pages.toString())
+        }
+    }
 }
 
 const defaultSignature = new DealSignature([13,13,13,13])
@@ -135,9 +140,7 @@ class AndrewsStrategy {
 
     computePageContent(pageNo:bigint): number[] {
         const sig  = this.signature
-        if (pageNo < BigInt(0) || pageNo>= sig.pages) {
-            throw new Error("Invalid page number pageNo outside range <="+sig.pages.toString())
-        }
+        this.signature.assertValidPageNo(pageNo)
         var toWhom: number[] = Array<number>(sig.cards)
         for (var card = 0; card<sig.cards; card++) {
             toWhom[card] = 0 // default

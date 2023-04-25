@@ -13,6 +13,8 @@ test("deal signature constructor",
     expect(sig.perSeat).toEqual([1,2,3,4])
     expect(sig.pages).toEqual(BigInt(12600))
     expect(sig.lastPage()).toBe(BigInt(12599))
+    expect(() => sig.assertValidPageNo(sig.pages)).toThrowError()
+    expect(() => sig.assertValidPageNo(BigInt(-1))).toThrowError()
   })
 
 test("Andrews strategy default signature", 
@@ -36,7 +38,7 @@ test("Try an index",
     var sig = test_sig1234()
     var aBook = new book.AndrewsStrategy(sig)
     expect(aBook.computePageContent(BigInt(0))).toEqual([3,3,3,3,2,2,2,1,1,0])
-    var lastPage = aBook.lastPage()
+    var lastPage = aBook.signature.lastPage()
     expect(aBook.computePageContent(lastPage)).toEqual([0,1,1,2,2,2,3,3,3,3])
   }
 )
