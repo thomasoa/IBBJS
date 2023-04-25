@@ -6,12 +6,12 @@ import {decode, encode} from './squashed.js'
 
 interface SeatFactor {
     // Represents a factor of the Andrews strategy
-    quotient:bigint;
-    seat: number;
-    cards: number;
+    readonly quotient:bigint;
+    readonly seat: number;
+    readonly cards: number;
 }
 
-function computeFactors(cardsPer:number[]): SeatFactor[] {
+function computeFactors(cardsPer: readonly number[]): SeatFactor[] {
     var totalCards:number = 0
     var totalProduct = BigInt(1)
     var oldProduct = BigInt(1)
@@ -74,10 +74,10 @@ class SequenceBuilder {
     // higher seats (3) we get [0,2,1,2,2] and  [1,3,4] is the indices
     // of 2 in that sequence.
 
-    sequence: Array<number>;
+    readonly sequence: Array<number>;
+    readonly seat: number;
     seqIdx: number;
     afterIndex: number;
-    seat: number;
 
     constructor(seat:number, cards: number) {
         this.seat = seat
@@ -98,8 +98,8 @@ class SequenceBuilder {
 }
 
 class AndrewsStrategy {
-    signature:DealSignature;
-    factors:SeatFactor[];
+    readonly signature:DealSignature;
+    readonly factors:SeatFactor[];
     
     constructor(signature:DealSignature|undefined) {
         this.signature = signature_or_default(signature);
@@ -108,17 +108,17 @@ class AndrewsStrategy {
 
     computePageNumber(deal:NumericDeal):bigint {
         const sig=this.signature
-        var sequences: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
+        const builders: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
         for (var i=1; i<sig.seats; i++) {
-            sequences[i-1]=new SequenceBuilder(i,sig.perSeat[i])
+            builders[i-1]=new SequenceBuilder(i,sig.perSeat[i])
         }
         deal.toWhom.forEach((whom,card) => 
-            sequences.forEach((builder) => builder.nextItem(card,whom))
+            builders.forEach((builder) => builder.nextItem(card,whom))
         )
         var sum:bigint = BigInt(0)
         this.factors.forEach(
             (factor) => {
-                var builder = sequences[factor.seat-1]
+                var builder = builders[factor.seat-1]
                 var seqNo = encode(builder.sequence)
                 sum += seqNo * factor.quotient
             }
