@@ -60,3 +60,13 @@ test("Pavlicek strategy default signature",
     expect(pBook.signature.perSeat).toEqual([13,13,13,13])
   }
 )
+
+test("Andrews book complete invertible for signature [2,2,2,2]",() => {
+   var sig = new book.DealSignature([2,2,2,2])
+   var aBook = new book.AndrewsStrategy(sig)
+   console.log('Total pages',sig.pages)
+   for (var page=BigInt(0); page<sig.pages; page++) {
+     var deal = aBook.computePageContent(page)
+     expect(aBook.computePageNumber(deal)).toBe(page)
+   }
+})
