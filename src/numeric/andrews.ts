@@ -141,7 +141,7 @@ class AndrewsStrategy {
         // cards.
         this.factors.forEach(
             (factor:SeatFactor) => {
-                // console.log(factor,indices,toWhom)
+
                 var seatIndex:bigint = pageNo / factor.quotient
                 pageNo = pageNo % factor.quotient
                 var sequence: number[] = decode(seatIndex,factor.cards)
