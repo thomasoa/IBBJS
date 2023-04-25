@@ -1,3 +1,4 @@
+// Common numeric deal logic and types
 import { multinomial} from "./choose.js"
 
 type SeatNumber = number;
@@ -5,6 +6,15 @@ type CardNumber = number;
 type PageNumber = bigint;
 
 class DealSignature {
+    // An immutable definition ffor a class of deals
+    // 
+    // sig = new DealSignature[4,4,4,4]
+    //
+    // sig.perSet - an array telling how man cards each seat is suppose to get]
+    // sig.seats  - the number of seats
+    // sig.cards  - the total number of cards to be dealt
+    // sig.pages  - The total number of distinct deals of this type
+    //
     readonly perSeat: readonly number[];
     readonly seats:number;
     readonly cards:number;
@@ -19,11 +29,11 @@ class DealSignature {
         this.pages = multinomial(cardsPerSeat);
     }
 
-    lastPage(): bigint {
+    lastPage(): PageNumber {
         return this.pages-BigInt(1)
     }
 
-    assertValidPageNo(pageNo:bigint):void {
+    assertValidPageNo(pageNo:PageNumber):void {
         if (pageNo>=this.pages || pageNo<BigInt(0)) {
             throw new Error("Invalid page number pageNo outside range <="+this.pages.toString())
         }
@@ -43,9 +53,9 @@ function signature_or_default(sig:DealSignature|undefined):DealSignature {
 class NumericDeal {
     // A deal which matches a signature
     // 
-    signature: DealSignature;
-    toWhom: number[];
-    hands: number[][];
+    readonly signature: DealSignature;
+    readonly toWhom: readonly SeatNumber[];
+    readonly hands: readonly CardNumber[][];
 
     constructor(sig:DealSignature,toWhom:number[]) {
         this.signature = sig
