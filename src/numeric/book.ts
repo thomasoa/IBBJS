@@ -2,6 +2,31 @@
 import {choose, multinomial} from "./choose.js"
 import {decode, encode} from './squashed.js'
 
+class DealSignature {
+    perSeat:number[];
+    seats:number;
+    cards:number;
+    pages:bigint;
+
+    constructor(cardsPerSeat:number[]) {
+        this.perSeat = cardsPerSeat
+        this.seats = cardsPerSeat.length
+        this.cards = cardsPerSeat.reduce(
+            (total:number, nextVal:number) => total + nextVal
+        )
+        this.pages = multinomial(cardsPerSeat);
+    }
+}
+
+const defaultSignature = new DealSignature([13,13,13,13])
+
+function signature_or_default(sig:DealSignature|undefined):DealSignature {
+    if (sig == undefined) {
+        return defaultSignature
+    }
+    return sig
+}
+
 interface SeatFactor {
     quotient:bigint;
     seat: number;
@@ -31,18 +56,22 @@ function updateSequence(
     toWhom:number[],
     remaining: number[]
 ):number[] {
+    // seat - the seat we are currently populating
+    // sequence - the (sorted) subsequence of indices for this seat
+    // toWhom - the deal we are updating
+    // remaining - the current sequence of un-dealt cards
     const newRemaining = Array<number>(remaining.length-sequence.length)
     var iSeq = 0
     var iNewRemaining = 0
-    for(var i=0; i<remaining.length; i++) {
+    remaining.forEach( (card,i) =>  {
         if (iSeq<sequence.length && sequence[iSeq]==i) {
-            toWhom[remaining[i]] = seat
+            toWhom[card] = seat
             iSeq++
         } else {
-            newRemaining[iNewRemaining] = remaining[i]
+            newRemaining[iNewRemaining] = card
             iNewRemaining++
         }
-    }
+    })
     return newRemaining
 }
 
@@ -70,32 +99,25 @@ class SequenceBuilder {
     }
 }
 
-export class NumericBook {
-    seats:number;
-    cards:number;
-    perSeat:number[];
-    pages:bigint;
+class AndrewsStrategy {
+    signature:DealSignature;
     factors:SeatFactor[];
     
 
-    constructor(cardsPerSeat:number[]) {
-        this.perSeat = cardsPerSeat
-        this.seats = cardsPerSeat.length
-        this.cards = cardsPerSeat.reduce(
-            (total:number, nextVal:number) => total + nextVal
-        )
-        this.pages = multinomial(cardsPerSeat);
-        this.factors = computeFactors(this.perSeat)
+    constructor(signature:DealSignature|undefined) {
+        this.signature = signature_or_default(signature);
+        this.factors = computeFactors(this.signature.perSeat)
     }
 
     lastPage(): bigint {
-        return this.pages-BigInt(1)
+        return this.signature.pages-BigInt(1)
     }
 
     computePageNumber(toWhom:number[]):bigint {
-        var sequences: Array<SequenceBuilder>=Array<SequenceBuilder>(this.seats-1);
-        for (var i=1; i<this.seats; i++) {
-            sequences[i-1]=new SequenceBuilder(i,this.perSeat[i])
+        const sig=this.signature
+        var sequences: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
+        for (var i=1; i<sig.seats; i++) {
+            sequences[i-1]=new SequenceBuilder(i,sig.perSeat[i])
         }
         toWhom.forEach((whom,card) => 
             sequences.forEach((builder) => builder.nextItem(card,whom))
@@ -112,12 +134,13 @@ export class NumericBook {
     }
 
     computePageContent(pageNo:bigint): number[] {
-        if (pageNo < BigInt(0) || pageNo>= this.pages) {
-            throw new Error("Invalid page number pageNo outside range <="+this.pages.toString())
+        const sig  = this.signature
+        if (pageNo < BigInt(0) || pageNo>= sig.pages) {
+            throw new Error("Invalid page number pageNo outside range <="+sig.pages.toString())
         }
-        var toWhom: number[] = Array<number>(this.cards)
-        for (var card = 0; card<this.cards; card++) {
-            toWhom[card] = 0
+        var toWhom: number[] = Array<number>(sig.cards)
+        for (var card = 0; card<sig.cards; card++) {
+            toWhom[card] = 0 // default
         }
 
         var indices = toWhom.map((val,index) => index)
@@ -134,3 +157,14 @@ export class NumericBook {
         return toWhom
     }
 }
+
+class PavlicekStrategy {
+    signature:DealSignature
+
+    constructor(signature:DealSignature) {
+        this.signature = signature_or_default(signature)
+    }
+
+}
+
+export {DealSignature, AndrewsStrategy, PavlicekStrategy}
