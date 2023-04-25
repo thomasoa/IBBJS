@@ -1,0 +1,9 @@
+    <script type="module">
+
+      import { AndrewsStrategy, PavlicekStrategy } from "./numeric/book.js"
+      var aBook = new AndrewsStrategy()
+
+      console.log(aBook.computePageContent(BigInt(0)))
+      console.log(aBook.computePageContent(aBook.lastPage()))
+   </script>
+
