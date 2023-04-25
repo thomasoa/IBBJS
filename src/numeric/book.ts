@@ -148,7 +148,6 @@ class SequenceBuilder {
     seat: number;
 
     constructor(seat:number, cards: number) {
-
         this.seat = seat
         this.sequence = Array<number>(cards)
         this.seqIdx = 0
