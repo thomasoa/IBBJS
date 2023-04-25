@@ -1,13 +1,17 @@
 import { multinomial} from "./choose.js"
 
+type SeatNumber = number;
+type CardNumber = number;
+type PageNumber = bigint;
+
 class DealSignature {
-    readonly perSeat:number[];
+    readonly perSeat: readonly number[];
     readonly seats:number;
     readonly cards:number;
     readonly pages:bigint;
 
     constructor(cardsPerSeat:number[]) {
-        this.perSeat = cardsPerSeat
+        this.perSeat = [...cardsPerSeat]
         this.seats = cardsPerSeat.length
         this.cards = cardsPerSeat.reduce(
             (total:number, nextVal:number) => total + nextVal
