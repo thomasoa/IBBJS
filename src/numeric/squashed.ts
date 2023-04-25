@@ -18,6 +18,8 @@ function largestLessThan(index:bigint, n:number): number {
 }
 
 function decode(index:bigint, n:number): number[] {
+    // Compute the n-subset of the natural numbers with the
+    // given index.
     const result = Array(n)
     while (n>0) {
         result[n-1]=largestLessThan(index, n)
