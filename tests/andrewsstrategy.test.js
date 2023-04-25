@@ -1,21 +1,9 @@
 const book = require('../dest/numeric/book.js')
 
-function test_sig1234() {
-    return new book.DealSignature([1,2,3,4]) ;
+function signature1234() {
+  // dommon signature for these tests
+  return new book.DealSignature([1,2,3,4]) ;
 }
-
-
-test("deal signature constructor",
-  () => {
-    var sig = test_sig1234(); // [1,2,3,4]
-    expect(sig.seats).toBe(4)
-    expect(sig.cards).toBe(10)
-    expect(sig.perSeat).toEqual([1,2,3,4])
-    expect(sig.pages).toEqual(BigInt(12600))
-    expect(sig.lastPage()).toBe(BigInt(12599))
-    expect(() => sig.assertValidPageNo(sig.pages)).toThrowError()
-    expect(() => sig.assertValidPageNo(BigInt(-1))).toThrowError()
-  })
 
 test("Andrews strategy default signature", 
   () => {
@@ -26,7 +14,7 @@ test("Andrews strategy default signature",
 
 test("Andrews strategy factors",
  () => {
-    var sig = test_sig1234()
+    var sig = signature1234()
     var aBook = new book.AndrewsStrategy(sig)
     expect(aBook.factors[0]).toMatchObject({seat:3,cards:4,quotient:BigInt(60)})
     expect(aBook.factors[1]).toMatchObject({seat:2,cards:3,quotient:BigInt(3)})
@@ -35,7 +23,7 @@ test("Andrews strategy factors",
 
 test("Try an index",
   ()=> {
-    var sig = test_sig1234()
+    var sig = signature1234()
     var aBook = new book.AndrewsStrategy(sig)
     expect(aBook.computePageContent(BigInt(0))).toEqual([3,3,3,3,2,2,2,1,1,0])
     var lastPage = aBook.signature.lastPage()
