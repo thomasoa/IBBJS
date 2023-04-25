@@ -3,10 +3,10 @@ import {choose, multinomial} from "./choose.js"
 import {decode, encode} from './squashed.js'
 
 class DealSignature {
-    perSeat:number[];
-    seats:number;
-    cards:number;
-    pages:bigint;
+    readonly perSeat:number[];
+    readonly seats:number;
+    readonly cards:number;
+    readonly pages:bigint;
 
     constructor(cardsPerSeat:number[]) {
         this.perSeat = cardsPerSeat
@@ -38,6 +38,7 @@ function signature_or_default(sig:DealSignature|undefined):DealSignature {
 }
 
 interface SeatFactor {
+    // Represents a factor of the Andrews strategy
     quotient:bigint;
     seat: number;
     cards: number;
@@ -62,19 +63,21 @@ function computeFactors(cardsPer:number[]): SeatFactor[] {
  
 
 interface BookStrategy {
-    signature: DealSignature;
+    readonly signature: DealSignature;
     computePageContent(pageNo:bigint):number[];
     computePageNumber(deal:number[]):bigint;
 }
 
 class NumericDeal {
+    // A deal which matches a signature
+    // 
     signature: DealSignature;
     toWhom: number[];
     hands: number[][];
 
     constructor(sig:DealSignature,toWhom:number[]) {
         this.signature = sig
-        this.toWhom = toWhom
+        this.toWhom = [...toWhom]
         if (toWhom.length != sig.cards) {
             throw Error('Wrong number of cards in deal. Expected' + sig.cards + ', got ' + toWhom.length)
         }
@@ -126,12 +129,26 @@ function updateSequence(
 }
 
 class SequenceBuilder {
-    seat: number;
+    // Keeps track of the number of cards in the seat or
+    // lower seats, and determines the sequence of cards
+    // as a subset of those cards only. 
+    // 
+    // builder2 = SequenceBuilder(2,3)
+    // [0,3,2,3,1,2,3,2].forEach((seat,card) => {
+    //     builder2.nextItem(card,seat)  
+    // }
+    //
+    // Then builder2.sequence should be [1,3,4], because, ignoring the
+    // higher seats (3) we get [0,2,1,2,2] and  [1,3,4] is the indices
+    // of 2 in that sequence.
+
     sequence: Array<number>;
     seqIdx: number;
     afterIndex: number;
+    seat: number;
 
     constructor(seat:number, cards: number) {
+
         this.seat = seat
         this.sequence = Array<number>(cards)
         this.seqIdx = 0
@@ -179,6 +196,7 @@ class AndrewsStrategy {
     }
 
     computePageContent(pageNo:bigint): NumericDeal {
+        // Determine what deal is on the given page number
         const sig  = this.signature
         this.signature.assertValidPageNo(pageNo)
         var toWhom: number[] = Array<number>(sig.cards)
@@ -187,6 +205,9 @@ class AndrewsStrategy {
         }
 
         var indices = toWhom.map((val,index) => index)
+        // Factors are stored in reverse order by seatts, and with
+        // no entry for seat 0 because that seat gets all the remaining
+        // cards.
         this.factors.forEach(
             (factor:SeatFactor) => {
                 // console.log(factor,indices,toWhom)
