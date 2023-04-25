@@ -1,10 +1,10 @@
-const book = require('../dest/numeric/book.js')
+const numDeal = require('../dest/numeric/deal.js')
 
 
 
 test("deal signature constructor",
   () => {
-    var sig = new book.DealSignature([1,2,3,4]); 
+    var sig = new numDeal.DealSignature([1,2,3,4]); 
     expect(sig.seats).toBe(4)
     expect(sig.cards).toBe(10)
     expect(sig.perSeat).toEqual([1,2,3,4])

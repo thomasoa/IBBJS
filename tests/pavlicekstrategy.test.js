@@ -1,4 +1,4 @@
-const book = require('../dest/numeric/book.js')
+const pavlicek = require('../dest/numeric/pavlicek.js')
 
 function signature1234() {
   // dommon signature for these tests
@@ -7,8 +7,10 @@ function signature1234() {
 
 test("Pavlicek strategy default signature", 
   () => {
-    var pBook = new book.PavlicekStrategy()
+    var pBook = new pavlicek.PavlicekStrategy()
     expect(pBook.signature.perSeat).toEqual([13,13,13,13])
   }
 )
+
+
 
