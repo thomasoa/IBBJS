@@ -61,6 +61,11 @@ class PavlicekStrategy {
         // console.log(remaining.toWhom)
         return new NumericDeal(sig,remaining.toWhom)
     }
+
+    computePageNumber(deal:NumericDeal):PageNumber {
+        return BigInt(0)
+    }
+
 }
 
 export {PavlicekStrategy}
