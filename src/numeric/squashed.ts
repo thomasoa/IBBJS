@@ -1,6 +1,6 @@
 import { choose } from "./choose.js";
 
-function encode(sortedValues: number[]):bigint {
+function encode(sortedValues: readonly number[]):bigint {
     const binomials:bigint[] = sortedValues.map(
         (value:number, index:number):bigint => choose(value,index+1)
     )
