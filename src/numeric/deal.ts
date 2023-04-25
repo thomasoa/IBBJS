@@ -4,6 +4,7 @@ import { multinomial} from "./choose.js"
 type SeatNumber = number;
 type CardNumber = number;
 type PageNumber = bigint;
+type HandArray = CardNumber[]
 
 class DealSignature {
     // An immutable definition ffor a class of deals
@@ -55,7 +56,7 @@ class NumericDeal {
     // 
     readonly signature: DealSignature;
     readonly toWhom: readonly SeatNumber[];
-    readonly hands: readonly CardNumber[][];
+    readonly hands: readonly HandArray[];
 
     constructor(sig:DealSignature,toWhom:number[]) {
         this.signature = sig
@@ -63,6 +64,7 @@ class NumericDeal {
         if (toWhom.length != sig.cards) {
             throw Error('Wrong number of cards in deal. Expected' + sig.cards + ', got ' + toWhom.length)
         }
+        // Split deal into hands
         this.hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
         this.toWhom.forEach((seat,card) => {
             if (seat>= sig.seats || seat< 0) {
@@ -73,7 +75,7 @@ class NumericDeal {
             this.hands[seat].push(card)
         })
 
-        sig.perSeat.forEach((cards,seat) => {
+        sig.perSeat.forEach((cards:number,seat:SeatNumber) => {
              if (cards != this.hands[seat].length) {
                 throw Error(
                     'Wrong number of cards for seat ' + seat + ' expected ' + cards + ' cards'
@@ -85,8 +87,11 @@ class NumericDeal {
 }
 interface BookStrategy {
     readonly signature: DealSignature;
-    computePageContent(pageNo:bigint):number[];
-    computePageNumber(deal:number[]):bigint;
+    computePageContent(pageNo:PageNumber):number[];
+    computePageNumber(deal:NumericDeal):PageNumber;
 }
 
-export {DealSignature, NumericDeal, signature_or_default, BookStrategy}
+export {
+    DealSignature, NumericDeal, signature_or_default, 
+    BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray 
+}

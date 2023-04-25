@@ -1,5 +1,5 @@
 //  An entirely numeric version of the book
-import {signature_or_default, DealSignature, NumericDeal} from "./deal.js"
+import {signature_or_default, DealSignature, NumericDeal, PageNumber} from "./deal.js"
 import {choose} from "./choose.js"
 import {decode, encode} from './squashed.js'
 
@@ -106,7 +106,7 @@ class AndrewsStrategy {
         this.factors = computeFactors(this.signature.perSeat)
     }
 
-    computePageNumber(deal:NumericDeal):bigint {
+    computePageNumber(deal:NumericDeal):PageNumber {
         const sig=this.signature
         const builders: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
         for (var i=1; i<sig.seats; i++) {
