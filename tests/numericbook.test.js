@@ -12,6 +12,7 @@ test("deal signature constructor",
     expect(sig.cards).toBe(10)
     expect(sig.perSeat).toEqual([1,2,3,4])
     expect(sig.pages).toEqual(BigInt(12600))
+    expect(sig.lastPage()).toBe(BigInt(12599))
   })
 
 test("Andrews strategy default signature", 

@@ -16,6 +16,11 @@ class DealSignature {
         )
         this.pages = multinomial(cardsPerSeat);
     }
+
+    lastPage(): bigint {
+        return this.pages-BigInt(1)
+    }
+
 }
 
 const defaultSignature = new DealSignature([13,13,13,13])
@@ -103,14 +108,9 @@ class AndrewsStrategy {
     signature:DealSignature;
     factors:SeatFactor[];
     
-
     constructor(signature:DealSignature|undefined) {
         this.signature = signature_or_default(signature);
         this.factors = computeFactors(this.signature.perSeat)
-    }
-
-    lastPage(): bigint {
-        return this.signature.pages-BigInt(1)
     }
 
     computePageNumber(toWhom:number[]):bigint {
