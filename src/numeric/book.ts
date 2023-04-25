@@ -59,6 +59,46 @@ function computeFactors(cardsPer:number[]): SeatFactor[] {
     return result.slice(1).reverse()
 
 }
+ 
+
+interface BookStrategy {
+    signature: DealSignature;
+    computePageContent(pageNo:bigint):number[];
+    computePageNumber(deal:number[]):bigint;
+}
+
+class NumericDeal {
+    signature: DealSignature;
+    toWhom: number[];
+    hands: number[][];
+
+    constructor(sig:DealSignature,toWhom:number[]) {
+        this.signature = sig
+        this.toWhom = toWhom
+        if (toWhom.length != sig.cards) {
+            throw Error('Wrong number of cards in deal. Expected' + sig.cards + ', got ' + toWhom.length)
+        }
+        this.hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
+        this.toWhom.forEach((seat,card) => {
+            if (seat>= sig.seats || seat< 0) {
+                throw Error(
+                    'Invalid seat ' + seat + ' for deal in with ' + sig.seats + ' seats'
+                )
+            }
+            this.hands[seat].push(card)
+        })
+
+        sig.perSeat.forEach((cards,seat) => {
+             if (cards != this.hands[seat].length) {
+                throw Error(
+                    'Wrong number of cards for seat ' + seat + ' expected ' + cards + ' cards'
+                )
+             }
+        })
+
+    }
+
+}
 
 function updateSequence(
     seat:number,
@@ -118,13 +158,13 @@ class AndrewsStrategy {
         this.factors = computeFactors(this.signature.perSeat)
     }
 
-    computePageNumber(toWhom:number[]):bigint {
+    computePageNumber(deal:NumericDeal):bigint {
         const sig=this.signature
         var sequences: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
         for (var i=1; i<sig.seats; i++) {
             sequences[i-1]=new SequenceBuilder(i,sig.perSeat[i])
         }
-        toWhom.forEach((whom,card) => 
+        deal.toWhom.forEach((whom,card) => 
             sequences.forEach((builder) => builder.nextItem(card,whom))
         )
         var sum:bigint = BigInt(0)
@@ -138,7 +178,7 @@ class AndrewsStrategy {
         return sum
     }
 
-    computePageContent(pageNo:bigint): number[] {
+    computePageContent(pageNo:bigint): NumericDeal {
         const sig  = this.signature
         this.signature.assertValidPageNo(pageNo)
         var toWhom: number[] = Array<number>(sig.cards)
@@ -157,7 +197,7 @@ class AndrewsStrategy {
 
             }
         )
-        return toWhom
+        return new NumericDeal(this.signature,toWhom)
     }
 }
 
@@ -170,4 +210,4 @@ class PavlicekStrategy {
 
 }
 
-export {DealSignature, AndrewsStrategy, PavlicekStrategy}
+export {DealSignature, AndrewsStrategy, PavlicekStrategy, NumericDeal}

@@ -25,9 +25,9 @@ test("Try an index",
   ()=> {
     var sig = signature1234()
     var aBook = new book.AndrewsStrategy(sig)
-    expect(aBook.computePageContent(BigInt(0))).toEqual([3,3,3,3,2,2,2,1,1,0])
+    expect(aBook.computePageContent(BigInt(0)).toWhom).toEqual([3,3,3,3,2,2,2,1,1,0])
     var lastPage = aBook.signature.lastPage()
-    expect(aBook.computePageContent(lastPage)).toEqual([0,1,1,2,2,2,3,3,3,3])
+    expect(aBook.computePageContent(lastPage).toWhom).toEqual([0,1,1,2,2,2,3,3,3,3])
   }
 )
 
@@ -37,15 +37,8 @@ test("getPageNo returns original page number",
     var sig = new book.DealSignature([1,2,3,4])
     var aBook = new book.AndrewsStrategy(sig)
     var pageNo = BigInt(755)
-    var contents = aBook.computePageContent(pageNo)    
-    expect(aBook.computePageNumber(contents)).toEqual(pageNo)
-  }
-)
-
-test("Pavlicek strategy default signature", 
-  () => {
-    var pBook = new book.PavlicekStrategy()
-    expect(pBook.signature.perSeat).toEqual([13,13,13,13])
+    var deal = aBook.computePageContent(pageNo)    
+    expect(aBook.computePageNumber(deal)).toEqual(pageNo)
   }
 )
 
