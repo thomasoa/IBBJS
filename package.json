@@ -11,7 +11,7 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
-        "test": "tsc && jest --silent=false",
+        "test": "tsc && jest --silent=false --collect-coverage",
         "build": "tsc && tsc-alias"
     },
     "babel": {
