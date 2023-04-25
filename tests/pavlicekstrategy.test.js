@@ -1,8 +1,9 @@
 const pavlicek = require('../dest/numeric/pavlicek.js')
+const numDeal = require('../dest/numeric/deal.js')
 
 function signature1234() {
   // dommon signature for these tests
-  return new book.DealSignature([1,2,3,4]) ;
+  return new numDeal.DealSignature([1,2,3,4]) ;
 }
 
 test("Pavlicek strategy default signature", 
@@ -11,6 +12,20 @@ test("Pavlicek strategy default signature",
     expect(pBook.signature.perSeat).toEqual([13,13,13,13])
   }
 )
+
+test("Pavlicek strategy decode", () => {
+   var pBook = new pavlicek.PavlicekStrategy(signature1234())
+   var deal = pBook.computePageContent(BigInt(0))
+   expect(deal.toWhom).toEqual([0,1,1,2,2,2,3,3,3,3])
+})
+
+test("Pavlicek strategy decode - last page", () => {
+  var pBook = new pavlicek.PavlicekStrategy(signature1234())
+  var deal = pBook.computePageContent(pBook.signature.lastPage())
+  expect(deal.toWhom).toEqual([3,3,3,3,2,2,2,1,1,0])
+})
+
+
 
 
 
