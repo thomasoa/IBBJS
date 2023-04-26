@@ -26,17 +26,27 @@ test("Pavlicek strategy decode - last page", () => {
   expect(deal.toWhom).toEqual([3,3,3,3,2,2,2,1,1,0])
 })
 
-test("Pavlicek strategy complete deals ensure unique [2,2,2,2]",() => {
-  var sig = new numDeal.DealSignature([2,2,2,2])
+test("Pavlicek strategy: computePageNumber returns original page number",
+  ()=> {
+    // Ensure computing the contents then 
+    var sig = new numDeal.DealSignature([1,2,3,4])
+    var pBook = new pavlicek.PavlicekStrategy(sig)
+    var pageNo = BigInt(755)
+    var deal = pBook.computePageContent(pageNo)    
+    expect(pBook.computePageNumber(deal)).toEqual(pageNo)
+  }
+)
+
+test("Pavlicek strategy complete deals ensured unique [2,2,2,2]",() => {
+  var sig = new numDeal.DealSignature([2,2,2,2]) // 2520 pages
   var pBook = new pavlicek.PavlicekStrategy(sig)
   var map = new Map()
   for (var page=BigInt(0); page<sig.pages; page++) {
     var deal = pBook.computePageContent(page)
-
-    var dealString = deal.toWhom.join('')
-    
+    var dealString = deal.toWhom.join('')    
     expect(map.has(dealString)).toBeFalsy()
     map.set(dealString,page)
+    expect(pBook.computePageNumber(deal)).toBe(page)
   }
 })
 
