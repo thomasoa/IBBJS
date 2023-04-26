@@ -1,12 +1,13 @@
 interface Seat {
     name:string;
-    letter:string
+    letter:string;
+    order:number
 }
 
-const North = { name:"north",letter:"N"}
-const East = { name:"east",letter:"E"}
-const South = {name:"south", letter:"S"}
-const West = {name:"west", letter:"W"}
+const North = { name:"north",letter:"N", order:0}
+const East = { name:"east",letter:"E", order:1}
+const South = {name:"south", letter:"S", order:2}
+const West = {name:"west", letter:"W", order:3}
 const Seats = {
     north: North,
     east: East,
@@ -14,17 +15,22 @@ const Seats = {
     west: West,
     all: new Array<Seat>(North,East,South,West)
 }
-type Rank = string
+type Rank {
+    brief: string,
+    order: number
+}
+
 interface Suit {
     name:string;
     letter:string;
     symbol:string;
+    order:number
 }
 
-const Spades: Suit = {name:'spades',letter:'S', symbol:'S'}
-const Hearts: Suit = {name:'hearts',letter:'H', symbol:'H'}
-const Diamonds: Suit = {name:'diamonds',letter:'DD', symbol:'D'}
-const Clubs: Suit = {name:'clubs',letter:'C', symbol:'C'}
+const Spades: Suit = {name:'spades',letter:'S', symbol:'S', order:0}
+const Hearts: Suit = {name:'hearts',letter:'H', symbol:'H', order:1}
+const Diamonds: Suit = {name:'diamonds',letter:'DD', symbol:'D', order:2}
+const Clubs: Suit = {name:'clubs',letter:'C', symbol:'C',order:3}
 
 const Suits = {
     spades: Spades,
@@ -45,7 +51,11 @@ class Card {
     }
 }
 
-const Ranks = ['A','K','Q','J','10','9','8','7','6','5','4','3','2']
+const Ranks :Array<Rank> = ['A','K','Q','J','10','9','8','7','6','5','4','3','2'].map(
+    (brief:string,order:number):Rank {
+        return {brief:brief, order: order}
+    }
+)
 
 function make_cards():Array<Card> {
     var cards = new Array<Card>(52)
@@ -58,4 +68,4 @@ function make_cards():Array<Card> {
 }
 const Cards = make_cards()
 
-export { Suits, Ranks, Cards, Seats}
+export { Suits, Ranks, Cards, Seats, Suit, Rank, Card, Seat}
