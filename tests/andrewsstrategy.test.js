@@ -31,7 +31,7 @@ test("Andrews strategy factors",
     expect(aBook.factors[2]).toMatchObject({seat:1,cards:2,quotient:BigInt(1)})
 });
 
-test("Try an index",
+test("Andrews strategy: Try first and last deal",
   ()=> {
     var sig = signature1234()
     var aBook = new andrews.AndrewsStrategy(sig)
@@ -41,7 +41,7 @@ test("Try an index",
   }
 )
 
-test("getPageNo returns original page number",
+test("Andrews strategy: computePageNumber returns original page number",
   ()=> {
     // Ensure computing the contents then 
     var sig = new numDeal.DealSignature([1,2,3,4])
