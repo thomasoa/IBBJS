@@ -1,4 +1,4 @@
-interface Seat {
+type Seat = {
     name:string;
     letter:string;
     order:number
@@ -15,12 +15,12 @@ const Seats = {
     west: West,
     all: new Array<Seat>(North,East,South,West)
 }
-type Rank {
+type Rank = {
     brief: string,
     order: number
 }
 
-interface Suit {
+type Suit = {
     name:string;
     letter:string;
     symbol:string;
@@ -44,15 +44,17 @@ class Card {
     suit: Suit;
     rank: Rank;
     short: string;
+    order: number;
     constructor(suit:Suit,rank:Rank) {
         this.suit = suit
         this.rank = rank
-        this.short = suit.letter+rank
+        this.short = suit.letter+rank.brief
+        this.order = rank.order + 13*suit.order
     }
 }
 
 const Ranks :Array<Rank> = ['A','K','Q','J','10','9','8','7','6','5','4','3','2'].map(
-    (brief:string,order:number):Rank {
+    (brief:string,order:number):Rank => {
         return {brief:brief, order: order}
     }
 )
