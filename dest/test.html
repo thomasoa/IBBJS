@@ -63,29 +63,66 @@ Page Number(s):
           }) 
       }
 
-      function submit_pages(form) {
-          var page = form.find('input[name="pageNumbers"]').val()
-          var scramble = form.find('select[name="scramble"]').val()
+      function get_named_book(edition,scramble) {
+        var editions = books[edition] 
+        var book, title;
+        if (scramble=='Scrambled') {
+            title = edition + ' Scrambled'
+            book = editions[1];
+        } else {
+            title = edition
+            book = editions[0];
+        }
+        return { book: book, title: title, edition: edition, scramble: scramble }        
+      }
+
+      function determine_named_book(form) {
+        if (form == undefined) {
+            form = $('#lookup')
+        }
+        var scramble = form.find('select[name="scramble"]').val()
           var edition = form.find('select[name="edition"]').val()
-          console.log('Edition',edition)
+          return get_named_book(edition,scramble)
           var editions = books[edition]
-          var book;
+          var book, title;
           if (scramble=='Scrambled') {
+            title = edition + ' Scrambled'
             book = editions[1];
           } else {
+            title = edition
             book = editions[0];
           }
+          return { book: book, title: title }
+
+      }
+
+      function submit_pages(form) {
+          var page = form.find('input[name="pageNumbers"]').val()
+          var namedBook = determine_named_book(form)
           var pageNo = BigInt(page)
-          var deal = book.computePageContent(pageNo)
-          var text = 'Page ' + page + ' of edition ' + edition + ' '+scramble+'\n'
+          processBookPage(namedBook,pageNo)
+        }
+
+        function processBookPage(namedBook,pageNo) {
+          var deal = namedBook.book.computePageContent(pageNo)
+          var text = 'Page ' + pageNo.toString() + ' of edition ' + namedBook.title + '\n'
           text += deal.toWhom.toString()+'\n'
           deal.hands.forEach((hand,seat) => {
               text += 'Seat ' + seat +' gets cards {}' + hand.toString() + '}\n'
           })
-          $('#toWhom').text(text)
+          $('#toWhom').prepend(text+"\n")
+      }
+
+      function powers_of_ten() {
+        var namedBook = determine_named_book()
+        var pages = namedBook.book.signature.pages
+        for (var pageNo = BigInt(1); pageNo<pages; pageNo *= BigInt(10)) {
+            processBookPage(namedBook,pageNo)
+        }
       }
 
       initialize()
+
    </script>
 
 </body>
