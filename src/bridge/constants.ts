@@ -34,9 +34,15 @@ const Suits = {
     all: new Array<Suit>(Spades,Hearts,Diamonds,Clubs)
 }
 
-interface Card {
+class Card {
     suit: Suit;
     rank: Rank;
+    short: string;
+    constructor(suit:Suit,rank:Rank) {
+        this.suit = suit
+        this.rank = rank
+        this.short = suit.letter+rank
+    }
 }
 
 const Ranks = ['A','K','Q','J','10','9','8','7','6','5','4','3','2']
@@ -44,10 +50,9 @@ const Ranks = ['A','K','Q','J','10','9','8','7','6','5','4','3','2']
 function make_cards():Array<Card> {
     var cards = new Array<Card>(52)
     for (var cardNum=0; cardNum<52; cardNum++) {
-        cards[cardNum] = {
-            suit: Suits.all[Math.floor(cardNum/13)],
-            rank: Ranks[cardNum % 13]
-        }
+        var suit = Suits.all[Math.floor(cardNum/13)]
+        var rank = Ranks[cardNum % 13]
+        cards[cardNum] = new Card(suit,rank)
     }
     return cards
 }
