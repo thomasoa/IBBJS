@@ -1,4 +1,6 @@
 const pavlicek = require('../dest/numeric/pavlicek.js')
+const numDeal = require('../dest/numeric/deal.js')
+
 
 function signature1234() {
   // dommon signature for these tests
@@ -24,7 +26,7 @@ test("Pavlicek strategy decode - last page", () => {
   expect(deal.toWhom).toEqual([3,3,3,3,2,2,2,1,1,0])
 })
 
-test("Andrews book complete deals ensure unique [2,2,2,2]",() => {
+test("Pavlicek strategy complete deals ensure unique [2,2,2,2]",() => {
   var sig = new numDeal.DealSignature([2,2,2,2])
   var pBook = new pavlicek.PavlicekStrategy(sig)
   var map = new Map()
