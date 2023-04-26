@@ -1,5 +1,4 @@
 const pavlicek = require('../dest/numeric/pavlicek.js')
-const numDeal = require('../dest/numeric/deal.js')
 
 function signature1234() {
   // dommon signature for these tests
