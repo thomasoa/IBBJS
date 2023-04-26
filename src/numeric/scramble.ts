@@ -9,13 +9,27 @@ interface Scrambler {
     unscramble: PageTransform    
 }
 
+function safe_mod(n1:bigint,n2:bigint): bigint {
+    // The % operator sometimes returns negative numbers
+    const zero = BigInt(0)
+    if (n2<zero) {
+        n2 = -n1
+    }
+    var result = n1%n2
+    if (result < zero) {
+        return result+n2
+    } else {
+        return result
+    }
+}
 class MultiplierScrambler {
     scramble: PageTransform 
     unscramble: PageTransform
     constructor(pages:bigint,multiplier:bigint,translate:bigint) {
         var inverse = modular_inverse(pages,multiplier)
-        this.scramble  = (pageNo:PageNumber) => (pageNo *multiplier+translate)%pages
-        this.unscramble = (pageNo:bigint) => ((pageNo-translate)*inverse)%pages
+        console.log("Inverse",inverse)
+        this.scramble  = (pageNo:PageNumber) => safe_mod(pageNo *multiplier+translate,pages)
+        this.unscramble = (pageNo:bigint) => safe_mod((pageNo-translate)*inverse,pages)
     }
 }
 
@@ -41,4 +55,9 @@ class ScrambleStrategy {
     }
 }
 
-export {MultiplierScrambler, ScrambleStrategy}
+function scramble_book(base:BookStrategy,multiplier:bigint,translate:bigint):BookStrategy {
+    var scrambler = new MultiplierScrambler(base.signature.pages,multiplier,translate)
+    return new ScrambleStrategy(base,scrambler)
+}
+
+export {Scrambler, MultiplierScrambler, ScrambleStrategy, scramble_book}
