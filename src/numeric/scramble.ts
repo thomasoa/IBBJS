@@ -27,7 +27,6 @@ class MultiplierScrambler {
     unscramble: PageTransform
     constructor(pages:bigint,multiplier:bigint,translate:bigint) {
         var inverse = modular_inverse(pages,multiplier)
-        console.log("Inverse",inverse)
         this.scramble  = (pageNo:PageNumber) => safe_mod(pageNo *multiplier+translate,pages)
         this.unscramble = (pageNo:bigint) => safe_mod((pageNo-translate)*inverse,pages)
     }
