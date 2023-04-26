@@ -35,7 +35,6 @@ export function modular_inverse(modulus:bigint, unit:bigint):bigint {
     result.quotients.forEach((quotient)=>{
         var p_new = p_1*quotient + p_0
         var q_new = q_1*quotient + q_0
-        console.log('p',p_new, 'q',q_new)
         p_0=p_1 ; p_1=p_new; q_0=q_1; q_1=q_new
     })
     if (result.quotients.length % 2 == 0) {

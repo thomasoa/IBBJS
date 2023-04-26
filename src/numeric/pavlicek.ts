@@ -28,7 +28,6 @@ class Remaining {
         for (var seat =0; seat<this.perSeat.length; seat++) {
             var cards = this.perSeat[seat]    
             var width: bigint = range.width * BigInt(cards)/BigInt(this.total)
-            //console.log(nextStart.toString(),width.toString())
             if (nextStart + width > pageNo) {
                 this.toWhom[card]= seat
                 this.total--
@@ -70,7 +69,6 @@ class PavlicekStrategy {
         for (var card:CardNumber = 0; card<sig.cards; card++) {
             range = remaining.nextRange(range,pageNo,card)
         }
-        // console.log(remaining.toWhom)
         return new NumericDeal(sig,remaining.toWhom)
     }
 
