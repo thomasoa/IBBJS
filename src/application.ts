@@ -1,46 +1,78 @@
-import { NumericDeal, AndrewsStrategy, BookStrategy, PavlicekStrategy,scramble_book} from "./numeric/book.js"
+import {Edition, build_editions} from "./model/books.js"
+import {Deal} from "./bridge/deal.js"
+import {PageNumber} from "./numeric/deal.js"
+import { BridgeBook } from "./bridge/book.js"
 
-function make_scrambler():(BookStrategy)=>(BookStrategy) {
-  var multiplier = BigInt("13109994191499930367061460371")
-  var translation = BigInt("34563463456363563565356345634")
-  return (book) => scramble_book(book,multiplier,translation)
-}
-
-interface BookInfo {
-    edition: string;
-    scrambled: boolean;
-    title: string;
-}
 
 interface ProducedDeal {
-    deal: NumericDeal,
-    bookInfo: BookInfo,
+    deal: Deal,
+    edition: string,
+    scrambled: boolean,
     pageNo: bigint,
-    index: number
 }
 
-type ProducedDealCallback = (dealEvent:ProducedDeal)=> any
+type ProducedDealCallback = (index:number, dealEvent:ProducedDeal|undefined)=> any
 
 class Application {
-    readonly books:Map<string,Array<BookStrategy>>
+    readonly editions:Map<string,Edition> = build_editions()
+    readonly deals:Array<ProducedDeal> = new Array<ProducedDeal>()
     readonly callbacks = {
         updateCurrentDeal: new Array<ProducedDealCallback>(),
-        updateDealCount: new Array<()=>any>()
+        updateDealCount: new Array<(count:number)=>any>()
     }
+    currentDeal:number = -1
 
-    readonly deals = new Array<ProducedDeal>()
     constructor() {
-        var scrambler = make_scrambler()
-        var andrewsBook = new AndrewsStrategy(undefined /* default*/)
-        var pavlicekBook = new PavlicekStrategy(undefined)
-        this.books = new Map<string,Array<BookStrategy>>([
-           ['Andrews',[andrewsBook,scrambler(andrewsBook)]],
-           ['Pavlicek',[pavlicekBook,scrambler(pavlicekBook)]] 
-        ])
     }
 
-    editionNames():Array<string> {
-        return Array.from(this.books.keys())
+    get length() {
+        return this.deals.length
+    }
+
+    get editionNames():Array<string> {
+        return Array.from(this.editions.keys())
+    }
+
+    book(editionName:string,scrambled:boolean):BridgeBook {
+        var edition = this.editions.get(editionName)
+        if (scrambled) {
+            return edition.scrambled
+        } else {
+            return edition.book
+        }
+    }
+    lookupDeal(editionName:string,scrambled:boolean, pageNumber:PageNumber):Deal {
+        var book = this.book(editionName,scrambled)
+        return book.getDeal(pageNumber)
+    }
+
+    updateCount():void {
+        this.callbacks.updateDealCount.forEach(
+            (callback)=> callback(this.length)
+            )
+    }
+
+    reset():void {
+        this.deals = new Array<ProducedDeal>(0)
+        this.updateCount()
+        this.updateCurrent(-1)
+    }
+
+    updateCurrent(currentDeal:number):void {
+        if (currentDeal >= this.length) {
+            throw Error('No deal number' + currentDeal)
+        }
+        this.currentDeal = currentDeal
+        var deal:ProducedDeal|undefined;
+        this.currentDeal = currentDeal
+        if (currentDeal<0) {
+            deal = undefined
+        } else { 
+            deal = this.deals[this.currentDeal]
+        }
+        this.callbacks.updateCurrentDeal.forEach(
+            (callback) => callback(currentDeal,deal)
+        )
     }
 }
 
