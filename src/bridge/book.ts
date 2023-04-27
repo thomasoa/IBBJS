@@ -44,7 +44,7 @@ class BridgeBook {
 
     get pages() { return this.strategy.pages}
     get lastPage() { return this.strategy.lastPage}
-    getDeal(pageNo:PageNumber):Deal|void {
+    getDeal(pageNo:PageNumber):Deal {
         var numDeal = this.strategy.computePageContent(pageNo)
         var seatMap = this.seatMap
         var cardMap = this.cardMap
