@@ -76,18 +76,20 @@ class Application {
         }
         var book = this.book(editionName,scramble)
         var newCurrent = this.length
-        pages.forEach((page) => {
+        var newDeals = pages.map((page) => {
             var deal = book.getDeal(page)
-            this.addDeal({
+            return {
                 deal: deal, 
                 edition: editionName, 
                 scrambled: scramble, 
                 pageNo: page
-            })
-            if (this.length == newCurrent+1) {
-                this.updateCurrent(newCurrent)
             }
         })
+        var _this = this
+        newDeals.forEach ((deal) => _this.addDeal(deal))
+        if (this.length > newCurrent) {
+            this.updateCurrent(newCurrent)
+        }
     }
 
     findDeal(edition:string,scrambled:boolean,page:PageNumber):void {
