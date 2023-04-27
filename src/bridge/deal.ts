@@ -51,11 +51,22 @@ class Hand {
         })
         this.holdings = suits.map((ranks)=> new Holding(ranks))
     }
+    suit(suit:C.Suit): Holding {
+        return this.holdings[suit.order]
+    }
+    spades():Holding {return this.suit(C.Suits.spades)}
+    hearts():Holding {return this.suit(C.Suits.hearts)}
+    diamonds():Holding {return this.suit(C.Suits.diamonds)}
+    clubs():Holding {return this.suit(C.Suits.clubs)}
+
+    has(card:C.Card):boolean {
+        return this.suit(card.suit).has(card.rank)
+    }
 }
 
 class Deal {
     toWhom: Array<C.Seat>;
-    hands: Array<Hand>
+    hands: Array<Hand>;
     constructor(toWhom:Array<C.Seat>,hands:Array<Hand>) {
         this.toWhom = toWhom
         this,hands = hands
