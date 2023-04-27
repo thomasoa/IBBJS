@@ -7,7 +7,7 @@
   <title>The Impossible Bridge Book: JavaScript edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Thomas Andrews">
-  <!-- <link rel="stylesheet" href="css/style.css"> -->
+  <link rel="stylesheet" href="css/style.css">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
@@ -37,9 +37,9 @@ Page Number(s):
     Deal <span id='dealIndex'></span> of <span id='dealCount'></span> 
     <a href='#' id='forward'>&gt;&gt;</a></h3>
 
-  <h1 id="bookTitle"></h1>
-  <h2>Page <span id='pageNumber'></span> </h2>
+  <h1>Page <span id='pageNumber'></span> of <span id='bookTitle'></span></h1>
   <pre id='hands'></pre>
+  <div><button id='reset'>Reset</button></div>
 </div>
 </div>
 
@@ -75,7 +75,12 @@ Page Number(s):
       function updateDealCount(count) {
         $('#dealCount').text(count)
       }
-            
+      
+      function reset() {
+        App.reset()
+          $('#lookup').find('input[name="pageNumbers"]').val('')
+
+      }
       function initialize() {
           App.listenCurrentDeal(updateCurrentDeal)
           App.listenDealCount(updateDealCount)
@@ -84,20 +89,24 @@ Page Number(s):
               submit_pages(form)
               return false;
           }) 
+          $('#reset').on('click',() => reset())
           $('#back').on('click',() => App.previousDeal())
           $('#forward').on('click',() => App.nextDeal())
           App.reset()
       }
 
-
+      function submitPages(form,pageNumbers) {
+        var scramble = form.find('select[name="scramble"]').val()
+          var edition = form.find('select[name="edition"]').val()
+          App.findDeals(edition,scramble=='Scrambled',pageNumbers)
+      }
 
       function submit_pages(form) {
         try {
-
-          var page = form.find('input[name="pageNumbers"]').val()
-          var scramble = form.find('select[name="scramble"]').val()
-          var edition = form.find('select[name="edition"]').val()
-          App.findDeal(edition,scramble=='Scrambled',BigInt(page))
+          var pageEntry = form.find('input[name="pageNumbers"]')
+          var page = $(pageEntry).val()
+          submitPages(form,[BigInt(page)])
+          $(pageEntry).val('')
           $('#error').hide()
         } catch (e) {
 
