@@ -43,9 +43,10 @@ class BridgeBook {
     }
 
     get pages() { return this.strategy.pages}
-    get lastPage() { return this.strategy.lastPage}
+    get lastPage() { return this.strategy.pages}
     getDeal(pageNo:PageNumber):Deal {
-        var numDeal = this.strategy.computePageContent(pageNo)
+
+        var numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
         var seatMap = this.seatMap
         var cardMap = this.cardMap
         var toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
