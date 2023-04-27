@@ -38,7 +38,33 @@ Page Number(s):
     <a href='#' id='forward'>&gt;&gt;</a></h3>
 
   <h1>Page <span id='pageNumber'></span> of <span id='bookTitle'></span></h1>
-  <pre id='hands'></pre>
+  <div class="diagram">
+    <div class="hand north">
+    <div class="holding spades"><span  class="holding"></span></div>
+    <div class="holding hearts"><span  class="holding"></span></div>
+    <div class="holding diamonds"><span class="holding"></span></div>
+    <div class="holding clubs"><span  class="holding"></span></div>
+    </div>
+    <div class="hand west">
+      <div class="holding spades"><span  class="holding"></span></div>
+      <div class="holding hearts"><span  class="holding"></span></div>
+      <div class="holding diamonds"><span class="holding"></span></div>
+      <div class="holding clubs"><span  class="holding"></span></div>
+      </div>
+    <div class="hand east">
+      <div class="holding spades"><span  class="holding"></span></div>
+      <div class="holding hearts"><span  class="holding"></span></div>
+      <div class="holding diamonds"><span class="holding"></span></div>
+      <div class="holding clubs"><span  class="holding"></span></div>
+      </div>
+    <div class="hand south">
+      <div class="holding spades"><span  class="holding"></span></div>
+      <div class="holding hearts"><span  class="holding"></span></div>
+      <div class="holding diamonds"><span class="holding"></span></div>
+      <div class="holding clubs"><span  class="holding"></span></div>
+      </div>
+    </div>
+    
   <div><button id='reset'>Reset</button></div>
 </div>
 </div>
@@ -47,6 +73,14 @@ Page Number(s):
 
       import { Application } from "./application.js"
       var App = new Application()
+
+      function visibility(flag) {
+        return flag ? 'visible' : 'hidden'
+      }
+
+      function setVisibility(selector,flag) {
+        $(selector).css('visibility',visibility(flag))
+      }
 
       function updateCurrentDeal(index,dealInfo) {
           console.log("Index: ",index)
@@ -64,10 +98,18 @@ Page Number(s):
             $('#bookTitle').text(title)
             $('#error').hide()
             $('#pageNumber').text(dealInfo.pageNo)
-            $('#back').toggle(App.allowPrevious)
-            $('#forward').toggle(App.allowNext)
-            var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")
-            $('#hands').text(hands)
+            setVisibility('#back',App.allowPrevious)
+            setVisibility('#forward',App.allowNext)
+            //$('#back').toggle(App.allowPrevious)
+            //$('#forward').toggle(App.allowNext)
+            dealInfo.deal.eachHand((seat,hand) => {
+              console.log(seat.name)
+              var handDiv = $('.diagram .'+seat.name)
+              hand.eachSuit((suit,holding) => {
+                handDiv.find('.'+suit.name+ ' span.holding').text(holding.toString())
+              })
+            })
+            // var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")
             dealLoc.show()
           }
       }
@@ -104,8 +146,9 @@ Page Number(s):
       function submit_pages(form) {
         try {
           var pageEntry = form.find('input[name="pageNumbers"]')
-          var page = $(pageEntry).val()
-          submitPages(form,[BigInt(page)])
+          var pageText = $(pageEntry).val()
+          var pages = pageText.split(',').map((page)=> BigInt(page))
+          submitPages(form,pages)
           $(pageEntry).val('')
           $('#error').hide()
         } catch (e) {
