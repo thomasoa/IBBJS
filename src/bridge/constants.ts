@@ -53,17 +53,42 @@ class Card {
     }
 }
 
-const Ranks :Array<Rank> = ['A','K','Q','J','10','9','8','7','6','5','4','3','2'].map(
-    (brief:string,order:number):Rank => {
-        return {brief:brief, order: order}
-    }
-)
+function qr(s,o):Rank { return {brief:s, order:o} }
+var Ace = qr('A',0)
+var King = qr('K',1)
+var Queen = qr('Q',2)
+var Jack = qr('J',3)
+var Ten = qr('T',4)
+var Nine = qr('9',5)
+var Eight = qr('8',6)
+var Seven = qr('7',7)
+var Six = qr('6',8)
+var Five = qr('5',9)
+var Four = qr('4',10)
+var Three = qr('3',11)
+var Two = qr('2',12)
+const Ranks = {
+    ace: Ace,
+    king: King,
+    queen: Queen,
+    jack: Jack,
+    ten: Ten,
+    nine: Nine,
+    eight: Eight,
+    seven: Seven,
+    six: Six,
+    five: Five,
+    four: Four,
+    three: Three,
+    two: Two,
+    all: [Ace,King, Queen,Jack,Ten,Nine,Eight,Seven,Six,Five,Four,Three,Two]
+}
 
 function make_cards():Array<Card> {
     var cards = new Array<Card>(52)
     for (var cardNum=0; cardNum<52; cardNum++) {
         var suit = Suits.all[Math.floor(cardNum/13)]
-        var rank = Ranks[cardNum % 13]
+        var rank = Ranks.all[cardNum % 13]
         cards[cardNum] = new Card(suit,rank)
     }
     return cards
