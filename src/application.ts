@@ -21,7 +21,7 @@ interface ProducedDeal {
 
 type ProducedDealCallback = (dealEvent:ProducedDeal)=> any
 
-class Model {
+class Application {
     readonly books:Map<string,Array<BookStrategy>>
     readonly callbacks = {
         updateCurrentDeal: new Array<ProducedDealCallback>(),
@@ -44,4 +44,4 @@ class Model {
     }
 }
 
-export {Model}
+export {Application}
