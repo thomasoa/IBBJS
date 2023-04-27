@@ -9,9 +9,9 @@ const defaultCardMap:CardMap = (card:numeric.CardNumber) => C.Cards[card]
 const defaultSeatMap:SeatMap = (seat:numeric.SeatNumber) => C.Seats.all[seat]
 
 class Holding {
-    ranks: Array<C.Rank>
-    length: number
-    bits:number
+    readonly ranks: Array<C.Rank>
+    readonly length: number
+    readonly bits:number
     constructor(ranks:Array<C.Rank>) {
         this.ranks = ranks
         this.length = ranks.length
@@ -21,11 +21,16 @@ class Holding {
         )
     }
 
-    toString():string {
+    asString(divider:string):string {
         if (this.length == 0) {
             return '-'
         }
-        return this.ranks.map((rank)=> rank.brief).join(' ')
+
+        return this.ranks.map((rank)=> rank.brief).join(divider)
+    }
+
+    toString():string {
+        return this.asString(' ')
     }
 
     has(rank:C.Rank):boolean {
