@@ -28,6 +28,10 @@ class Holding {
         return this.ranks.map((rank)=> rank.brief).join(' ')
     }
 
+    has(rank:C.Rank):boolean {
+        return (this.bits & rank.bit) != 0
+    }
+
 
 }
 
