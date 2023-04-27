@@ -1,5 +1,5 @@
 import * as d from "../dest/bridge/deal.js"
-import {Rank, Ranks} from "../dest/bridge/constants.js"
+import {Ranks, Card, Cards, Suits, CardsByName,Seats} from "../dest/bridge/constants.js"
 
 test("Holding void",() => {
    var holding = new d.Holding(new Array(0))
@@ -24,6 +24,15 @@ test("AK2 Holding", () => {
    expect(holding.has(Ranks.two)).toBeTruthy()
 })
 
-test("Holding has", ()=>{
-
+test("Hand construction and holdings", () => {
+   var cards = [
+      "SQ","S10","S9","HA",
+      "H8","H7","H6","H5",
+      "H4","H3","H2","DK","DJ"].map((s) => CardsByName.get(s))
+   console.log(cards)
+   var hand = new d.Hand(cards)
+   expect(hand.spades().toString()).toBe('Q 10 9')
+   expect(hand.hearts().toString()).toBe("A 8 7 6 5 4 3 2")
+   expect(hand.diamonds().toString()).toBe("K J")
+   expect(hand.clubs().toString()).toBe("-")
 })
