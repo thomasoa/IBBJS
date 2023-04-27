@@ -58,6 +58,10 @@ class Hand {
     has(card:C.Card):boolean {
         return this.suit(card.suit).has(card.rank)
     }
+
+    toString():string {
+        return this.holdings.map((h)=> h.asString('')).join(' ')
+    }
 }
 
 class Deal {
@@ -65,8 +69,17 @@ class Deal {
     hands: Array<Hand>;
     constructor(toWhom:Array<C.Seat>,hands:Array<Hand>) {
         this.toWhom = toWhom
-        this,hands = hands
+        this.hands = hands
     }
+    hand(seat:C.Seat):Hand {
+        return this.hands[seat.order]
+    }
+
+    north():Hand {   return this.hand(C.Seats.north) }
+    east():Hand {   return this.hand(C.Seats.east) }
+    south():Hand {   return this.hand(C.Seats.south) }
+    west():Hand {   return this.hand(C.Seats.west) }
+
 }
 
 export {Holding, Hand, Deal}
