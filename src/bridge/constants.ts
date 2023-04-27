@@ -17,7 +17,8 @@ const Seats = {
 }
 type Rank = {
     brief: string,
-    order: number
+    order: number,
+    bit: number
 }
 
 type Suit = {
@@ -53,7 +54,7 @@ class Card {
     }
 }
 
-function qr(s,o):Rank { return {brief:s, order:o} }
+function qr(s,o):Rank { return {brief:s, order:o, bit: 1<<(12-o)} }
 var Ace = qr('A',0)
 var King = qr('K',1)
 var Queen = qr('Q',2)

@@ -16,7 +16,7 @@ class Holding {
         this.ranks = ranks
         this.length = ranks.length
         this.bits = ranks.reduce(
-            (binary,rank) => (1<< (12-rank.order))|binary,
+            (binary,rank) => rank.bit|binary,
             0
         )
     }
