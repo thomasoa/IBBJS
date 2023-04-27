@@ -28,34 +28,38 @@ Page Number(s):
 <input type="submit" value="Lookup"></input> 
 
 </form>
-<pre id='toWhom'>
+<pre id='deal'>
 </pre>
 </div>
 
-    <script type="module">
+<script type="module">
 
-      import { AndrewsStrategy, PavlicekStrategy,scramble_book} from "./numeric/book.js"
+      import { Application } from "./application.js"
+      var App = new Application()
 
-      function make_scrambler() {
-        var multiplier = BigInt("13109994191499930367061460371")
-        var translation = BigInt("34563463456363563565356345634")
-        return (book) => scramble_book(book,multiplier,translation)
+      function updateCurrentDeal(index,dealInfo) {
+          console.log("Index: ",index)
+          var dealLoc = $('#deal')
+          if (dealInfo == undefined) {
+            dealLoc.text('Nothing to see')
+          } else {
+            var title = dealInfo.edition + " Edition"
+            if (dealInfo.scrambled) {
+              title = "Scrambled "+ title
+            }
+            var text = title + "\n" + "Page " + dealInfo.pageNo + "\n"
+            var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")
+            dealLoc.text(text+hands)
+          }
       }
 
-      function make_books() {
-        var scrambler = make_scrambler()
-        var aBook = new AndrewsStrategy()
-        var pBook = new PavlicekStrategy()
-        return { 
-          Andrews: [aBook,scrambler(aBook)],
-          Pavlicek: [pBook,scrambler(aBook)]
-        }
+      function updateDealCount(count) {
 
-    }
-      // global variable
-      var books =  make_books()
-    
+      }
+            
       function initialize() {
+          App.listenCurrentDeal(updateCurrentDeal)
+          App.listenDealCount(updateDealCount)
           const form = $('#lookup')
           form.submit(() => {
               submit_pages(form)
@@ -63,67 +67,25 @@ Page Number(s):
           }) 
       }
 
-      function get_named_book(edition,scramble) {
-        var editions = books[edition] 
-        var book, title;
-        if (scramble=='Scrambled') {
-            title = edition + ' Scrambled'
-            book = editions[1];
-        } else {
-            title = edition
-            book = editions[0];
-        }
-        return { book: book, title: title, edition: edition, scramble: scramble }        
-      }
 
-      function determine_named_book(form) {
-        if (form == undefined) {
-            form = $('#lookup')
-        }
-        var scramble = form.find('select[name="scramble"]').val()
-          var edition = form.find('select[name="edition"]').val()
-          return get_named_book(edition,scramble)
-          var editions = books[edition]
-          var book, title;
-          if (scramble=='Scrambled') {
-            title = edition + ' Scrambled'
-            book = editions[1];
-          } else {
-            title = edition
-            book = editions[0];
-          }
-          return { book: book, title: title }
-
-      }
 
       function submit_pages(form) {
+        try {
+
           var page = form.find('input[name="pageNumbers"]').val()
-          var namedBook = determine_named_book(form)
-          var pageNo = BigInt(page)
-          processBookPage(namedBook,pageNo)
-        }
+          var scramble = form.find('select[name="scramble"]').val()
+          var edition = form.find('select[name="edition"]').val()
+          App.findDeal(edition,scramble=='Scrambled',BigInt(page))
+        } catch (e) {
+          console.error(e)
+          $('#deal').text(e)
 
-        function processBookPage(namedBook,pageNo) {
-          var deal = namedBook.book.computePageContent(pageNo)
-          var text = 'Page ' + pageNo.toString() + ' of edition ' + namedBook.title + '\n'
-          text += deal.toWhom.toString()+'\n'
-          deal.hands.forEach((hand,seat) => {
-              text += 'Seat ' + seat +' gets cards {}' + hand.toString() + '}\n'
-          })
-          $('#toWhom').prepend(text+"\n")
-      }
-
-      function powers_of_ten() {
-        var namedBook = determine_named_book()
-        var pages = namedBook.book.signature.pages
-        for (var pageNo = BigInt(1); pageNo<pages; pageNo *= BigInt(10)) {
-            processBookPage(namedBook,pageNo)
         }
       }
 
       initialize()
 
-   </script>
+</script>
 
 </body>
 </html>
