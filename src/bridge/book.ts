@@ -1,23 +1,27 @@
 import * as C from "./constants.js"
-import * as numeric from "../numeric/deal.js"
+import {PageNumber, SeatNumber,  CardNumber} from "../numeric/deal.js"
 import {BookStrategy} from "../numeric/book.js"
 import {Hand, Deal} from "./deal.js"
 
-type CardMap = (card:numeric.CardNumber) => C.Card
-type SeatMap = (seat:numeric.SeatNumber) => C.Seat
-const defaultCardMap:CardMap = (card:numeric.CardNumber) => C.Cards[card]
-const defaultSeatMap:SeatMap = (seat:numeric.SeatNumber) => C.Seats.all[seat]
+type CardMap = (card:CardNumber) => C.Card
+type SeatMap = (seat:SeatNumber) => C.Seat
+const defaultCardMap:CardMap = (card:CardNumber) => C.Cards[card]
+const defaultSeatMap:SeatMap = (seat:SeatNumber) => C.Seats.all[seat]
 
 class BridgeBook {
     readonly strategy:BookStrategy
     readonly seatMap:SeatMap
     readonly cardMap:CardMap
+    readonly pages:PageNumber
+    readonly lastPage:PageNumber
     constructor(
-        strategy: BookStrategy, 
+        strategy: BookStrategy,
         seatMap:SeatMap|undefined,
         cardMap:CardMap|undefined
     ) {
         this.strategy = strategy
+        this.pages = strategy.signature.pages
+        this.lastPage = strategy.signature.lastPage()
         if (seatMap == undefined) {
             seatMap = defaultSeatMap
         }
@@ -28,7 +32,7 @@ class BridgeBook {
         this.cardMap = cardMap
     }
 
-    getDeal(pageNo:numeric.PageNumber):Deal|void {
+    getDeal(pageNo:PageNumber):Deal|void {
         var numDeal = this.strategy.computePageContent(pageNo)
         var seatMap = this.seatMap
         var cardMap = this.cardMap
