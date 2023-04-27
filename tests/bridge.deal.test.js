@@ -36,3 +36,21 @@ test("Hand construction and holdings", () => {
    expect(hand.clubs().toString()).toBe("-")
    expect(hand.toString()).toBe('Q109 A8765432 KJ -')
 })
+
+test("Hand eachSuit method", ()=>{
+   var cards = [
+      "SQ","S10","S9","HA",
+      "H8","H7","H6","H5",
+      "H4","H3","H2","DK","DJ"].map((s) => CardsByName.get(s))
+   var hand = new d.Hand(cards)
+   var suitMap = new Map()
+   hand.eachSuit((suit,holding)=>{
+      suitMap.set(suit.name,holding.toString())
+   })
+   expect(suitMap.get('spades'))
+   expect(suitMap.get('spades')).toBe('Q 10 9')
+   expect(suitMap.get('hearts')).toBe("A 8 7 6 5 4 3 2")
+   expect(suitMap.get('diamonds')).toBe("K J")
+   expect(suitMap.get('clubs')).toBe("-")
+
+})
