@@ -34,4 +34,5 @@ test("Hand construction and holdings", () => {
    expect(hand.hearts().toString()).toBe("A 8 7 6 5 4 3 2")
    expect(hand.diamonds().toString()).toBe("K J")
    expect(hand.clubs().toString()).toBe("-")
+   expect(hand.toString()).toBe('Q109 A8765432 KJ -')
 })
