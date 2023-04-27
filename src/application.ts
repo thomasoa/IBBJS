@@ -12,21 +12,45 @@ interface ProducedDeal {
 }
 
 type ProducedDealCallback = (index:number, dealEvent:ProducedDeal|undefined)=> any
+type DealCountCallback = (count:number)=>any
+interface AppCallbacks {
+    updateCurrentDeal: Array<ProducedDealCallback>
+    updateDealCount: Array<DealCountCallback>
+}
 
 class Application {
-    readonly editions:Map<string,Edition> = build_editions()
-    readonly deals:Array<ProducedDeal> = new Array<ProducedDeal>()
-    readonly callbacks = {
-        updateCurrentDeal: new Array<ProducedDealCallback>(),
-        updateDealCount: new Array<(count:number)=>any>()
-    }
+    readonly editions:Map<string,Edition>;
+    private deals:Array<ProducedDeal>;
+    readonly callbacks:AppCallbacks; 
     currentDeal:number = -1
 
     constructor() {
+        this.editions = build_editions()
+        this.deals = new Array<ProducedDeal>()
+        this.callbacks = {
+            updateCurrentDeal: new Array<ProducedDealCallback>(),
+            updateDealCount: new Array<(count:number)=>any>()
+        }
     }
-
     get length() {
         return this.deals.length
+    }
+
+    nextDeal() {
+        if (this.currentDeal<0 || this.currentDeal==this.length-1) {
+            console.warn('Cannot go to next page')
+            return
+        }
+        this.updateCurrent(this.currentDeal+1)
+    }
+
+    previousDDeal() {
+        if (this.currentDeal<=0) {
+            console.warn('Cannot go to next page')
+            return          
+        }
+        this.updateCurrent(this.currentDeal-1)
+
     }
 
     get editionNames():Array<string> {

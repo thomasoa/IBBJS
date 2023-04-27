@@ -14,7 +14,7 @@ interface Edition {
 
 function edition(book:BridgeBook):Edition {
     var scrambledStrat:numeric.BookStrategy = scramble(book.strategy)
-    var scrambled = new BridgeBook(scrambled, book.seatMap, book.cardMap)
+    var scrambled = new BridgeBook(scrambledStrat, book.seatMap, book.cardMap)
     return {book: book, scrambled: scrambled }
 }
 
@@ -31,8 +31,8 @@ function andrewsBook():BridgeBook {
     
 function build_editions():Map<string,Edition> {
     var editions = new Map<string,Edition>()
-    editions["Pavlicek"]=edition(pavlicekBook())
-    editions["Andrews"]=edition(andrewsBook())
+    editions.set("Pavlicek",edition(pavlicekBook()))
+    editions.set("Andrews",edition(andrewsBook()))
     return editions
 }
 
