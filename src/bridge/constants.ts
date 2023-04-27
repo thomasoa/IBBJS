@@ -30,7 +30,7 @@ type Suit = {
 
 const Spades: Suit = {name:'spades',letter:'S', symbol:'S', order:0}
 const Hearts: Suit = {name:'hearts',letter:'H', symbol:'H', order:1}
-const Diamonds: Suit = {name:'diamonds',letter:'DD', symbol:'D', order:2}
+const Diamonds: Suit = {name:'diamonds',letter:'D', symbol:'D', order:2}
 const Clubs: Suit = {name:'clubs',letter:'C', symbol:'C',order:3}
 
 const Suits = {
@@ -60,7 +60,7 @@ var Ace = qr('A',0)
 var King = qr('K',1)
 var Queen = qr('Q',2)
 var Jack = qr('J',3)
-var Ten = qr('T',4)
+var Ten = qr('10',4)
 var Nine = qr('9',5)
 var Eight = qr('8',6)
 var Seven = qr('7',7)
@@ -96,5 +96,6 @@ function make_cards():Array<Card> {
     return cards
 }
 const Cards = make_cards()
+const CardsByName = new Map<string,Card>(Cards.map((card)=>[card.short,card]))
 
-export { Suits, Ranks, Cards, Seats, Suit, Rank, Card, Seat}
+export { Suits, Suit, Ranks, Cards, CardsByName, Seats, Rank, Card, Seat}
