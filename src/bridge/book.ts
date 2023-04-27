@@ -45,7 +45,9 @@ class BridgeBook {
     get pages() { return this.strategy.pages}
     get lastPage() { return this.strategy.pages}
     getDeal(pageNo:PageNumber):Deal {
-
+        if (pageNo<BigInt(1) || pageNo>this.lastPage) {
+            throw Error('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
+        }
         var numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
         var seatMap = this.seatMap
         var cardMap = this.cardMap
