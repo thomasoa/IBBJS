@@ -62,9 +62,14 @@ class Hand {
     toString():string {
         return this.holdings.map((h)=> h.asString('')).join(' ')
     }
+
+    eachSuit(method: (suit:C.Suit,holding:Holding) => void):void {
+        this.holdings.forEach((holding,index) => method(C.Suits.all[index],holding))
+    }
 }
 
 class Deal {
+
     toWhom: Array<C.Seat>;
     hands: Array<Hand>;
     constructor(toWhom:Array<C.Seat>,hands:Array<Hand>) {
@@ -80,6 +85,10 @@ class Deal {
     south():Hand {   return this.hand(C.Seats.south) }
     west():Hand {   return this.hand(C.Seats.west) }
 
+    eachHand(method: (seat:C.Seat,hand:Hand)=> any):void {
+        var _this=this;
+        C.Seats.all.forEach((seat)=> method(seat,_this.hands[seat.order]))
+    }
 }
 
 export {Holding, Hand, Deal}
