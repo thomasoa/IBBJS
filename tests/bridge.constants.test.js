@@ -1,4 +1,4 @@
-import {Seats, Suits, Ranks, Cards} from "../dest/bridge/constants.js"
+import {Seats, Suits, Ranks, Cards, CardsByName} from "../dest/bridge/constants.js"
 
 test("Ensure the sizes are right",() => {
     expect(Seats.all.length).toBe(4)
@@ -31,4 +31,10 @@ test("Ensure card orders agree with the linear order", ()=>{
         expect(card.order).toBe(index)
     })
 
+})
+
+test("CardsByName lookup",()=>{
+    var spadeThree = CardsByName.get('S3')
+    expect(spadeThree.suit).toBe(Suits.spades)
+    expect(spadeThree.rank).toBe(Ranks.three)
 })
