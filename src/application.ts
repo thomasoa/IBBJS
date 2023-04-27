@@ -32,25 +32,66 @@ class Application {
             updateDealCount: new Array<(count:number)=>any>()
         }
     }
+
+    deal(index:number):ProducedDeal {
+        return this.deals[index]
+    }
+
     get length() {
         return this.deals.length
     }
 
     nextDeal() {
-        if (this.currentDeal<0 || this.currentDeal==this.length-1) {
-            console.warn('Cannot go to next page')
-            return
+        if (!this.allowNext) {
+            throw Error('Cannot go to next page')
         }
         this.updateCurrent(this.currentDeal+1)
     }
 
-    previousDDeal() {
-        if (this.currentDeal<=0) {
-            console.warn('Cannot go to next page')
-            return          
+    previousDeal() {
+        if (! this.allowPrevious) {
+            throw Error('Cannot go to previous page')          
         }
         this.updateCurrent(this.currentDeal-1)
 
+    }
+
+    get allowNext():boolean {
+        return (this.currentDeal>=0 && this.currentDeal< this.length-1)
+    }
+
+    get allowPrevious():boolean {
+        return this.currentDeal>0
+    }
+    
+    addDeal(deal:ProducedDeal):number {
+        this.deals.push(deal)
+        this.updateCount()
+        return this.length
+    }
+
+    findDeals(editionName:string,scramble:boolean, pages:Array<PageNumber>):void {
+        if (pages.length == 0) { 
+            return 
+        }
+        var book = this.book(editionName,scramble)
+        var newCurrent = this.length
+        pages.forEach((page) => {
+            var deal = book.getDeal(page)
+            this.addDeal({
+                deal: deal, 
+                edition: editionName, 
+                scrambled: scramble, 
+                pageNo: page
+            })
+            if (this.length == newCurrent+1) {
+                this.updateCurrent(newCurrent)
+            }
+        })
+    }
+
+    findDeal(edition:string,scrambled:boolean,page:PageNumber):void {
+        this.findDeals(edition,scrambled,[page])
     }
 
     get editionNames():Array<string> {
@@ -82,9 +123,23 @@ class Application {
         this.updateCurrent(-1)
     }
 
+    listenCurrentDeal(callback:ProducedDealCallback):void {
+        this.callbacks.updateCurrentDeal.push(callback)
+    }
+
+    listenDealCount(callback:DealCountCallback):void {
+        this.callbacks.updateDealCount.push(callback)
+    }
+
     updateCurrent(currentDeal:number):void {
         if (currentDeal >= this.length) {
             throw Error('No deal number' + currentDeal)
+        }
+        if (currentDeal<0) {
+            if (this.length>0) {
+                throw Error("Cannot set current deal to a negative value when deals exist")
+            }
+            currentDeal = -1
         }
         this.currentDeal = currentDeal
         var deal:ProducedDeal|undefined;
