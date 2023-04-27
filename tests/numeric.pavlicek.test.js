@@ -22,7 +22,7 @@ test("Pavlicek strategy decode", () => {
 
 test("Pavlicek strategy decode - last page", () => {
   var pBook = new pavlicek.PavlicekStrategy(signature1234())
-  var deal = pBook.computePageContent(pBook.signature.lastPage)
+  var deal = pBook.computePageContent(pBook.lastPage)
   expect(deal.toWhom).toEqual([3,3,3,3,2,2,2,1,1,0])
 })
 

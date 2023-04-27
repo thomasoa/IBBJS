@@ -87,6 +87,8 @@ class NumericDeal {
 }
 interface BookStrategy {
     readonly signature: DealSignature;
+    readonly pages:PageNumber;
+    readonly lastPage:PageNumber;
     computePageContent(pageNo:PageNumber):NumericDeal;
     computePageNumber(deal:NumericDeal):PageNumber;
 }

@@ -59,6 +59,8 @@ class PavlicekStrategy {
         this.signature = signature_or_default(signature)
     }
 
+    get pages():PageNumber { return this.signature.pages }
+    get lastPage():PageNumber { return this.signature.lastPage }
 
     //private narrowRange(start)
     computePageContent(pageNo:PageNumber):NumericDeal {

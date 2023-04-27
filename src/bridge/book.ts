@@ -8,20 +8,30 @@ type SeatMap = (seat:SeatNumber) => C.Seat
 const defaultCardMap:CardMap = (card:CardNumber) => C.Cards[card]
 const defaultSeatMap:SeatMap = (seat:SeatNumber) => C.Seats.all[seat]
 
+function validate_signature(strategy:BookStrategy):void {
+    var seats = strategy.signature.perSeat.length
+    if (seats != 4) {
+        throw new Error("Deal strategy signature should be [13,13,13,13], but has " + seats + " seats")
+    }
+    for (var seatLength of strategy.signature.perSeat) {
+        if (seatLength != 13) {
+            throw new Error("Signature must be [13,13,13,13] but got a seat length of " + seatLength)
+        }
+    }
+    
+}
 class BridgeBook {
     readonly strategy:BookStrategy
     readonly seatMap:SeatMap
     readonly cardMap:CardMap
-    readonly pages:PageNumber
-    readonly lastPage:PageNumber
     constructor(
         strategy: BookStrategy,
         seatMap:SeatMap|undefined,
         cardMap:CardMap|undefined
     ) {
+        
+        validate_signature(strategy)
         this.strategy = strategy
-        this.pages = strategy.signature.pages
-        this.lastPage = strategy.signature.lastPage
         if (seatMap == undefined) {
             seatMap = defaultSeatMap
         }
@@ -32,6 +42,8 @@ class BridgeBook {
         this.cardMap = cardMap
     }
 
+    get pages() { return this.strategy.pages}
+    get lastPage() { return this.strategy.lastPage}
     getDeal(pageNo:PageNumber):Deal|void {
         var numDeal = this.strategy.computePageContent(pageNo)
         var seatMap = this.seatMap
