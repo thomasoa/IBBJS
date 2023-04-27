@@ -14,3 +14,56 @@ body {
     margin-top: 2em;
     border-top: 2px solid black; 
 }
+
+body {
+    background: #FFFFCC;
+    font-family: "Helvetica Narrow",san-serif;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+body.toc {
+    background: url(http://thomasoandrews.com/graphics/idealbg.jpg)
+}
+
+
+A:link {
+   color: #003399;
+}
+
+A:visited {
+   color: #222255;
+}
+
+A {
+   font-weight: bold;
+}
+
+A:hover {
+   color: white ;
+   background: #3366CC ;
+}
+
+A:active {
+   color: #000099 ;
+}
+
+table.datatable  {
+    margin-left: auto ;
+    margin-right: auto 
+}
+
+div.body , div.signature {
+    clear: left;
+    width: 90%;
+    margin-left: 5%;
+}
+
+div.footer {
+    clear: left;
+]}
+
+
+ddiv, p, li {
+  max-width: 7.5in;
+}
