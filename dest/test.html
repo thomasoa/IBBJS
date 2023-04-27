@@ -16,7 +16,9 @@
 <div class="container">
  <form name="lookup" id='lookup' onsubmit='return false;'>
 Page Number(s):
- <input type='text' id='pageNo' name='pageNumbers' maxlength='1000'  size='70'></input>
+ <div>
+  <input type='text' id='pageNo' name='pageNumbers' maxlength='1000'  size='70'></input>
+  </div><div>
  <select name="scramble">
     <option value="">Normal</option>
     <option value="Scrambled">Scrambled</option>
@@ -26,10 +28,19 @@ Page Number(s):
     <option value="Pavlicek">Pavlicek Edition</option>
  </select>
 <input type="submit" value="Lookup"></input> 
+</div>
 
 </form>
-<pre id='deal'>
-</pre>
+<div id='error'></div>
+<div style='display: none;' id='deal'>
+  <h3><a href='#' id='back'>&lt;&lt;</a>
+    Deal <span id='dealIndex'></span> of <span id='dealCount'></span> 
+    <a href='#' id='forward'>&gt;&gt;</a></h3>
+
+  <h1 id="bookTitle"></h1>
+  <h2>Page <span id='pageNumber'></span> </h2>
+  <pre id='hands'></pre>
+</div>
 </div>
 
 <script type="module">
@@ -41,20 +52,28 @@ Page Number(s):
           console.log("Index: ",index)
           var dealLoc = $('#deal')
           if (dealInfo == undefined) {
-            dealLoc.text('Nothing to see')
+            dealLoc.hide()
+            console.log('Undefined')
+            return
           } else {
+            $('#dealIndex').text(index+1)
             var title = dealInfo.edition + " Edition"
             if (dealInfo.scrambled) {
               title = "Scrambled "+ title
             }
-            var text = title + "\n" + "Page " + dealInfo.pageNo + "\n"
+            $('#bookTitle').text(title)
+            $('#error').hide()
+            $('#pageNumber').text(dealInfo.pageNo)
+            $('#back').toggle(App.allowPrevious)
+            $('#forward').toggle(App.allowNext)
             var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")
-            dealLoc.text(text+hands)
+            $('#hands').text(hands)
+            dealLoc.show()
           }
       }
 
       function updateDealCount(count) {
-
+        $('#dealCount').text(count)
       }
             
       function initialize() {
@@ -65,6 +84,9 @@ Page Number(s):
               submit_pages(form)
               return false;
           }) 
+          $('#back').on('click',() => App.previousDeal())
+          $('#forward').on('click',() => App.nextDeal())
+          App.reset()
       }
 
 
@@ -76,14 +98,18 @@ Page Number(s):
           var scramble = form.find('select[name="scramble"]').val()
           var edition = form.find('select[name="edition"]').val()
           App.findDeal(edition,scramble=='Scrambled',BigInt(page))
+          $('#error').hide()
         } catch (e) {
+
           console.error(e)
-          $('#deal').text(e)
+          $('#error').text(e)
+          $('#error').show()
+          return false
 
         }
       }
 
-      initialize()
+      $(document).ready(() => initialize())
 
 </script>
 
