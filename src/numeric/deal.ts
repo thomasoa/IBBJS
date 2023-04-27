@@ -30,7 +30,7 @@ class DealSignature {
         this.pages = multinomial(cardsPerSeat);
     }
 
-    lastPage(): PageNumber {
+    get lastPage(): PageNumber {
         return this.pages-BigInt(1)
     }
 
@@ -92,6 +92,7 @@ interface BookStrategy {
 }
 
 export {
-    DealSignature, NumericDeal, signature_or_default, 
-    BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray 
+    DealSignature, NumericDeal, //classes
+    signature_or_default, // function
+    BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray // types
 }

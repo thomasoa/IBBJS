@@ -21,7 +21,7 @@ class BridgeBook {
     ) {
         this.strategy = strategy
         this.pages = strategy.signature.pages
-        this.lastPage = strategy.signature.lastPage()
+        this.lastPage = strategy.signature.lastPage
         if (seatMap == undefined) {
             seatMap = defaultSeatMap
         }
@@ -53,4 +53,4 @@ class BridgeBook {
     }
 }
 
-export {BridgeBook}
+export {BridgeBook, SeatMap, CardMap}

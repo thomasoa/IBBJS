@@ -36,7 +36,7 @@ test("Andrews strategy: Try first and last deal",
     var sig = signature1234()
     var aBook = new andrews.AndrewsStrategy(sig)
     expect(aBook.computePageContent(BigInt(0)).toWhom).toEqual([3,3,3,3,2,2,2,1,1,0])
-    var lastPage = aBook.signature.lastPage()
+    var lastPage = aBook.signature.lastPage
     expect(aBook.computePageContent(lastPage).toWhom).toEqual([0,1,1,2,2,2,3,3,3,3])
   }
 )
