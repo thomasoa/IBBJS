@@ -36,7 +36,7 @@ class DealSignature {
 
     assertValidPageNo(pageNo:PageNumber):void {
         if (pageNo>=this.pages || pageNo<BigInt(0)) {
-            throw new Error("Invalid page number pageNo outside range <="+this.pages.toString())
+            throw new Error("Invalid page " + pageNo + " outside range <="+this.pages.toString())
         }
     }
 }
