@@ -85,7 +85,7 @@ class PavlicekStrategy {
     get pages():PageNumber { return this.signature.pages }
     get lastPage():PageNumber { return this.signature.lastPage }
 
-]    computePageContent(pageNo:PageNumber):NumericDeal {
+    computePageContent(pageNo:PageNumber):NumericDeal {
         var sig: DealSignature = this.signature
         var remaining = new Remaining(sig.perSeat, sig.cards)
         var range = new Range(BigInt(0),sig.pages)
