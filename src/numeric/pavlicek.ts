@@ -4,15 +4,29 @@ import {
 } from './deal.js'
 
 class Range {
+    /**
+     * Used for computations: a range of values.
+     * start - the first value
+     * width - the size of the range
+     */
     readonly start:bigint;
     readonly width:bigint;
     constructor(start:bigint,width:bigint) {
         this.start = start
         this.width = width
-    }    
+    }
+    get last() { return this.start+this.width }
+    contain(num:bigint):boolean {
+        return num>=this.start && num<this.last
+    }
 }
 
 class Remaining {
+    /**
+     * Used for two different purposes 
+     * - decoding page numbers to deals
+     * - encoding deals to page numbers
+     */
     toWhom: SeatNumber[];
     perSeat: number[];
     total: number;
@@ -24,6 +38,9 @@ class Remaining {
     }
 
     nextRange(range:Range,pageNo:PageNumber, card:CardNumber):Range {
+        /**
+         * Used when computing a deal from a page number
+         */
         var nextStart = range.start
         for (var seat =0; seat<this.perSeat.length; seat++) {
             var cards = this.perSeat[seat]    
@@ -40,6 +57,9 @@ class Remaining {
     }
 
     nextCard(card:CardNumber, seat:SeatNumber,range:Range):Range {
+        /**
+         * Used when computing a page number from a deal
+         */
         var skip = 0
         for (var skipSeat:SeatNumber=0; skipSeat< seat; skipSeat++) {
             skip += this.perSeat[skipSeat]
@@ -53,6 +73,9 @@ class Remaining {
 }
 
 class PavlicekStrategy {
+    /**
+     * Described here: http://www.rpbridge.net/7z68.htm
+     */
     readonly signature:DealSignature
 
     constructor(signature:DealSignature|undefined) {
@@ -62,8 +85,7 @@ class PavlicekStrategy {
     get pages():PageNumber { return this.signature.pages }
     get lastPage():PageNumber { return this.signature.lastPage }
 
-    //private narrowRange(start)
-    computePageContent(pageNo:PageNumber):NumericDeal {
+]    computePageContent(pageNo:PageNumber):NumericDeal {
         var sig: DealSignature = this.signature
         var remaining = new Remaining(sig.perSeat, sig.cards)
         var range = new Range(BigInt(0),sig.pages)
