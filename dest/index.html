@@ -115,7 +115,6 @@ Page Number(s):
             //$('#back').toggle(App.allowPrevious)
             //$('#forward').toggle(App.allowNext)
             dealInfo.deal.eachHand((seat,hand) => {
-              console.log(seat.name)
               var handDiv = $('.diagram .'+seat.name)
               hand.eachSuit((suit,holding) => {
                 var hString = holding.toString()
