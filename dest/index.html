@@ -118,7 +118,9 @@ Page Number(s):
               console.log(seat.name)
               var handDiv = $('.diagram .'+seat.name)
               hand.eachSuit((suit,holding) => {
-                handDiv.find('.'+suit.name+ ' span.holding').text(holding.toString())
+                var hString = holding.toString()
+                if (hString=='-')  { hString = '\u2014' }
+                handDiv.find('.'+suit.name+ ' span.holding').text(hString)
               })
             })
             // var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")
