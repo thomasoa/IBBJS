@@ -50,10 +50,10 @@ class Hand {
     suit(suit:C.Suit): Holding {
         return this.holdings[suit.order]
     }
-    spades():Holding {return this.suit(C.Suits.spades)}
-    hearts():Holding {return this.suit(C.Suits.hearts)}
-    diamonds():Holding {return this.suit(C.Suits.diamonds)}
-    clubs():Holding {return this.suit(C.Suits.clubs)}
+    get spades():Holding {return this.suit(C.Suits.spades)}
+    get hearts():Holding {return this.suit(C.Suits.hearts)}
+    get diamonds():Holding {return this.suit(C.Suits.diamonds)}
+    get clubs():Holding {return this.suit(C.Suits.clubs)}
 
     has(card:C.Card):boolean {
         return this.suit(card.suit).has(card.rank)
@@ -80,10 +80,10 @@ class Deal {
         return this.hands[seat.order]
     }
 
-    north():Hand {   return this.hand(C.Seats.north) }
-    east():Hand {   return this.hand(C.Seats.east) }
-    south():Hand {   return this.hand(C.Seats.south) }
-    west():Hand {   return this.hand(C.Seats.west) }
+    get north():Hand {   return this.hand(C.Seats.north) }
+    get east():Hand {   return this.hand(C.Seats.east) }
+    get south():Hand {   return this.hand(C.Seats.south) }
+    get west():Hand {   return this.hand(C.Seats.west) }
 
     eachHand(method: (seat:C.Seat,hand:Hand)=> any):void {
         var _this=this;
