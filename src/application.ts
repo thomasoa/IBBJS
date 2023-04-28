@@ -50,7 +50,7 @@ class Application {
 
     previousDeal() {
         if (! this.allowPrevious) {
-            throw Error('Cannot go to previous page')          
+            throw Error('Cannot go to previous deal')          
         }
         this.updateCurrent(this.currentDeal-1)
 
@@ -107,10 +107,6 @@ class Application {
         } else {
             return edition.book
         }
-    }
-    lookupDeal(editionName:string,scrambled:boolean, pageNumber:PageNumber):Deal {
-        var book = this.book(editionName,scrambled)
-        return book.getDeal(pageNumber)
     }
 
     updateCount():void {
