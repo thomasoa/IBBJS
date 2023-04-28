@@ -10,7 +10,7 @@ test('Multiplier scrambler',() => {
 
     expect(scrambler.scramble(BigInt(1))).toBe(BigInt((1*3+7)%11))
     expect(scrambler.scramble(BigInt(2))).toBe(BigInt((2*3+7)%11))
-    expect(scrambler.scramble(BigInt(0))).toBe(BigInt(7))
+    expect(scrambler.scramble(BigInt(0))).toBe(BigInt(0*3+7)%11)
 
     for (var i=BigInt(0); i<modulus; i++) {
         expect(scrambler.unscramble(scrambler.scramble(i))).toBe(i)
