@@ -9,7 +9,7 @@
   <meta name="author" content="Thomas Andrews">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/no-table.css">
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
@@ -76,6 +76,15 @@ Page Number(s):
       import { Application } from "./application.js"
       var App = new Application()
 
+      function backDeal() {
+        App.previousDeal()
+        return false;
+      }
+
+      function fowardDeal() {
+        App.nextDeal()
+        return false;
+      }
       function visibility(flag) {
         return flag ? 'visible' : 'hidden'
       }
@@ -85,11 +94,9 @@ Page Number(s):
       }
 
       function updateCurrentDeal(index,dealInfo) {
-          console.log("Index: ",index)
           var dealLoc = $('#deal')
           if (dealInfo == undefined) {
             dealLoc.hide()
-            console.log('Undefined')
             return
           } else {
             $('#dealIndex').text(index+1)
@@ -134,8 +141,8 @@ Page Number(s):
               return false;
           }) 
           $('#reset').on('click',() => reset())
-          $('#back').on('click',() => App.previousDeal())
-          $('#forward').on('click',() => App.nextDeal())
+          $('#back').on('click',() => backDeal())
+          $('#forward').on('click',() => fowardDeal())
           App.reset()
       }
 
