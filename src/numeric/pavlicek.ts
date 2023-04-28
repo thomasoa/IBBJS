@@ -28,7 +28,6 @@ class Remaining {
         for (var seat =0; seat<this.perSeat.length; seat++) {
             var cards = this.perSeat[seat]    
             var width: bigint = range.width * BigInt(cards)/BigInt(this.total)
-            //console.log(nextStart.toString(),width.toString())
             if (nextStart + width > pageNo) {
                 this.toWhom[card]= seat
                 this.total--
@@ -39,6 +38,18 @@ class Remaining {
         }
         throw new Error('Invalid page number '+ (pageNo.toString()))
     }
+
+    nextCard(card:CardNumber, seat:SeatNumber,range:Range):Range {
+        var skip = 0
+        for (var skipSeat:SeatNumber=0; skipSeat< seat; skipSeat++) {
+            skip += this.perSeat[skipSeat]
+        }
+        var newStart = range.start + range.width * BigInt(skip)/BigInt(this.total)
+        var width = range.width * BigInt(this.perSeat[seat]) / BigInt(this.total)
+        this.total -= 1
+        this.perSeat[seat] -= 1
+        return new Range(newStart,width)
+    }
 }
 
 class PavlicekStrategy {
@@ -48,6 +59,8 @@ class PavlicekStrategy {
         this.signature = signature_or_default(signature)
     }
 
+    get pages():PageNumber { return this.signature.pages }
+    get lastPage():PageNumber { return this.signature.lastPage }
 
     //private narrowRange(start)
     computePageContent(pageNo:PageNumber):NumericDeal {
@@ -58,12 +71,19 @@ class PavlicekStrategy {
         for (var card:CardNumber = 0; card<sig.cards; card++) {
             range = remaining.nextRange(range,pageNo,card)
         }
-        // console.log(remaining.toWhom)
         return new NumericDeal(sig,remaining.toWhom)
     }
 
     computePageNumber(deal:NumericDeal):PageNumber {
-        return BigInt(0)
+        var range = new Range(BigInt(0),deal.signature.pages)
+        var remaining = new Remaining(deal.signature.perSeat,deal.signature.cards)
+        deal.toWhom.forEach((seat,card) => {
+            range = remaining.nextCard(card,seat,range)
+        })
+        if (range.width != BigInt(1)) {
+            throw new Error('Got range width ' + range.width.toString() + ' after decode')
+        }
+        return range.start
     }
 
 }

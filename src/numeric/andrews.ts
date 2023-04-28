@@ -3,7 +3,6 @@ import {signature_or_default, DealSignature, NumericDeal, PageNumber} from "./de
 import {choose} from "./choose.js"
 import {decode, encode} from './squashed.js'
 
-
 interface SeatFactor {
     // Represents a factor of the Andrews strategy
     readonly quotient:bigint;
@@ -105,6 +104,9 @@ class AndrewsStrategy {
         this.signature = signature_or_default(signature);
         this.factors = computeFactors(this.signature.perSeat)
     }
+
+    get pages():PageNumber { return this.signature.pages }
+    get lastPage():PageNumber { return this.signature.lastPage }
 
     computePageNumber(deal:NumericDeal):PageNumber {
         const sig=this.signature

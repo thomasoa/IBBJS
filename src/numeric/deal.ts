@@ -30,13 +30,13 @@ class DealSignature {
         this.pages = multinomial(cardsPerSeat);
     }
 
-    lastPage(): PageNumber {
+    get lastPage(): PageNumber {
         return this.pages-BigInt(1)
     }
 
     assertValidPageNo(pageNo:PageNumber):void {
         if (pageNo>=this.pages || pageNo<BigInt(0)) {
-            throw new Error("Invalid page number pageNo outside range <="+this.pages.toString())
+            throw new Error("Invalid page " + pageNo + " outside range <="+this.pages.toString())
         }
     }
 }
@@ -87,11 +87,14 @@ class NumericDeal {
 }
 interface BookStrategy {
     readonly signature: DealSignature;
+    readonly pages:PageNumber;
+    readonly lastPage:PageNumber;
     computePageContent(pageNo:PageNumber):NumericDeal;
     computePageNumber(deal:NumericDeal):PageNumber;
 }
 
 export {
-    DealSignature, NumericDeal, signature_or_default, 
-    BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray 
+    DealSignature, NumericDeal, //classes
+    signature_or_default, // function
+    BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray // types
 }
