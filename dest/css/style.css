@@ -1,5 +1,7 @@
 body {
     max-width: 40em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #error {
@@ -21,11 +23,6 @@ body {
     line-height: 1.5;
     font-size: 14px;
 }
-
-body.toc {
-    background: url(http://thomasoandrews.com/graphics/idealbg.jpg)
-}
-
 
 A:link {
    color: #003399;
