@@ -7,15 +7,21 @@ type PageNumber = bigint;
 type HandArray = CardNumber[]
 
 class DealSignature {
-    // An immutable definition ffor a class of deals
-    // 
-    // sig = new DealSignature[4,4,4,4]
-    //
-    // sig.perSet - an array telling how man cards each seat is suppose to get]
-    // sig.seats  - the number of seats
-    // sig.cards  - the total number of cards to be dealt
-    // sig.pages  - The total number of distinct deals of this type
-    //
+    /** An immutable definition ffor a class of deals
+     * 
+     * sig = new DealSignature[4,4,4,4]
+     *
+     * sig.perSet - an array telling how man cards each seat is suppose to get
+     * sig.seats  - the number of seats
+     * sig.cards  - the total number of cards to be dealt
+     * sig.pages  - The total number of distinct deals of this type
+     * 
+     * A bridge deal has:
+     *     perSeat = [13,13,13,13] - each seat gets 13 cards
+     *     seats   = 4
+     *     card    = 52
+     *    pages   = A very large number - the multinomial of 52 choose (13,13,13,13)   
+     */
     readonly perSeat: readonly number[];
     readonly seats:number;
     readonly cards:number;
@@ -50,14 +56,15 @@ function signature_or_default(sig:DealSignature|undefined):DealSignature {
     return sig
 }
 
-
+/**
+ *  A deal which matches a signature
+ * 
+ * Cards in a NumericDeal are just indexes from zero to one
+ * less than the number of cards in the signature. No meaning
+ * is implied by the seat numbers - they will be mapped in
+ * the bridge package.
+ */
 class NumericDeal {
-    // A deal which matches a signature
-    // 
-    // Cards in a NumericDeal are just indexes from zero to one
-    // less than the number of cards in the signature. No meaning
-    // is implied by the seat numbers - they will be mapped in
-    // the bridge package.
     readonly signature: DealSignature;
     readonly toWhom: readonly SeatNumber[];
     readonly hands: readonly HandArray[];
@@ -89,6 +96,13 @@ class NumericDeal {
 
     }
 }
+
+/**
+ * A BookStrategy is a way of converting deals into indexes.
+ * 
+ * The 'page numbers' start from zero and end at the number of
+ * pages minus 1, as computed by the DealSignature.
+ */
 interface BookStrategy {
     readonly signature: DealSignature;
     readonly pages:PageNumber;
