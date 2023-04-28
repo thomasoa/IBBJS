@@ -33,24 +33,35 @@ test("Application findDeal callbacks",()=> {
     expect(myCount).toBe(0)
     expect(myIndex).toBe(-1)
     expect(myDeal).toBeUndefined()
+
     app.findDeal("Andrews",false,BigInt(1))
     expect(myCount).toBe(1)
     expect(myIndex).toBe(0)
     expect(myDeal.edition).toBe("Andrews")
     expect(myDeal.scrambled).toBeFalsy()
     expect(myDeal.pageNo.toString()).toBe("1")
+
     app.findDeals("Andrews",true,[BigInt(4),BigInt(5)])
     expect(myCount).toBe(3)
     expect(myIndex).toBe(1)
     expect(myDeal.edition).toBe("Andrews")
     expect(myDeal.scrambled).toBeTruthy()
     expect(myDeal.pageNo.toString()).toBe("4")
+
     app.nextDeal()
     expect(myCount).toBe(3)
     expect(myIndex).toBe(2)
     expect(myDeal.edition).toBe("Andrews")
     expect(myDeal.scrambled).toBeTruthy()
     expect(myDeal.pageNo.toString()).toBe("5")
+
+    app.previousDeal()
+    expect(myCount).toBe(3)
+    expect(myIndex).toBe(1)
+    expect(myDeal.edition).toBe("Andrews")
+    expect(myDeal.scrambled).toBeTruthy()
+    expect(myDeal.pageNo.toString()).toBe("4")
+
 })
 
 test("Exceptions with updateCurrent",()=>{
