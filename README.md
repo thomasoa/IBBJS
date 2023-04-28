@@ -1,6 +1,8 @@
 # IBBJS
 TypeScript/JavaScript version of The Impossible Bridge Book.
 
+I deploy this on my [GitHub Pages](https://thomasoa.github.io/impossible/index.html) page.
+
 Now that there is an arbitrary precision integer class built into Javsscript,
 it is easy to implement The Impossible Bridge Book entirely in the browser.
 
