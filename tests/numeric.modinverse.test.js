@@ -37,5 +37,6 @@ test('Find gcd of 53644737765488792839237440000 and unit 13109994191499930367061
     var n = BigInt('13109994191499930367061460371')
     expect(long_gcd(m,n).gcd).toBe(BigInt(1))
     var inverse = modular_inverse(m,n)
+    expect(inverse).toBeGreaterThan(BigInt(0))
     expect((inverse*n)%m).toBe(BigInt(1))
 })
