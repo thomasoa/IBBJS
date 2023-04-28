@@ -4,6 +4,7 @@ import {Ranks, Card, Cards, Suits, CardsByName,Seats} from "../dest/bridge/const
 test("Holding void",() => {
    var holding = new d.Holding(new Array(0))
    expect(holding.length).toBe(0)
+   expect(holding.isVoid()).toBeTruthy()
    expect(holding.toString()).toBe('-')
    expect(holding.asString(',')).toBe('-')
    expect(holding.bits).toBe(0)
@@ -15,6 +16,7 @@ test("Holding void",() => {
 test("AK2 Holding", () => {
    var holding = new d.Holding([Ranks.ace,Ranks.king,Ranks.two])
    expect(holding.length).toBe(3)
+   expect(holding.isVoid()).toBeFalsy()
    expect(holding.toString()).toBe("A K 2")
    expect(holding.asString('')).toBe("AK2")
    expect(holding.bits).toBe((3<<11)+1)

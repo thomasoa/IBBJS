@@ -6,16 +6,16 @@ type SeatMap = (seat:numeric.SeatNumber) => C.Seat
 
 class Holding {
     readonly ranks: Array<C.Rank>
-    readonly length: number
     readonly bits:number
     constructor(ranks:Array<C.Rank>) {
         this.ranks = ranks
-        this.length = ranks.length
         this.bits = ranks.reduce(
             (binary,rank) => rank.bit|binary,
             0
         )
     }
+
+    get length() { return this.ranks.length }
 
     asString(divider:string):string {
         if (this.length == 0) {
@@ -25,6 +25,10 @@ class Holding {
         return this.ranks.map((rank)=> rank.brief).join(divider)
     }
 
+    isVoid():boolean {
+        return this.length == 0
+    }
+    
     toString():string {
         return this.asString(' ')
     }
@@ -86,8 +90,10 @@ class Deal {
     get west():Hand {   return this.hand(C.Seats.west) }
 
     eachHand(method: (seat:C.Seat,hand:Hand)=> any):void {
-        var _this=this;
-        C.Seats.all.forEach((seat)=> method(seat,_this.hands[seat.order]))
+        //var hands=this.hands;
+        //C.Seats.all.forEach((seat)=> method(seat,hands[seat.order]))
+        this.hands.forEach((hand,index) => method(C.Seats.all[index],hand))
+
     }
 }
 
