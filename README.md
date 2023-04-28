@@ -10,10 +10,10 @@ For personal education reasons, I am going to try to do the project in TypeScrip
 
 Working with npm, tcm, jest, and VSCode.
 
-To run, 
+To run, you will need `npm` installed.
 
    1. Clone the repository
-   2. Run 'npm install' 
-   3. Run 'npm run build'
-   4. Copy to contents of the dest/ folder to a directory visible to a browser.
-   5. Open test.html in a browser.
+   2. Run `npm install`
+   3. Run `npm run build`
+   4. Copy the contents of the `dest/` folder to a directory visible to a browser.
+   5. Open `index.html` in a browser.
