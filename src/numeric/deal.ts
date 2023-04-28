@@ -54,16 +54,20 @@ function signature_or_default(sig:DealSignature|undefined):DealSignature {
 class NumericDeal {
     // A deal which matches a signature
     // 
+    // Cards in a NumericDeal are just indexes from zero to one
+    // less than the number of cards in the signature. No meaning
+    // is implied by the seat numbers - they will be mapped in
+    // the bridge package.
     readonly signature: DealSignature;
     readonly toWhom: readonly SeatNumber[];
     readonly hands: readonly HandArray[];
 
     constructor(sig:DealSignature,toWhom:number[]) {
-        this.signature = sig
-        this.toWhom = [...toWhom]
         if (toWhom.length != sig.cards) {
             throw Error('Wrong number of cards in deal. Expected' + sig.cards + ', got ' + toWhom.length)
         }
+        this.signature = sig
+        this.toWhom = [...toWhom]
         // Split deal into hands
         this.hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
         this.toWhom.forEach((seat,card) => {
