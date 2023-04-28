@@ -5,6 +5,7 @@ interface LongGCDResult {
 }
 
 function long_gcd(m:bigint,n:bigint):LongGCDResult {
+
     var quotients = Array<bigint>()
     var zero = BigInt(0)
     while (n!=zero) {
@@ -21,7 +22,15 @@ function long_gcd(m:bigint,n:bigint):LongGCDResult {
 
 export function modular_inverse(modulus:bigint, unit:bigint):bigint {
     var zero = BigInt(0), one = BigInt(1)
+
+    if (modulus<zero) {
+        modulus = -modulus
+    }
     unit = unit % modulus
+    if (unit<zero) {
+        unit += modulus
+    }
+    
     if (unit == zero) {
         throw Error('Unit ' + unit.toString() + ' is divible by the modulus '+modulus.toString())
     }

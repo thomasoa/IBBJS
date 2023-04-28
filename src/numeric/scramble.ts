@@ -9,11 +9,13 @@ interface Scrambler {
     unscramble: PageTransform    
 }
 
-function safe_mod(n1:bigint,n2:bigint): bigint {
+export function safe_mod(n1:bigint,n2:bigint): bigint {
+    // Computes n1 % n2, but with values r in range
+    // 0 <= r < abs(n2)
     // The % operator sometimes returns negative numbers
     const zero = BigInt(0)
     if (n2<zero) {
-        n2 = -n1
+        n2 = -n2
     }
     var result = n1%n2
     if (result < zero) {
@@ -22,6 +24,7 @@ function safe_mod(n1:bigint,n2:bigint): bigint {
         return result
     }
 }
+
 class MultiplierScrambler {
     scramble: PageTransform 
     unscramble: PageTransform
