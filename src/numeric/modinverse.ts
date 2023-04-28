@@ -4,11 +4,42 @@ interface LongGCDResult {
     quotients:bigint[]
 }
 
-function long_gcd(m:bigint,n:bigint):LongGCDResult {
+export function safe_mod(n1:bigint,n2:bigint): bigint {
+    // Computes n1 % n2, but with values r in range
+    // 0 <= r < abs(n2)
+    // The % operator sometimes returns negative numbers
+    const zero = BigInt(0)
+    if (n2<zero) {
+        n2 = -n2
+    }
+    var result = n1%n2
+    if (result < zero) {
+        return result+n2
+    } else {
+        return result
+    }
+}
+
+
+export function long_gcd(m:bigint,n:bigint):LongGCDResult {
 
     var quotients = Array<bigint>()
     var zero = BigInt(0)
-    while (n!=zero) {
+    if (m<zero) {
+        m = -m
+    }
+
+    if (m==zero) {
+        throw Error('long_gcd cannot be called when m is zero')
+    }
+    
+    n = safe_mod(n,m)
+    
+    if (n==zero) {
+        return {gcd: n, quotients: quotients}
+    }
+
+    while (true) {
         var q = m/n
         var r = m % n
         if (r==zero) {
@@ -30,15 +61,15 @@ export function modular_inverse(modulus:bigint, unit:bigint):bigint {
     if (unit<zero) {
         unit += modulus
     }
-    
+
     if (unit == zero) {
-        throw Error('Unit ' + unit.toString() + ' is divible by the modulus '+modulus.toString())
+        throw Error('Unit ' + unit + ' is divible by the modulus '+modulus)
     }
     const result = long_gcd(modulus,unit)
     if (result.gcd != one) {
-        throw Error('Modulus ' + modulus.toString() 
-                               + ' and unit '+ unit.toString() 
-                               +' are not relatively prime')
+        throw Error('Modulus ' + modulus
+                               + ' and unit '+ unit 
+                               +' are not relatively prime, gcd='+result.gcd)
     }
     var p_0=zero, p_1 = one, q_0 = one, q_1= zero
     result.quotients.forEach((quotient)=>{

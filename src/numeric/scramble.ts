@@ -1,5 +1,5 @@
 // A crude way to create scrambled deal strategies
-import { modular_inverse } from "./modinverse.js";
+import { modular_inverse, safe_mod} from "./modinverse.js";
 import { BookStrategy, PageNumber, NumericDeal, DealSignature} from "./deal.js";
 
 type PageTransform = (pageNo:PageNumber) => PageNumber;
@@ -9,21 +9,6 @@ interface Scrambler {
     unscramble: PageTransform    
 }
 
-export function safe_mod(n1:bigint,n2:bigint): bigint {
-    // Computes n1 % n2, but with values r in range
-    // 0 <= r < abs(n2)
-    // The % operator sometimes returns negative numbers
-    const zero = BigInt(0)
-    if (n2<zero) {
-        n2 = -n2
-    }
-    var result = n1%n2
-    if (result < zero) {
-        return result+n2
-    } else {
-        return result
-    }
-}
 
 class MultiplierScrambler {
     scramble: PageTransform 
