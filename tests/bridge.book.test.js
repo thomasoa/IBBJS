@@ -1,6 +1,6 @@
 import * as Books from "../dest/bridge/book.js"
 import * as C from "../dest/bridge/constants.js"
-import {PavlicekStrategy, AndrewsStrategy} from "../dest/numeric/book.js"
+import {PavlicekStrategy, AndrewsStrategy} from "../dest/numeric/index.js"
 
 test("Book constructor",() => {
     var strategy = new PavlicekStrategy()
