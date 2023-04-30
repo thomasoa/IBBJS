@@ -1,5 +1,5 @@
-//  Just a single source library for all you need to import
-// from this numeric directory for the Impossible Bridge Book.
+//  Just a single source entry point for all you need to 
+// the numeric directory for the Impossible Bridge Book.
 import {DealSignature, BookStrategy, NumericDeal, 
     PageNumber,CardNumber,SeatNumber} from "./deal.js"
 import {AndrewsStrategy} from "./andrews.js"
