@@ -1,7 +1,7 @@
-import {Edition, build_editions} from "./model/books.js"
-import {Deal} from "./bridge/deal.js"
-import {PageNumber} from "./numeric/deal.js"
-import { BridgeBook } from "./bridge/book.js"
+import {Edition, build_editions} from "./books.js"
+import {Deal} from "../bridge/deal.js"
+import {PageNumber} from "../numeric/deal.js"
+import { BridgeBook } from "../bridge/book.js"
 
 
 interface ProducedDeal {
