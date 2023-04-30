@@ -18,8 +18,8 @@ interface NewCurrentDealEvent {
 /* 
  * Callbacks for two event types.
  */
-type NewCurrentDealCalllback = (index:number, dealEvent:NewCurrentDealEvent|undefined)=> any
-type DealCountCallback = (count:number)=>any
+type NewCurrentDealCalllback = (index:number, dealEvent:NewCurrentDealEvent|undefined)=> void
+type DealCountCallback = (count:number)=>void
 
 interface AppCallbacks {
     updateCurrentDeal: Array<NewCurrentDealCalllback>
