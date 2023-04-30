@@ -36,7 +36,7 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
     n = safe_mod(n,m)
     
     if (n==zero) {
-        return {gcd: n, quotients: quotients}
+        return {gcd: m, quotients: quotients}
     }
 
     while (true) {

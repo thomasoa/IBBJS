@@ -16,6 +16,19 @@ test('safe_mod when normal mod might return negative',()=>{
    expect(int_safe_mod(-13,-3)).toBe(BigInt(2))
 })
 
+test('long_gcd with negative values',()=>{
+   var result = long_gcd(BigInt(-8),BigInt(-3));
+   expect(result.gcd).toBe(BigInt(1))
+   expect(result.quotients).toEqual([BigInt(1),BigInt(1),BigInt(1)])
+})
+
+test('long_gcd with n divivisble by m',()=>{
+   var result = long_gcd(BigInt(6),BigInt(12))
+   expect(result.gcd).toBe(BigInt(6))
+   expect(result.quotients).toEqual([])
+})
+
+
 test('Inverse of 3 modulo 7',() => {
     expect(int_mod_inverse(7,3)).toBe(BigInt(5))
 })
