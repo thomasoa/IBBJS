@@ -1,6 +1,5 @@
 import * as C from "./constants.js"
-import {PageNumber, SeatNumber,  CardNumber} from "../numeric/deal.js"
-import {BookStrategy} from "../numeric/book.js"
+import {BookStrategy, PageNumber, SeatNumber,  CardNumber} from "../numeric/book.js"
 import {Hand, Deal} from "./deal.js"
 
 type CardMap = (card:CardNumber) => C.Card
