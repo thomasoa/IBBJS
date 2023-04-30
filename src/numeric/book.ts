@@ -1,6 +1,7 @@
 //  Just a single source library for all you need to import
 // from this numeric directory
-import {DealSignature, BookStrategy, NumericDeal} from "./deal.js"
+import {DealSignature, BookStrategy, NumericDeal, 
+    PageNumber,CardNumber,SeatNumber} from "./deal.js"
 import {AndrewsStrategy} from "./andrews.js"
 import { PavlicekStrategy } from "./pavlicek.js"
 import { scramble_book } from "./scramble.js"
@@ -10,4 +11,9 @@ import { scramble_book } from "./scramble.js"
 
 
 
-export {DealSignature, AndrewsStrategy, PavlicekStrategy, BookStrategy, NumericDeal, scramble_book}
+export {
+    DealSignature, NumericDeal, AndrewsStrategy, PavlicekStrategy, // Classes
+    BookStrategy,  // interface
+    PageNumber,CardNumber,SeatNumber,
+    scramble_book  // function
+}
