@@ -32,6 +32,9 @@ test("Hand construction and holdings", () => {
       "H8","H7","H6","H5",
       "H4","H3","H2","DK","DJ"].map((s) => CardsByName.get(s))
    var hand = new d.Hand(cards)
+   expect(hand.has(CardsByName.get('HA'))).toBeTruthy()
+   expect(hand.has(CardsByName.get('SA'))).toBeFalsy()
+   
    expect(hand.spades.toString()).toBe('Q 10 9')
    expect(hand.hearts.toString()).toBe("A 8 7 6 5 4 3 2")
    expect(hand.diamonds.toString()).toBe("K J")

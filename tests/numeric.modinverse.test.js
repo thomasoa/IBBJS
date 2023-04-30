@@ -28,6 +28,9 @@ test('long_gcd with n divivisble by m',()=>{
    expect(result.quotients).toEqual([])
 })
 
+test('long_gcd throws error when m is zero',()=>{
+    expect(()=> long_gcd(BigInt(0),BigInt(1))).toThrow()
+})
 
 test('Inverse of 3 modulo 7',() => {
     expect(int_mod_inverse(7,3)).toBe(BigInt(5))

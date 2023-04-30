@@ -33,7 +33,8 @@ test("Scrambled book complete invertible for signature [2,2,2,2]",() => {
     var sig = new DealSignature([2,2,2,2])
     var aBook = new AndrewsStrategy(sig)
     var sBook = scramble_book(aBook,BigInt(11*17*31),BigInt(1001))
- 
+    expect(sBook.pages).toBe(aBook.pages)
+    expect(sBook.lastPage).toBe(aBook.lastPage)
     for (var page=BigInt(0); page<sig.pages; page++) {
       var deal = sBook.computePageContent(page)
       expect(sBook.computePageNumber(deal)).toBe(page)
