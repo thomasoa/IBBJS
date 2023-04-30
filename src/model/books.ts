@@ -1,6 +1,7 @@
 import {BridgeBook, SeatMap} from "../bridge/book.js"
 import {Seats} from "../bridge/constants.js"
 import * as numeric from "../numeric/book.js"
+
 function scramble(strategy:numeric.BookStrategy):numeric.BookStrategy {
     var multiplier = BigInt("13109994191499930367061460371")
     var translation = BigInt("34563463456363563565356345634")
