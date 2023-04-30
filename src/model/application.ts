@@ -4,36 +4,75 @@ import {PageNumber} from "../numeric/deal.js"
 import { BridgeBook } from "../bridge/book.js"
 
 
-interface ProducedDeal {
+/**
+ * Interface for a class of events that occur when the application has
+ * a new CurrentDeal.
+ */
+interface NewCurrentDealEvent {
     deal: Deal,
     edition: string,
     scrambled: boolean,
-    pageNo: bigint,
+    pageNo: PageNumber,
 }
 
-type ProducedDealCallback = (index:number, dealEvent:ProducedDeal|undefined)=> any
+/* 
+ * Callbacks for two event types.
+ */
+type NewCurrentDealCalllback = (index:number, dealEvent:NewCurrentDealEvent|undefined)=> any
 type DealCountCallback = (count:number)=>any
+
 interface AppCallbacks {
-    updateCurrentDeal: Array<ProducedDealCallback>
+    updateCurrentDeal: Array<NewCurrentDealCalllback>
     updateDealCount: Array<DealCountCallback>
 }
 
 class Application {
+    /**
+     * Implements the non-display logic of the application.
+     * 
+     * The application keeps track of an array of produced deals and
+     * which deal is 'current.'
+     * 
+     * The main useful public methods are:
+     *    findDeals(bookName:string, scrambled:boolean, bigint[])
+     *    findDeal(bookName:string, scrambled:boolean, bigint)
+     *       - These two look up page numbers in the "books," append the
+     *         deals ffound there to the array of found deals.
+     *       - Updates the current deal to be the first of the new found deals.
+     *       - Emits both a NewCurrentDeal event, and a new count event (which is just
+     *         the count.) 
+     * 
+     *    listenDealCount(callback) - the callback takes a parameter of signature:
+     *            { 
+     *              currentDeal: number; 
+     *              deal?: { deal: Deal, edition: string, scrambled: boolean, pageNo: bigint }
+     *            }
+     * where deal: will be undefined if currentDeal < 0 (after a reset, for example)
+     * 
+     *    listenDealCount(callback) - the callback takes a parameter just a number, the
+     *    count of the deals
+     * 
+     *    reset() - Clears the array and emits both a DealCount event and a CurrentDeal event.
+     * 
+     *    allowsBack allowsForward - true if you can move in that direction in tthe array
+     *    from the currentDeal.
+     */
+
     readonly editions:Map<string,Edition>;
-    private deals:Array<ProducedDeal>;
+    private deals:Array<NewCurrentDealEvent>;
     readonly callbacks:AppCallbacks; 
     currentDeal:number = -1
 
     constructor() {
         this.editions = build_editions()
-        this.deals = new Array<ProducedDeal>()
+        this.deals = new Array<NewCurrentDealEvent>()
         this.callbacks = {
-            updateCurrentDeal: new Array<ProducedDealCallback>(),
+            updateCurrentDeal: new Array<NewCurrentDealCalllback>(),
             updateDealCount: new Array<(count:number)=>any>()
         }
     }
 
-    deal(index:number):ProducedDeal {
+    deal(index:number):NewCurrentDealEvent {
         return this.deals[index]
     }
 
@@ -64,7 +103,7 @@ class Application {
         return this.currentDeal>0
     }
     
-    addDeal(deal:ProducedDeal):number {
+    addDeal(deal:NewCurrentDealEvent):number {
         this.deals.push(deal)
         this.updateCount()
         return this.length
@@ -116,12 +155,12 @@ class Application {
     }
 
     reset():void {
-        this.deals = new Array<ProducedDeal>(0)
+        this.deals = new Array<NewCurrentDealEvent>(0)
         this.updateCount()
         this.updateCurrent(-1)
     }
 
-    listenCurrentDeal(callback:ProducedDealCallback):void {
+    listenCurrentDeal(callback:NewCurrentDealCalllback):void {
         this.callbacks.updateCurrentDeal.push(callback)
     }
 
@@ -140,7 +179,7 @@ class Application {
             currentDeal = -1
         }
         this.currentDeal = currentDeal
-        var deal:ProducedDeal|undefined;
+        var deal:NewCurrentDealEvent|undefined;
         this.currentDeal = currentDeal
         if (currentDeal<0) {
             deal = undefined
