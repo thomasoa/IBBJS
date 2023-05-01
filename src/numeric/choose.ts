@@ -8,25 +8,43 @@ type PascalRow = Array<bigint|undefined>
 type OptPascalRow = PascalRow | undefined 
 
 export class ChooseCache {
-    readonly size: number;
-    readonly rows: Array<PascalRow>;
+    private rows: Array<PascalRow>;
 
     constructor(size:number) {
-        this.size = size
-        this.rows = Array<PascalRow>(size) 
+        //this.rows = Array<PascalRow>(size+1)
+        this.rows = Array.from({length:size+1},(v,index)=>this.blankRow(index))
+        console.debug('Constructor: ',size)
+    }
+
+    get size():number {
+        return this.rows.length-1
+    }
+
+    private blankRow(rowNum:number):PascalRow {
+        // We only need half the row
+        var columns = Math.floor(rowNum/2)+1
+        var row = new Array<bigint|undefined>(columns)
+        row[0]=BigInt(1)
+        return row
+    }
+
+    private addRow():void {
+        this.rows.push(this.blankRow(this.size+1))
+    }
+
+    private row(n:number):PascalRow {
+        while (this.size<n) {
+            this.addRow()
+        }
+        this.rows[n] = this.rows[n] || this.blankRow(n)
+        return this.rows[n]
     }
 
     choose(n:number,k:number):bigint {
        if (2*k>n) { k = n-k }
        if (k<0) { return BigInt(0) }
        const lazy = (c:ChooseCache):bigint => c.choose(n-1,k-1) + c.choose(n-1,k)
-
-       if (n>this.size) {
-        return lazy(this)
-       }
-       this.rows[n] = this.rows[n] || Array<bigint|undefined>(n+1)
-       this.rows[n][0] = BigInt(1)
-       const row: PascalRow = this.rows[n]
+       const row = this.row(n)
        row[k] = row[k] || lazy(this)
        return row[k] as bigint
     }
