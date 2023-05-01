@@ -104,7 +104,7 @@ class PavlicekStrategy {
     }
 
     computePageNumber(deal:NumericDeal):PageNumber {
-        if (!this.signature.equal(deal.signature)) {
+        if (!this.signature.equals(deal.signature)) {
             throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
         }
         var range = new Range(BigInt(0),deal.signature.pages)

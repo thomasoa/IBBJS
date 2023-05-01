@@ -46,7 +46,7 @@ class DealSignature {
         }
     }
 
-    equal(otherSig:DealSignature):boolean {
+    equals(otherSig:DealSignature):boolean {
         if (this===otherSig) {
             return true
         }

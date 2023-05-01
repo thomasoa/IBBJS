@@ -113,7 +113,7 @@ class AndrewsStrategy {
     get lastPage():PageNumber { return this.signature.lastPage }
 
     computePageNumber(deal:NumericDeal):PageNumber {
-        if (!this.signature.equal(deal.signature)) {
+        if (!this.signature.equals(deal.signature)) {
             throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
         }
         const sig=this.signature

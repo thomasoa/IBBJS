@@ -25,11 +25,11 @@ test('NumericDeal throw error when wrong number of cards for a seat', ()=> {
 
 test('DealSignature.equal()', ()=>{
     var sig = new numDeal.DealSignature([3,3])
-    expect(sig.equal(sig)).toBeTruthy()
+    expect(sig.equals(sig)).toBeTruthy()
     var sigSame = new numDeal.DealSignature([3,3])
-    expect(sig.equal(sigSame)).toBeTruthy()
+    expect(sig.equals(sigSame)).toBeTruthy()
         var sigSeats = new numDeal.DealSignature([2,2,2])
-    expect(sig.equal(sigSeats)).toBeFalsy()
+    expect(sig.equals(sigSeats)).toBeFalsy()
     var sigCounts = new numDeal.DealSignature([2,4])
-    expect(sig.equal(sigCounts)).toBeFalsy()
+    expect(sig.equals(sigCounts)).toBeFalsy()
 })
