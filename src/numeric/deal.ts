@@ -40,6 +40,15 @@ class DealSignature {
         return this.pages-BigInt(1)
     }
 
+    validSeat(seatNum:SeatNumber):boolean {
+        return seatNum>=0 && seatNum<this.seats
+    }
+
+    validHands(hands:readonly HandArray[]):boolean {
+        return (hands.length == this.seats) && 
+            this.perSeat.every((len,seatNum)=> len == hands[seatNum].length)
+    }
+
     assertValidPageNo(pageNo:PageNumber):void {
         if (pageNo>=this.pages || pageNo<BigInt(0)) {
             throw new Error("Invalid page " + pageNo + " outside range <="+this.pages.toString())
@@ -64,6 +73,21 @@ class DealSignature {
  */
 const bridgeSignature = new DealSignature([13,13,13,13])
 
+function buildHands(signature:DealSignature, toWhom: SeatNumber[]):readonly HandArray[] {
+    var hands = signature.perSeat.map((cards,seat) => new Array<number>(0))
+    toWhom.forEach((seat,card) => {
+        if (signature.validSeat(seat)) {
+            hands[seat].push(card)
+        } else {
+            throw Error(
+                'Invalid seat ' + seat + ' for deal in with ' + signature.seats + ' seats'
+            )
+        }
+    })
+    return hands
+
+}
+
 /**
  *  A deal which matches a signature
  * 
@@ -83,28 +107,17 @@ class NumericDeal {
         }
         this.signature = sig
         this.toWhom = Array.from(toWhom)
-        // Split deal into hands
-        var hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
-        this.toWhom.forEach((seat,card) => {
-            if (seat>= sig.seats || seat< 0) {
-                throw Error(
-                    'Invalid seat ' + seat + ' for deal in with ' + sig.seats + ' seats'
-                )
-            }
-            hands[seat].push(card)
-        })
-        this.hands = hands
-
-        sig.perSeat.forEach((cards:number,seat:SeatNumber) => {
-             if (cards != this.hands[seat].length) {
-                throw Error(
-                    'Wrong number of cards for seat ' + seat + ' expected ' + cards + ' cards'
-                )
-             }
-        })
+        this.hands = buildHands(sig,toWhom)
+        this.validateSignature()
 
     }
 
+    validateSignature():void {
+        if (!this.signature.validHands(this.hands)) {
+            throw new Error('Invalid deal signature')
+        }
+        
+    }
 }
 
 /**
