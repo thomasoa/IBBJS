@@ -126,9 +126,7 @@ class Application {
         })
         var _this = this
         newDeals.forEach ((deal) => _this.addDeal(deal))
-        if (this.length > newCurrent) {
-            this.updateCurrent(newCurrent)
-        }
+        this.updateCurrent(newCurrent)
     }
 
     findDeal(edition:string,scrambled:boolean,page:PageNumber):void {
