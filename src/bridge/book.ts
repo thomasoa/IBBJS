@@ -47,19 +47,14 @@ class BridgeBook {
         var seatMap = this.seatMap
         var cardMap = this.cardMap
         var toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
-        var cardsInHands: Array<Array<C.Card>> = C.Suits.all.map(
-           () => new Array<C.Card>() 
-        )
 
         numDeal.toWhom.forEach((seatNum,cardNum)=> {
              var seat = seatMap(seatNum)
              var card = cardMap(cardNum)
              toWhom[card.order] = seat
-             cardsInHands[seat.order].push(card)
         })
 
-        var hands: Array<Hand> = cardsInHands.map((cards) => new Hand(cards))
-        return new Deal(toWhom,hands)
+        return new Deal(toWhom)
     }
 }
 

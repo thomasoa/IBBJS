@@ -72,13 +72,21 @@ class Hand {
     }
 }
 
+function buildHands(toWhom:Array<C.Seat>):Array<Hand> {
+    var cards: Array<Array<C.Card>> = Array.from({length:4},()=> new Array<C.Card>(0))
+    toWhom.forEach((seat:C.Seat,cardNum:number)=>{
+        cards[seat.order].push(C.Cards[cardNum])
+    })
+    return cards.map((handCards)=> new Hand(handCards))
+}
+
 class Deal {
 
     toWhom: Array<C.Seat>;
     hands: Array<Hand>;
-    constructor(toWhom:Array<C.Seat>,hands:Array<Hand>) {
+    constructor(toWhom:Array<C.Seat>) {
         this.toWhom = toWhom
-        this.hands = hands
+        this.hands = buildHands(toWhom)
     }
     hand(seat:C.Seat):Hand {
         return this.hands[seat.order]

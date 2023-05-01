@@ -59,3 +59,17 @@ test("Hand eachSuit method", ()=>{
    expect(suitMap.get('clubs')).toBe("-")
 
 })
+
+test("Deal eachHand",()=>{
+   var toWhom = Array.from({length:52},(v,i)=> Seats.all[Math.floor(i/13)])
+   var deal = new d.Deal(toWhom)
+   var expected = new Map([
+      ["north","AKQJ1098765432 - - -"],
+      ["east","- AKQJ1098765432 - -"],
+      ['south','- - AKQJ1098765432 -'],
+      ['west','- - - AKQJ1098765432']
+   ])
+   deal.eachHand((seat,hand)=>{
+      expect(hand.toString()).toBe(expected.get(seat.name))
+   })
+})
