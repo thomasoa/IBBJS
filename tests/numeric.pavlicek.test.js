@@ -50,6 +50,14 @@ test("Pavlicek strategy complete deals ensured unique [2,2,2,2]",() => {
   }
 })
 
+test('Out of bounds page number',()=>{
+  var sig = new numDeal.DealSignature([2,2,2,2]) // 2520 pages
+  var pBook = new pavlicek.PavlicekStrategy(sig)
+  expect(()=> pBook.computePageContent(pBook.lastPage+1)).toThrow()
+  expect(()=> pBook.computePageContent(new BigInt(-1))).toThrow()
+
+})
+
 
 
 
