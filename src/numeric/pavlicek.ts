@@ -20,6 +20,11 @@ class Range {
     contains(num:bigint):boolean {
         return num>=this.start && num<this.last
     }
+
+    computeWidth(numerator:number,denominator:number):bigint {
+        return this.width * BigInt(numerator)/BigInt(denominator)
+    }
+    
 }
 
 class Remaining {
@@ -38,17 +43,11 @@ class Remaining {
         this.total = total
     }
 
-    nextRange(range:Range,pageNo:PageNumber, card:CardNumber):Range {
-        /**
-         * Used when computing a deal from a page number
-         */
-        if (!range.contains(pageNo)) {
-            throw new Error('Invalid page number '+ (pageNo.toString()))
-        }
+    private checkedNextRange(range,pageNo, card):Range {
         var nextStart = range.start
         for (var seat =0; seat<this.perSeat.length; seat++) {
             var cards = this.perSeat[seat]    
-            var width: bigint = range.width * BigInt(cards)/BigInt(this.total)
+            var width: bigint = range.computeWidth(cards,this.total)
             var nextRange = new Range(nextStart,width)
             if (nextRange.contains(pageNo)) {
                 this.toWhom[card]= seat
@@ -58,8 +57,16 @@ class Remaining {
             }
             nextStart = nextStart + width
         }
-        // Should not be reached
         throw new Error('Could not find seat for card ' +card +' and page '+ pageNo)
+    }
+    nextRange(range:Range,pageNo:PageNumber, card:CardNumber):Range {
+        /**
+         * Used when computing a deal from a page number
+         */
+        if (!range.contains(pageNo)) {
+            throw new Error('Invalid page number '+ (pageNo.toString()))
+        }
+        return this.checkedNextRange(range,pageNo,card)
     }
 
     nextCard(card:CardNumber, seat:SeatNumber,range:Range):Range {
@@ -70,8 +77,8 @@ class Remaining {
         for (var skipSeat:SeatNumber=0; skipSeat< seat; skipSeat++) {
             skip += this.perSeat[skipSeat]
         }
-        var newStart = range.start + range.width * BigInt(skip)/BigInt(this.total)
-        var width = range.width * BigInt(this.perSeat[seat]) / BigInt(this.total)
+        var newStart = range.start + range.computeWidth(skip,this.total)
+        var width = range.computeWidth(this.perSeat[seat],this.total)
         this.total -= 1
         this.perSeat[seat] -= 1
         return new Range(newStart,width)
@@ -103,10 +110,14 @@ class PavlicekStrategy {
         return new NumericDeal(sig,remaining.toWhom)
     }
 
-    computePageNumber(deal:NumericDeal):PageNumber {
+    private validateSignature(deal:NumericDeal) {
         if (!this.signature.equals(deal.signature)) {
             throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
         }
+    } 
+
+    computePageNumber(deal:NumericDeal):PageNumber {
+        this.validateSignature(deal)
         var range = new Range(BigInt(0),deal.signature.pages)
         var remaining = new Remaining(deal.signature.perSeat,deal.signature.cards)
         deal.toWhom.forEach((seat,card) => {
