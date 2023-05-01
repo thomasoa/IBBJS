@@ -61,3 +61,11 @@ test("Andrews book complete invertible for signature [2,2,2,2]",() => {
      expect(aBook.computePageNumber(deal)).toBe(page)
    }
 })
+
+test('Check computePageNumber with unmatching signatures',()=>{
+  var sig2 = new numDeal.DealSignature([2,2,2,2]) // 2520 pages
+  var aBook = new andrews.AndrewsStrategy(sig2)
+  var sig1 = new numDeal.DealSignature([1,1,1,1])
+  var deal = new numDeal.NumericDeal(sig1,[0,1,2,3])
+  expect(()=> aBook.computePageNumber(deal)).toThrow()
+})

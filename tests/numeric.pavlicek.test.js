@@ -52,10 +52,19 @@ test("Pavlicek strategy complete deals ensured unique [2,2,2,2]",() => {
 
 test('Out of bounds page number',()=>{
   var sig = new numDeal.DealSignature([2,2,2,2]) // 2520 pages
+  
   var pBook = new pavlicek.PavlicekStrategy(sig)
   expect(()=> pBook.computePageContent(pBook.lastPage+1)).toThrow()
   expect(()=> pBook.computePageContent(new BigInt(-1))).toThrow()
 
+})
+
+test('Check computePageNumber with unmatching signatures',()=>{
+  var sig2 = new numDeal.DealSignature([2,2,2,2]) // 2520 pages
+  var pBook = new pavlicek.PavlicekStrategy(sig2)
+  var sig1 = new numDeal.DealSignature([1,1,1,1])
+  var deal = new numDeal.NumericDeal(sig1,[0,1,2,3])
+  expect(()=> pBook.computePageNumber(deal)).toThrow()
 })
 
 
