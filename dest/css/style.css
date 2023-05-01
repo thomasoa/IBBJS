@@ -58,7 +58,7 @@ div.body , div.signature {
 
 div.footer {
     clear: left;
-]}
+}
 
 
 div, p, li {
@@ -66,7 +66,7 @@ div, p, li {
 }
 
 #dealindex {
-    text-align: center
+    text-align: center;
 }
 
 .diagram {
