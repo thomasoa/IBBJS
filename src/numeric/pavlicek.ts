@@ -98,11 +98,18 @@ class PavlicekStrategy {
     get pages():PageNumber { return this.signature.pages }
     get lastPage():PageNumber { return this.signature.lastPage }
 
+    /**
+     * The range for all pages for this strategy
+     */
+    private get baseRange():Range { 
+        return new Range(BigInt(0),this.pages)
+    }
+
     computePageContent(pageNo:PageNumber):NumericDeal {
         this.signature.assertValidPageNo(pageNo)
         var sig: DealSignature = this.signature
         var remaining = new Remaining(sig.perSeat, sig.cards)
-        var range = new Range(BigInt(0),sig.pages)
+        var range = this.baseRange
 
         for (var card:CardNumber = 0; card<sig.cards; card++) {
             range = remaining.nextRange(range,pageNo,card)
@@ -118,7 +125,7 @@ class PavlicekStrategy {
 
     computePageNumber(deal:NumericDeal):PageNumber {
         this.validateSignature(deal)
-        var range = new Range(BigInt(0),deal.signature.pages)
+        var range = this.baseRange
         var remaining = new Remaining(deal.signature.perSeat,deal.signature.cards)
         deal.toWhom.forEach((seat,card) => {
             range = remaining.nextCard(card,seat,range)
