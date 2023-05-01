@@ -54,14 +54,7 @@ class DealSignature {
         if (this.seats != otherSig.seats) {
             return false
         }
-
-        for (var seatNum=0; seatNum<this.seats; seatNum++) {
-            if (this.perSeat[seatNum] != otherSig.perSeat[seatNum]) {
-                return false
-            }
-        }
-        
-        return true
+        return this.perSeat.every((value,index)=> value == otherSig.perSeat[index])
     }
 
 }
