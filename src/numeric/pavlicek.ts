@@ -1,11 +1,11 @@
 import {
     DealSignature, signature_or_default, NumericDeal, 
-    CardNumber, HandArray, SeatNumber, PageNumber // types
+    CardNumber, SeatNumber, PageNumber // types
 } from './deal.js'
 
 class Range {
     /**
-     * Used for computations: a range of values.
+     * Used for computations: a range of bigint values.
      * start - the first value
      * width - the size of the range
      */
