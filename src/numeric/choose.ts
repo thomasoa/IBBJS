@@ -39,8 +39,14 @@ export class ChooseCache {
         return this.rows[n]
     }
 
+    private smallK(n:number, k:number):number {
+        if (2*k>n) { 
+            return n-k
+        }
+        return k
+    }
     choose(n:number,k:number):bigint {
-       if (2*k>n) { k = n-k }
+        k = this.smallK(n,k)
        if (k<0) { return BigInt(0) }
        const row = this.row(n)
        row[k] = row[k] || (this.choose(n-1,k-1) + this.choose(n-1,k))
