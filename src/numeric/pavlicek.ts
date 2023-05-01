@@ -42,6 +42,9 @@ class Remaining {
         /**
          * Used when computing a deal from a page number
          */
+        if (!range.contains(pageNo)) {
+            throw new Error('Invalid page number '+ (pageNo.toString()))
+        }
         var nextStart = range.start
         for (var seat =0; seat<this.perSeat.length; seat++) {
             var cards = this.perSeat[seat]    
@@ -55,7 +58,8 @@ class Remaining {
             }
             nextStart = nextStart + width
         }
-        throw new Error('Invalid page number '+ (pageNo.toString()))
+        // Should not be reached
+        throw new Error('Could not find seat for card ' +card +' and page '+ pageNo)
     }
 
     nextCard(card:CardNumber, seat:SeatNumber,range:Range):Range {
@@ -88,6 +92,7 @@ class PavlicekStrategy {
     get lastPage():PageNumber { return this.signature.lastPage }
 
     computePageContent(pageNo:PageNumber):NumericDeal {
+        this.signature.assertValidPageNo(pageNo)
         var sig: DealSignature = this.signature
         var remaining = new Remaining(sig.perSeat, sig.cards)
         var range = new Range(BigInt(0),sig.pages)
@@ -99,16 +104,21 @@ class PavlicekStrategy {
     }
 
     computePageNumber(deal:NumericDeal):PageNumber {
+        if (!this.signature.equal(deal.signature)) {
+            throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
+        }
         var range = new Range(BigInt(0),deal.signature.pages)
         var remaining = new Remaining(deal.signature.perSeat,deal.signature.cards)
         deal.toWhom.forEach((seat,card) => {
             range = remaining.nextCard(card,seat,range)
         })
         if (range.width != BigInt(1)) {
+            // Shouldn't normally be reached
             throw new Error('Got range width ' + range.width.toString() + ' after decode')
         }
         return range.start
     }
+
 
 }
 
