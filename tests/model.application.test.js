@@ -19,49 +19,57 @@ test("Application findDeal", ()=> {
 
 test("Application findDeal callbacks",()=> {
     var app = new Application()
+    var state = {count: 1000, current: 1000, deal: 1}
     var myCount = 1000 
     var myIndex = 1000
     var myDeal = 1
     app.listenDealCount((count) => {
-        myCount = count
+        state.count = count
     })
     app.listenCurrentDeal((index,deal) => {
-        myIndex = index
-        myDeal = deal
+        state.current = index
+        state.deal = deal
     })
     app.reset()
-    expect(myCount).toBe(0)
-    expect(myIndex).toBe(-1)
-    expect(myDeal).toBeUndefined()
+    expect(state.count).toBe(0)
+    expect(state.current).toBe(-1)
+    expect(state.deal).toBeUndefined()
 
     app.findDeal("Andrews",false,BigInt(1))
-    expect(myCount).toBe(1)
-    expect(myIndex).toBe(0)
-    expect(myDeal.edition).toBe("Andrews")
-    expect(myDeal.scrambled).toBeFalsy()
-    expect(myDeal.pageNo.toString()).toBe("1")
+    expect(state.count).toBe(1)
+    expect(state.current).toBe(0)
+    expect(state.deal.edition).toBe("Andrews")
+    expect(state.deal.scrambled).toBeFalsy()
+    expect(state.deal.pageNo.toString()).toBe("1")
 
     app.findDeals("Andrews",true,[BigInt(4),BigInt(5)])
-    expect(myCount).toBe(3)
-    expect(myIndex).toBe(1)
-    expect(myDeal.edition).toBe("Andrews")
-    expect(myDeal.scrambled).toBeTruthy()
-    expect(myDeal.pageNo.toString()).toBe("4")
+    expect(state.count).toBe(3)
+    expect(state.current).toBe(1)
+    expect(state.deal.edition).toBe("Andrews")
+    expect(state.deal.scrambled).toBeTruthy()
+    expect(state.deal.pageNo.toString()).toBe("4")
 
     app.nextDeal()
-    expect(myCount).toBe(3)
-    expect(myIndex).toBe(2)
-    expect(myDeal.edition).toBe("Andrews")
-    expect(myDeal.scrambled).toBeTruthy()
-    expect(myDeal.pageNo.toString()).toBe("5")
+    expect(state.count).toBe(3)
+    expect(state.current).toBe(2)
+    expect(state.deal.edition).toBe("Andrews")
+    expect(state.deal.scrambled).toBeTruthy()
+    expect(state.deal.pageNo.toString()).toBe("5")
 
     app.previousDeal()
-    expect(myCount).toBe(3)
-    expect(myIndex).toBe(1)
-    expect(myDeal.edition).toBe("Andrews")
-    expect(myDeal.scrambled).toBeTruthy()
-    expect(myDeal.pageNo.toString()).toBe("4")
+    expect(state.count).toBe(3)
+    expect(state.current).toBe(1)
+    expect(state.deal.edition).toBe("Andrews")
+    expect(state.deal.scrambled).toBeTruthy()
+    expect(state.deal.pageNo.toString()).toBe("4")
 
+    state.count = -1
+    state.current = -2
+    state.deal = -3
+    app.findDeals("Andrews",false,[])
+    expect(state.count).toBe(-1)
+    expect(state.current).toBe(-2)
+    expect(state.deal).toBe(-3)
 })
 
 test("Exceptions with updateCurrent",()=>{
