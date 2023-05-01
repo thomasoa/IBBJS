@@ -1,5 +1,5 @@
 import * as C from "./constants.js"
-import {BookStrategy, PageNumber, SeatNumber,  CardNumber} from "../numeric/index.js"
+import {BookStrategy, PageNumber, SeatNumber,  CardNumber, DealSignature} from "../numeric/index.js"
 import {Hand, Deal} from "./deal.js"
 
 type CardMap = (card:CardNumber) => C.Card
@@ -7,12 +7,12 @@ type SeatMap = (seat:SeatNumber) => C.Seat
 const defaultCardMap:CardMap = (card:CardNumber) => C.Cards[card]
 const defaultSeatMap:SeatMap = (seat:SeatNumber) => C.Seats.all[seat]
 
-function validate_signature(strategy:BookStrategy):void {
-    var seats = strategy.signature.perSeat.length
+function validate_signature(signature:DealSignature):void {
+    var seats = signature.perSeat.length
     if (seats != 4) {
         throw new Error("Deal strategy signature should be [13,13,13,13], but has " + seats + " seats")
     }
-    for (var seatLength of strategy.signature.perSeat) {
+    for (var seatLength of signature.perSeat) {
         if (seatLength != 13) {
             throw new Error("Signature must be [13,13,13,13] but got a seat length of " + seatLength)
         }
@@ -29,7 +29,7 @@ class BridgeBook {
         cardMap:CardMap|undefined
     ) {
         
-        validate_signature(strategy)
+        validate_signature(strategy.signature)
         this.strategy = strategy
         if (seatMap == undefined) {
             seatMap = defaultSeatMap
@@ -67,4 +67,4 @@ class BridgeBook {
     }
 }
 
-export {BridgeBook, SeatMap, CardMap}
+export {BridgeBook, SeatMap, CardMap, validate_signature}
