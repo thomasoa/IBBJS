@@ -45,6 +45,25 @@ class DealSignature {
             throw new Error("Invalid page " + pageNo + " outside range <="+this.pages.toString())
         }
     }
+
+    equal(otherSig:DealSignature):boolean {
+        if (this===otherSig) {
+            return true
+        }
+
+        if (this.seats != otherSig.seats) {
+            return false
+        }
+
+        for (var seatNum=0; seatNum<this.seats; seatNum++) {
+            if (this.perSeat[seatNum] != otherSig.perSeat[seatNum]) {
+                return false
+            }
+        }
+        
+        return true
+    }
+
 }
 
 /**
@@ -92,6 +111,7 @@ class NumericDeal {
         })
 
     }
+
 }
 
 /**
