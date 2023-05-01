@@ -13,7 +13,6 @@ export class ChooseCache {
     constructor(size:number) {
         //this.rows = Array<PascalRow>(size+1)
         this.rows = Array.from({length:size+1},(v,index)=>this.blankRow(index))
-        console.debug('Constructor: ',size)
     }
 
     get size():number {
@@ -43,9 +42,8 @@ export class ChooseCache {
     choose(n:number,k:number):bigint {
        if (2*k>n) { k = n-k }
        if (k<0) { return BigInt(0) }
-       const lazy = (c:ChooseCache):bigint => c.choose(n-1,k-1) + c.choose(n-1,k)
        const row = this.row(n)
-       row[k] = row[k] || lazy(this)
+       row[k] = row[k] || (this.choose(n-1,k-1) + this.choose(n-1,k))
        return row[k] as bigint
     }
 }
