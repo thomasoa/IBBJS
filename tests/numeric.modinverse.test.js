@@ -48,6 +48,10 @@ test('Expect inverse of 34 modulo 55 is 34', () => {
     expect(int_mod_inverse(55,34)).toEqual(BigInt(34))
 })
 
+test('mod_inverse when unit is zero in the modulus',()=>{
+    expect(()=> int_mod_inverse(2,0)).toThrow()
+})
+
 test('Find gcd of 53644737765488792839237440000 and unit 13109994191499930367061460371',()=>{
     var m = BigInt('53644737765488792839237440000')
     var n = BigInt('13109994191499930367061460371')
