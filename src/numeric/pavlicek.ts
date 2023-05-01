@@ -32,7 +32,7 @@ class Remaining {
     total: number;
 
     constructor(perSeat:readonly number[],total:number) {
-        this.perSeat = [...perSeat]
+        this.perSeat = Array.from(perSeat)
         this.toWhom = new Array<SeatNumber>(total)
         this.total = total
     }

@@ -28,7 +28,7 @@ class DealSignature {
     readonly pages:bigint;
 
     constructor(cardsPerSeat:number[]) {
-        this.perSeat = [...cardsPerSeat]
+        this.perSeat = Array.from(cardsPerSeat)
         this.seats = cardsPerSeat.length
         this.cards = cardsPerSeat.reduce(
             (total:number, nextVal:number) => total + nextVal
@@ -74,7 +74,7 @@ class NumericDeal {
             throw Error('Wrong number of cards in deal. Expected' + sig.cards + ', got ' + toWhom.length)
         }
         this.signature = sig
-        this.toWhom = [...toWhom]
+        this.toWhom = Array.from(toWhom)
         // Split deal into hands
         this.hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
         this.toWhom.forEach((seat,card) => {
