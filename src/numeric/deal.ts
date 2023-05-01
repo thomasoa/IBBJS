@@ -4,7 +4,7 @@ import { multinomial} from "./choose.js"
 type SeatNumber = number;
 type CardNumber = number;
 type PageNumber = bigint;
-type HandArray = CardNumber[]
+type HandArray =  readonly CardNumber[]
 
 class DealSignature {
     /** An immutable definition ffor a class of deals
@@ -47,11 +47,10 @@ class DealSignature {
     }
 }
 
-const defaultSignature = new DealSignature([13,13,13,13])
-
-function signature_or_default(sig:DealSignature|undefined):DealSignature {
-    return sig || defaultSignature
-}
+/**
+ * A standard bridge signature - four seats, each seat getting 13 cards
+ */
+const bridgeSignature = new DealSignature([13,13,13,13])
 
 /**
  *  A deal which matches a signature
@@ -73,15 +72,16 @@ class NumericDeal {
         this.signature = sig
         this.toWhom = Array.from(toWhom)
         // Split deal into hands
-        this.hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
+        var hands = this.signature.perSeat.map((cards,seat) => Array<number>(0))
         this.toWhom.forEach((seat,card) => {
             if (seat>= sig.seats || seat< 0) {
                 throw Error(
                     'Invalid seat ' + seat + ' for deal in with ' + sig.seats + ' seats'
                 )
             }
-            this.hands[seat].push(card)
+            hands[seat].push(card)
         })
+        this.hands = hands
 
         sig.perSeat.forEach((cards:number,seat:SeatNumber) => {
              if (cards != this.hands[seat].length) {
@@ -110,6 +110,6 @@ interface BookStrategy {
 
 export {
     DealSignature, NumericDeal, //classes
-    signature_or_default, // function
+    bridgeSignature, // constant
     BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray // types
 }
