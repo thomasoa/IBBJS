@@ -96,6 +96,11 @@ Page Number(s):
         $(selector).css('visibility',visibility(flag))
       }
 
+      function updatePreviousNext() {
+        setVisibility('#back',App.allowPrevious)
+        setVisibility('#forward',App.allowNext)
+      }
+
       function updateCurrentDeal(index,dealInfo) {
           var dealLoc = $('#deal')
           if (dealInfo == undefined) {
@@ -110,10 +115,7 @@ Page Number(s):
             $('#bookTitle').text(title)
             $('#error').hide()
             $('#pageNumber').text(dealInfo.pageNo)
-            setVisibility('#back',App.allowPrevious)
-            setVisibility('#forward',App.allowNext)
-            //$('#back').toggle(App.allowPrevious)
-            //$('#forward').toggle(App.allowNext)
+            updatePreviousNext()
             dealInfo.deal.eachHand((seat,hand) => {
               var handDiv = $('.diagram .'+seat.name)
               hand.eachSuit((suit,holding) => {
@@ -129,6 +131,7 @@ Page Number(s):
 
       function updateDealCount(count) {
         $('#dealCount').text(count)
+        updatePreviousNext()
       }
       
       function reset() {
