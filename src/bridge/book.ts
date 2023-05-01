@@ -31,12 +31,8 @@ class BridgeBook {
         
         validate_signature(strategy.signature)
         this.strategy = strategy
-        if (seatMap == undefined) {
-            seatMap = defaultSeatMap
-        }
-        if (cardMap == undefined) {
-            cardMap = defaultCardMap
-        }
+        seatMap = seatMap || defaultSeatMap
+        cardMap = cardMap || defaultCardMap
         this.seatMap = seatMap
         this.cardMap = cardMap
     }

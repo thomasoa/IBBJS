@@ -50,10 +50,7 @@ class DealSignature {
 const defaultSignature = new DealSignature([13,13,13,13])
 
 function signature_or_default(sig:DealSignature|undefined):DealSignature {
-    if (sig == undefined) {
-        return defaultSignature
-    }
-    return sig
+    return sig || defaultSignature
 }
 
 /**

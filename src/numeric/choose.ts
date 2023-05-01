@@ -24,14 +24,10 @@ export class ChooseCache {
        if (n>this.size) {
         return lazy(this)
        }
-       if (this.rows[n]== undefined) {
-        this.rows[n] = Array<bigint|undefined>(n+1)
-        this.rows[n][0] = BigInt(1)
-       }
+       this.rows[n] = this.rows[n] || Array<bigint|undefined>(n+1)
+       this.rows[n][0] = BigInt(1)
        const row: PascalRow = this.rows[n]
-       if (row[k] == undefined) {
-        row[k] = lazy(this)
-       }
+       row[k] = row[k] || lazy(this)
        return row[k] as bigint
     }
 }
