@@ -1,5 +1,6 @@
 import {
-    DealSignature, signature_or_default, NumericDeal, 
+    DealSignature, NumericDeal,        // classes
+    bridgeSignature,                   // constant
     CardNumber, SeatNumber, PageNumber // types
 } from './deal.js'
 
@@ -79,7 +80,7 @@ class PavlicekStrategy {
     readonly signature:DealSignature
 
     constructor(signature:DealSignature|undefined) {
-        this.signature = signature_or_default(signature)
+        this.signature = signature || bridgeSignature
     }
 
     get pages():PageNumber { return this.signature.pages }

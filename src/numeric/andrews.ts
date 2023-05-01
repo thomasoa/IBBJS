@@ -1,5 +1,9 @@
 //  An entirely numeric version of the book
-import {signature_or_default, DealSignature, NumericDeal, PageNumber} from "./deal.js"
+import {
+    bridgeSignature,            // constant
+    DealSignature, NumericDeal, // Classes
+    PageNumber                  // typr
+} from "./deal.js"
 import {choose} from "./choose.js"
 import {decode, encode} from './squashed.js'
 
@@ -101,7 +105,7 @@ class AndrewsStrategy {
     readonly factors:SeatFactor[];
     
     constructor(signature:DealSignature|undefined) {
-        this.signature = signature_or_default(signature);
+        this.signature = signature || bridgeSignature;
         this.factors = computeFactors(this.signature.perSeat)
     }
 
