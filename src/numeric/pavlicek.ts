@@ -17,7 +17,7 @@ class Range {
         this.width = width
     }
     get last() { return this.start+this.width }
-    contain(num:bigint):boolean {
+    contains(num:bigint):boolean {
         return num>=this.start && num<this.last
     }
 }
@@ -46,11 +46,12 @@ class Remaining {
         for (var seat =0; seat<this.perSeat.length; seat++) {
             var cards = this.perSeat[seat]    
             var width: bigint = range.width * BigInt(cards)/BigInt(this.total)
-            if (nextStart + width > pageNo) {
+            var nextRange = new Range(nextStart,width)
+            if (nextRange.contains(pageNo)) {
                 this.toWhom[card]= seat
                 this.total--
                 this.perSeat[seat]--
-                return new Range(nextStart,width)
+                return nextRange
             }
             nextStart = nextStart + width
         }
