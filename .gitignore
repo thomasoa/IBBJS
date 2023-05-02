@@ -3,3 +3,4 @@ dest/**/*.js
 node_modules/*
 coverage/**/*
 *.zip
+dest/**/*

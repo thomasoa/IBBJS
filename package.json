@@ -17,8 +17,8 @@
     "scripts": {
         "test": "npm run build && jest --silent=false",
         "test-coverage": "npm run build && jest --silent=false --collect-coverage",
-        "build": "tsc && npm run build:copy"
-        "build:copy": "(cd public_html; tar cf - .) | (cd dest; tar xf -)"
+        "build": "tsc && npm run build:copy",
+        "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)"
     },
     "babel": {
         "env": {
