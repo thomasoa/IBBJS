@@ -64,7 +64,7 @@ class Remaining {
         * Used when computing a deal from a page number
         */
         if (!range.contains(pageNo)) {
-            throw new Error('Invalid page number '+ (pageNo.toString()))
+            throw new RangeError('Invalid page number '+ (pageNo.toString()))
         }
         return this.checkedNextRange(range,pageNo,card)
     }
