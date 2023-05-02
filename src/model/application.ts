@@ -81,14 +81,14 @@ class Application {
     
     nextDeal() {
         if (!this.allowNext) {
-            throw Error('Cannot go to next page')
+            throw RangeError('Cannot go to next page')
         }
         this.updateCurrent(this.currentIndex+1)
     }
     
     previousDeal() {
         if (! this.allowPrevious) {
-            throw Error('Cannot go to previous deal')          
+            throw RangeError('Cannot go to previous deal')          
         }
         this.updateCurrent(this.currentIndex-1)
         
@@ -188,7 +188,7 @@ class Application {
                 
     chooseCurrent(currentIndex:number):void {
         if (currentIndex<0 || currentIndex>=this.length) {
-            throw new Error('Can only choose deal between 0 and '+(this.length-1))
+            throw new RangeError('Can only choose deal between 0 and '+(this.length-1))
         }
         this.updateCurrent(currentIndex)
     }

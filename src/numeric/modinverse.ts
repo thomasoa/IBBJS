@@ -65,8 +65,8 @@ export function modular_inverse(modulus:bigint, unit:bigint):bigint {
     const result = long_gcd(modulus,unit)
     if (result.gcd != one) {
         throw Error('Modulus ' + modulus
-        + ' and unit '+ unit 
-        +' are not relatively prime, gcd='+result.gcd)
+                    + ' and unit '+ unit 
+                    + ' are not relatively prime, gcd='+result.gcd)
     }
     var p_0=zero, p_1 = one, q_0 = one, q_1= zero
     result.quotients.forEach((quotient)=>{

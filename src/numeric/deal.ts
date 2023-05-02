@@ -51,7 +51,7 @@ class DealSignature {
 
     assertValidPageNo(pageNo:PageNumber):void {
         if (pageNo>=this.pages || pageNo<BigInt(0)) {
-            throw new Error("Invalid page " + pageNo + " outside range <="+this.pages.toString())
+            throw new RangeError("Invalid page " + pageNo + " outside range <="+this.pages.toString())
         }
     }
 
@@ -79,7 +79,7 @@ function buildHands(signature:DealSignature, toWhom: SeatNumber[]):readonly Hand
         if (signature.validSeat(seat)) {
             hands[seat].push(card)
         } else {
-            throw Error(
+            throw RangeError(
                 'Invalid seat ' + seat + ' for deal in with ' + signature.seats + ' seats'
             )
         }
