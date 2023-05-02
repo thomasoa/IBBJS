@@ -8,6 +8,7 @@ import {
 }  from "../numeric/index.js"
 
 function scramble(strategy:BookStrategy):BookStrategy {
+    // Copied from original Impossible Bridge Book
     var multiplier = BigInt("13109994191499930367061460371")
     var translation = BigInt("34563463456363563565356345634")
     return scramble_book(strategy,multiplier,translation)
