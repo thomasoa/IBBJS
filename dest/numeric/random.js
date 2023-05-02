@@ -1,3 +1,5 @@
+// Copied from https://github.com/bnoordhuis/random-bigint
+//
 // Copyright (c) 2018, Ben Noordhuis <info@bnoordhuis.nl>
 //
 // Permission to use, copy, modify, and/or distribute this software for any
