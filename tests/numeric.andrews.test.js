@@ -49,8 +49,7 @@ test("Andrews strategy: computePageNumber returns original page number",
   var pageNo = BigInt(755)
   var deal = aBook.computePageContent(pageNo)    
   expect(aBook.computePageNumber(deal)).toEqual(pageNo)
-}
-)
+})
 
 test("Andrews book complete invertible for signature [2,2,2,2]",() => {
   var sig = new numDeal.DealSignature([2,2,2,2])

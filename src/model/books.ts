@@ -26,14 +26,14 @@ function edition(book:BridgeBook):Edition {
 }
 
 function pavlicekBook():BridgeBook {
-    const strategy = new PavlicekStrategy(undefined)
-    return new BridgeBook(strategy,undefined,undefined)
+    const strategy = new PavlicekStrategy()
+    return new BridgeBook(strategy)
 }
 
 function andrewsBook():BridgeBook {
-    const strategy = new AndrewsStrategy(undefined)
+    const strategy = new AndrewsStrategy()
     const seatMap:SeatMap = (seatNumber) => Seats.all[3-seatNumber]
-    return new BridgeBook(strategy,seatMap,undefined)
+    return new BridgeBook(strategy,seatMap)
 }
 
 function build_editions():Map<string,Edition> {

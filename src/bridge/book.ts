@@ -19,8 +19,8 @@ class BridgeBook {
     readonly cardMap:CardMap
     constructor(
         strategy: BookStrategy,
-        seatMap:SeatMap|undefined,
-        cardMap:CardMap|undefined
+        seatMap:SeatMap=defaultSeatMap,
+        cardMap:CardMap=defaultCardMap
         ) {
             
             validate_signature(strategy.signature)

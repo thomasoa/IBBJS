@@ -91,8 +91,8 @@ class PavlicekStrategy {
     */
     readonly signature:DealSignature
     
-    constructor(signature:DealSignature|undefined) {
-        this.signature = signature || bridgeSignature
+    constructor(signature:DealSignature=bridgeSignature) {
+        this.signature = signature
     }
     
     get pages():PageNumber { return this.signature.pages }

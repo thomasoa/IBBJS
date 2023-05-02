@@ -97,8 +97,8 @@ class AndrewsStrategy {
     readonly signature:DealSignature;
     readonly factors:SeatFactor[];
     
-    constructor(signature:DealSignature|undefined) {
-        this.signature = signature || bridgeSignature;
+    constructor(signature:DealSignature=bridgeSignature) {
+        this.signature = signature;
         this.factors = computeFactors(this.signature.perSeat)
     }
 
