@@ -15,13 +15,13 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
+        "build": "tsc && npm run build:copy",
         "test": "npm run build && jest --silent=false",
         "test-coverage": "npm run build && jest --silent=false --collect-coverage",
-        "build": "tsc && npm run build:copy",
-        "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
         "cleanbuild": "npm run clean && npm run build",
+        "clean": "rm -rf dest",
         "publish": "npm run cleanbuild && sh publish.sh Commit $(git rev-parse HEAD) to $(git config --get remote.origin.url)",
-        "clean": "rm -rf dest"
+        "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
     },
     "babel": {
         "env": {
