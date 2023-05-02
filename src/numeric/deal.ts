@@ -26,6 +26,7 @@ class DealSignature {
     readonly seats:number;
     readonly cards:number;
     readonly pages:bigint;
+    private _bits:number | undefined;
 
     constructor(cardsPerSeat:number[]) {
         this.perSeat = Array.from(cardsPerSeat)
@@ -66,7 +67,12 @@ class DealSignature {
         return this.perSeat.every((value,index)=> value == otherSig.perSeat[index])
     }
 
-    bits():number {
+    get bits():number {
+        this._bits = this._bits || this.computeBits()
+        return this._bits
+    }
+    
+    computeBits():number {
         let bits = 0
         let pages = this.pages
         const two = BigInt(2)
