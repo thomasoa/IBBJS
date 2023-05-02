@@ -13,12 +13,14 @@ interface NewCurrentDealEvent {
     edition: string,
     scrambled: boolean,
     pageNo: PageNumber,
+    index?:number,
+    count?:number
 }
 
 /* 
  * Callbacks for two event types.
  */
-type NewCurrentDealCalllback = (index:number, dealEvent:NewCurrentDealEvent|undefined)=> void
+type NewCurrentDealCalllback = (dealEvent:NewCurrentDealEvent|undefined)=> void
 type DealCountCallback = (count:number)=>void
 
 interface AppCallbacks {
@@ -61,7 +63,7 @@ class Application {
     readonly editions:Map<string,Edition>;
     private deals:Array<NewCurrentDealEvent>;
     readonly callbacks:AppCallbacks; 
-    currentDeal:number = -1
+    currentIndex:number = -1
 
     constructor() {
         this.editions = build_editions()
@@ -84,23 +86,23 @@ class Application {
         if (!this.allowNext) {
             throw Error('Cannot go to next page')
         }
-        this.updateCurrent(this.currentDeal+1)
+        this.updateCurrent(this.currentIndex+1)
     }
 
     previousDeal() {
         if (! this.allowPrevious) {
             throw Error('Cannot go to previous deal')          
         }
-        this.updateCurrent(this.currentDeal-1)
+        this.updateCurrent(this.currentIndex-1)
 
     }
 
     get allowNext():boolean {
-        return (this.currentDeal>=0 && this.currentDeal< this.length-1)
+        return (this.currentIndex>=0 && this.currentIndex< this.length-1)
     }
 
     get allowPrevious():boolean {
-        return this.currentDeal>0
+        return this.currentIndex>0
     }
     
     addDeal(deal:NewCurrentDealEvent):number {
@@ -166,27 +168,33 @@ class Application {
         this.callbacks.updateDealCount.push(callback)
     }
 
-    updateCurrent(currentDeal:number):void {
-        if (currentDeal >= this.length) {
-            throw Error('No deal number' + currentDeal)
+    get currentDeal():NewCurrentDealEvent|undefined {
+        if (this.currentIndex>=0) {
+            var deal = this.deals[this.currentIndex]
+            deal.index = this.currentIndex
+            deal.count = this.length
+            return deal
         }
-        if (currentDeal<0) {
-            if (this.length>0) {
-                throw Error("Cannot set current deal to a negative value when deals exist")
-            }
-            currentDeal = -1
-        }
-        this.currentDeal = currentDeal
-        var deal:NewCurrentDealEvent|undefined;
-        this.currentDeal = currentDeal
-        if (currentDeal<0) {
-            deal = undefined
-        } else { 
-            deal = this.deals[this.currentDeal]
-        }
+        return undefined
+    }
+
+    private currentDealCallBacks():void {
+        var deal = this.currentDeal
         this.callbacks.updateCurrentDeal.forEach(
-            (callback) => callback(currentDeal,deal)
+            (callback) => callback(deal)
         )
+
+    }
+    private updateCurrent(currentIndex:number):void {
+        this.currentIndex = currentIndex
+        this.currentDealCallBacks()
+    }
+
+    chooseCurrent(currentIndex:number):void {
+        if (currentIndex<0 || currentIndex>=this.length) {
+            throw new Error('Can only choose deal between 0 and '+(this.length-1))
+        }
+        this.updateCurrent(currentIndex)
     }
 }
 

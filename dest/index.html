@@ -101,13 +101,14 @@ Page Number(s):
         setVisibility('#forward',App.allowNext)
       }
 
-      function updateCurrentDeal(index,dealInfo) {
+      function updateCurrentDeal(dealInfo) {
+
           var dealLoc = $('#deal')
           if (dealInfo == undefined) {
             dealLoc.hide()
             return
           } else {
-            $('#dealIndex').text(index+1)
+            $('#dealIndex').text(dealInfo.index+1)
             var title = dealInfo.edition + " Edition"
             if (dealInfo.scrambled) {
               title = "Scrambled "+ title

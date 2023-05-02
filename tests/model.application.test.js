@@ -20,19 +20,21 @@ test("Application findDeal", ()=> {
 test("Application findDeal callbacks",()=> {
     var app = new Application()
     var state = {count: 1000, current: 1000, deal: 1}
-    var myCount = 1000 
-    var myIndex = 1000
-    var myDeal = 1
     app.listenDealCount((count) => {
         state.count = count
     })
-    app.listenCurrentDeal((index,deal) => {
-        state.current = index
-        state.deal = deal
+    app.listenCurrentDeal((dealInfo) => {
+        if (dealInfo) {
+            state.current = dealInfo.index
+            state.deal = dealInfo
+        } else {
+            state.current = undefined
+            state.deal = undefined
+        }
     })
     app.reset()
     expect(state.count).toBe(0)
-    expect(state.current).toBe(-1)
+    expect(state.current).toBeUndefined()
     expect(state.deal).toBeUndefined()
 
     app.findDeal("Andrews",false,BigInt(1))
@@ -70,16 +72,6 @@ test("Application findDeal callbacks",()=> {
     expect(state.count).toBe(-1)
     expect(state.current).toBe(-2)
     expect(state.deal).toBe(-3)
-})
-
-test("Exceptions with updateCurrent",()=>{
-    var app = new Application()
-    expect(() => app.updateCurrent(0)).toThrow()
-    expect(() => app.updateCurrent(1)).toThrow()
-    app.findDeals("Pavlicek",false,[BigInt(10),BigInt(10000)])
-    expect(()=> app.updateCurrent(2)).toThrow()
-    expect(()=> app.updateCurrent(-1)).toThrow()
-    expect(()=> app.updateCurrent(-12)).toThrow()
 })
 
 test("Exceptions with nextPage and previousPage",()=>{
