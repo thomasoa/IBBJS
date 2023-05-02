@@ -5,7 +5,6 @@
 */
 
 type PascalRow = Array<bigint|undefined>
-//type OptPascalRow = PascalRow | undefined 
 
 export class ChooseCache {
     private rows: Array<PascalRow>;
