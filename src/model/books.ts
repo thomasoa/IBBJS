@@ -62,9 +62,5 @@ class BookSet {
             return edition.normal
         }
     }
-    
-    getBookPage(name:string, scrambled:boolean, pageNo:bigint):Deal {
-        return this.book(name,scrambled).getDeal(pageNo)
-    }
 }
 export {BookSet}
