@@ -14,14 +14,14 @@ function scramble(strategy:BookStrategy):BookStrategy {
 }
 
 interface Edition { 
-    book: BridgeBook, 
+    normal: BridgeBook, 
     scrambled: BridgeBook 
 }
 
 function edition(book:BridgeBook):Edition {
     var scrambledStrat:BookStrategy = scramble(book.strategy)
     var scrambled = new BridgeBook(scrambledStrat, book.seatMap, book.cardMap)
-    return {book: book, scrambled: scrambled }
+    return {normal: book, scrambled: scrambled }
 }
 
 function pavlicekBook():BridgeBook {
@@ -58,7 +58,7 @@ class BookSet {
         if (scrambled) {
             return edition.scrambled
         } else {
-            return edition.book
+            return edition.normal
         }
     }
     
