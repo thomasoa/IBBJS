@@ -18,7 +18,9 @@
         "test": "npm run build && jest --silent=false",
         "test-coverage": "npm run build && jest --silent=false --collect-coverage",
         "build": "tsc && npm run build:copy",
-        "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)"
+        "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
+        "cleanbuild": "npm run clean ; npm run build",
+        "clean": "rm -rf dest"
     },
     "babel": {
         "env": {
