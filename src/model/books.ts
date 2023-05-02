@@ -34,7 +34,7 @@ function andrewsBook():BridgeBook {
     var seatMap:SeatMap = (seatNumber) => Seats.all[3-seatNumber]
     return new BridgeBook(strategy,seatMap,undefined)
 }
-    
+
 function build_editions():Map<string,Edition> {
     var editions = new Map<string,Edition>()
     editions.set("Pavlicek",edition(pavlicekBook()))
@@ -44,15 +44,15 @@ function build_editions():Map<string,Edition> {
 
 class BookSet {
     editions: Map<string,Edition>;
-
+    
     constructor() {
         this.editions = build_editions()
     }
-
+    
     names():string[] {
         return Array.from(this.editions.keys())
     }
-    
+
     book(name:string, scrambled:boolean):BridgeBook {
         var edition = this.editions.get(name)
         if (scrambled) {
@@ -61,7 +61,7 @@ class BookSet {
             return edition.book
         }
     }
-
+    
     getBookPage(name:string, scrambled:boolean, pageNo:bigint):Deal {
         return this.book(name,scrambled).getDeal(pageNo)
     }

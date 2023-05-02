@@ -27,39 +27,39 @@ class BridgeBook {
         strategy: BookStrategy,
         seatMap:SeatMap|undefined,
         cardMap:CardMap|undefined
-    ) {
-        
-        validate_signature(strategy.signature)
-        this.strategy = strategy
-        seatMap = seatMap || defaultSeatMap
-        cardMap = cardMap || defaultCardMap
-        this.seatMap = seatMap
-        this.cardMap = cardMap
-    }
-
-    get pages() { return this.strategy.pages}
-    get lastPage() { return this.strategy.pages}
-
-    validPageNumber(pageNo:PageNumber) {
-        return pageNo>= BigInt(1) && pageNo<= this.lastPage
-    }
-    getDeal(pageNo:PageNumber):Deal {
-        if (!this.validPageNumber(pageNo)) {
-            throw Error('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
+        ) {
+            
+            validate_signature(strategy.signature)
+            this.strategy = strategy
+            seatMap = seatMap || defaultSeatMap
+            cardMap = cardMap || defaultCardMap
+            this.seatMap = seatMap
+            this.cardMap = cardMap
         }
-        var numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
-        var seatMap = this.seatMap
-        var cardMap = this.cardMap
-        var toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
-
-        numDeal.toWhom.forEach((seatNum,cardNum)=> {
-             var seat = seatMap(seatNum)
-             var card = cardMap(cardNum)
-             toWhom[card.order] = seat
-        })
-
-        return new Deal(toWhom)
+        
+        get pages() { return this.strategy.pages}
+        get lastPage() { return this.strategy.pages}
+        
+        validPageNumber(pageNo:PageNumber) {
+            return pageNo>= BigInt(1) && pageNo<= this.lastPage
+        }
+        getDeal(pageNo:PageNumber):Deal {
+            if (!this.validPageNumber(pageNo)) {
+                throw Error('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
+            }
+            var numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
+            var seatMap = this.seatMap
+            var cardMap = this.cardMap
+            var toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
+            
+            numDeal.toWhom.forEach((seatNum,cardNum)=> {
+                var seat = seatMap(seatNum)
+                var card = cardMap(cardNum)
+                toWhom[card.order] = seat
+            })
+            
+            return new Deal(toWhom)
+        }
     }
-}
-
-export {BridgeBook, SeatMap, CardMap, validate_signature}
+    
+    export {BridgeBook, SeatMap, CardMap, validate_signature}

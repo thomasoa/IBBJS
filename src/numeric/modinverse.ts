@@ -22,13 +22,13 @@ export function safe_mod(n1:bigint,n2:bigint): bigint {
 
 
 export function long_gcd(m:bigint,n:bigint):LongGCDResult {
-
+    
     var quotients = Array<bigint>()
     var zero = BigInt(0)
     if (m<zero) {
         m = -m
     }
-
+    
     if (m==zero) {
         throw Error('long_gcd cannot be called when m is zero')
     }
@@ -38,7 +38,7 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
     if (n==zero) {
         return {gcd: m, quotients: quotients}
     }
-
+    
     while (true) {
         var q = m/n
         var r = m % n
@@ -53,20 +53,20 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
 
 export function modular_inverse(modulus:bigint, unit:bigint):bigint {
     var zero = BigInt(0), one = BigInt(1)
-
+    
     if (modulus<zero) {
         modulus = -modulus
     }
     unit = safe_mod(unit, modulus)
-
+    
     if (unit == zero) {
         throw Error('Unit ' + unit + ' is divible by the modulus '+modulus)
     }
     const result = long_gcd(modulus,unit)
     if (result.gcd != one) {
         throw Error('Modulus ' + modulus
-                               + ' and unit '+ unit 
-                               +' are not relatively prime, gcd='+result.gcd)
+        + ' and unit '+ unit 
+        +' are not relatively prime, gcd='+result.gcd)
     }
     var p_0=zero, p_1 = one, q_0 = one, q_1= zero
     result.quotients.forEach((quotient)=>{
@@ -79,5 +79,5 @@ export function modular_inverse(modulus:bigint, unit:bigint):bigint {
     } else {
         return modulus-p_1
     }
-
+    
 }

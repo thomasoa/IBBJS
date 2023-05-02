@@ -6,10 +6,10 @@ import {
 
 class Range {
     /**
-     * Used for computations: a range of bigint values.
-     * start - the first value
-     * width - the size of the range
-     */
+    * Used for computations: a range of bigint values.
+    * start - the first value
+    * width - the size of the range
+    */
     readonly start:bigint;
     readonly width:bigint;
     constructor(start:bigint,width:bigint) {
@@ -20,7 +20,7 @@ class Range {
     contains(num:bigint):boolean {
         return num>=this.start && num<this.last
     }
-
+    
     computeWidth(numerator:number,denominator:number):bigint {
         return this.width * BigInt(numerator)/BigInt(denominator)
     }
@@ -29,20 +29,20 @@ class Range {
 
 class Remaining {
     /**
-     * Used for two different purposes 
-     * - decoding page numbers to deals
-     * - encoding deals to page numbers
-     */
+    * Used for two different purposes 
+    * - decoding page numbers to deals
+    * - encoding deals to page numbers
+    */
     toWhom: SeatNumber[];
     perSeat: number[];
     total: number;
-
+    
     constructor(perSeat:readonly number[],total:number) {
         this.perSeat = Array.from(perSeat)
         this.toWhom = new Array<SeatNumber>(total)
         this.total = total
     }
-
+    
     private checkedNextRange(range,pageNo, card):Range {
         var nextStart = range.start
         for (var seat =0; seat<this.perSeat.length; seat++) {
@@ -61,18 +61,18 @@ class Remaining {
     }
     nextRange(range:Range,pageNo:PageNumber, card:CardNumber):Range {
         /**
-         * Used when computing a deal from a page number
-         */
+        * Used when computing a deal from a page number
+        */
         if (!range.contains(pageNo)) {
             throw new Error('Invalid page number '+ (pageNo.toString()))
         }
         return this.checkedNextRange(range,pageNo,card)
     }
-
+    
     nextCard(card:CardNumber, seat:SeatNumber,range:Range):Range {
         /**
-         * Used when computing a page number from a deal
-         */
+        * Used when computing a page number from a deal
+        */
         var skip = 0
         for (var skipSeat:SeatNumber=0; skipSeat< seat; skipSeat++) {
             skip += this.perSeat[skipSeat]
@@ -87,42 +87,42 @@ class Remaining {
 
 class PavlicekStrategy {
     /**
-     * Described here: http://www.rpbridge.net/7z68.htm
-     */
+    * Described here: http://www.rpbridge.net/7z68.htm
+    */
     readonly signature:DealSignature
-
+    
     constructor(signature:DealSignature|undefined) {
         this.signature = signature || bridgeSignature
     }
-
+    
     get pages():PageNumber { return this.signature.pages }
     get lastPage():PageNumber { return this.signature.lastPage }
-
+    
     /**
-     * The range for all pages for this strategy
-     */
+    * The range for all pages for this strategy
+    */
     private get baseRange():Range { 
         return new Range(BigInt(0),this.pages)
     }
-
+    
     computePageContent(pageNo:PageNumber):NumericDeal {
         this.signature.assertValidPageNo(pageNo)
         var sig: DealSignature = this.signature
         var remaining = new Remaining(sig.perSeat, sig.cards)
         var range = this.baseRange
-
+        
         for (var card:CardNumber = 0; card<sig.cards; card++) {
             range = remaining.nextRange(range,pageNo,card)
         }
         return new NumericDeal(sig,remaining.toWhom)
     }
-
+    
     private validateSignature(deal:NumericDeal) {
         if (!this.signature.equals(deal.signature)) {
             throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
         }
     } 
-
+    
     computePageNumber(deal:NumericDeal):PageNumber {
         this.validateSignature(deal)
         var range = this.baseRange
@@ -136,8 +136,8 @@ class PavlicekStrategy {
         }
         return range.start
     }
-
-
+    
+    
 }
 
 export {PavlicekStrategy}

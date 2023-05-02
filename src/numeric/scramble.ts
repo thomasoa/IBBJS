@@ -23,21 +23,21 @@ class MultiplierScrambler {
 class ScrambleStrategy {
     base:BookStrategy;
     scrambler:Scrambler;
-
+    
     constructor(baseStrategy:BookStrategy, scrambler:Scrambler) {
         this.base = baseStrategy
         this.scrambler = scrambler
     }
-
+    
     get signature():DealSignature { return this.base.signature} 
     get pages():PageNumber { return this.base.pages }
     get lastPage():PageNumber { return this.base.lastPage }
-
+    
     computePageContent(pageNo:PageNumber):NumericDeal {
         var basePage = this.scrambler.scramble(pageNo)
         return this.base.computePageContent(basePage)
     }
-
+    
     computePageNumber(deal:NumericDeal):PageNumber {
         var basePage = this.base.computePageNumber(deal)
         return this.scrambler.unscramble(basePage)
