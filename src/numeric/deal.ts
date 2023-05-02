@@ -66,6 +66,16 @@ class DealSignature {
         return this.perSeat.every((value,index)=> value == otherSig.perSeat[index])
     }
 
+    bits():number {
+        let bits = 0
+        let pages = this.pages
+        const two = BigInt(2)
+        while (pages>BigInt(0)) {
+            bits ++
+            pages /= two
+        }
+        return bits
+    }
 }
 
 /**
