@@ -25,8 +25,6 @@ class BridgeBook {
             
             validate_signature(strategy.signature)
             this.strategy = strategy
-            seatMap = seatMap || defaultSeatMap
-            cardMap = cardMap || defaultCardMap
             this.seatMap = seatMap
             this.cardMap = cardMap
         }
