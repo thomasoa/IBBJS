@@ -44,26 +44,24 @@ class Application {
      *       - Emits both a NewCurrentDeal event, and a new count event (which is just
      *         the count.) 
      * 
-     *    listenDealCount(callback) - the callback takes a parameter of signature:
-     *            { 
-     *              currentDeal: number; 
-     *              deal?: { deal: Deal, edition: string, scrambled: boolean, pageNo: bigint }
-     *            }
-     * where deal: will be undefined if currentDeal < 0 (after a reset, for example)
-     * 
+     *    listenCurrent(callback) - the callback takes a parameter of type:  
+     *             { deal: Deal, edition: string, scrambled: 
+     *               boolean, pageNo: bigint, index: number, count:number}
+     *       The argument can also be undefined, when there is no current deal.
+     *
      *    listenDealCount(callback) - the callback takes a parameter just a number, the
      *    count of the deals
      * 
      *    reset() - Clears the array and emits both a DealCount event and a CurrentDeal event.
      * 
      *    allowsBack allowsForward - true if you can move in that direction in tthe array
-     *    from the currentDeal.
+     *    from the current deal.
      */
 
     readonly books:BookSet;
     private deals:Array<NewCurrentDealEvent>;
     readonly callbacks:AppCallbacks; 
-    currentIndex:number = -1
+    private currentIndex:number = -1
 
     constructor() {
         this.books = new BookSet()
