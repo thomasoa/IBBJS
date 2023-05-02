@@ -1,4 +1,4 @@
-import {BridgeBook, SeatMap} from "../bridge/book.js"
+import {BridgeBook, SeatMap,Deal} from "../bridge/index.js"
 import {Seats} from "../bridge/constants.js"
 import {
     BookStrategy, 
@@ -42,4 +42,28 @@ function build_editions():Map<string,Edition> {
     return editions
 }
 
-export {build_editions, Edition}
+class BookSet {
+    editions: Map<string,Edition>;
+
+    constructor() {
+        this.editions = build_editions()
+    }
+
+    names():string[] {
+        return Array.from(this.editions.keys())
+    }
+    
+    book(name:string, scrambled:boolean):BridgeBook {
+        var edition = this.editions.get(name)
+        if (scrambled) {
+            return edition.scrambled
+        } else {
+            return edition.book
+        }
+    }
+
+    getBookPage(name:string, scrambled:boolean, pageNo:bigint):Deal {
+        return this.book(name,scrambled).getDeal(pageNo)
+    }
+}
+export {BookSet}

@@ -1,4 +1,4 @@
-import {Edition, build_editions} from "./books.js"
+import {BookSet} from "./books.js"
 import {Deal} from "../bridge/deal.js"
 import {PageNumber} from "../numeric/deal.js"
 import { BridgeBook } from "../bridge/book.js"
@@ -60,13 +60,13 @@ class Application {
      *    from the currentDeal.
      */
 
-    readonly editions:Map<string,Edition>;
+    readonly books:BookSet;
     private deals:Array<NewCurrentDealEvent>;
     readonly callbacks:AppCallbacks; 
     currentIndex:number = -1
 
     constructor() {
-        this.editions = build_editions()
+        this.books = new BookSet()
         this.deals = new Array<NewCurrentDealEvent>()
         this.callbacks = {
             updateCurrentDeal: new Array<NewCurrentDealCalllback>(),
@@ -111,23 +111,26 @@ class Application {
         return this.length
     }
 
-    findDeals(editionName:string,scramble:boolean, pages:Array<PageNumber>):void {
-        if (pages.length == 0) { 
-            return 
-        }
-        var book = this.book(editionName,scramble)
-        var newCurrent = this.length
-        var newDeals = pages.map((page) => {
+    lookupDeals(editionName:string, scrambled:boolean,pages:PageNumber[]):NewCurrentDealEvent[] {
+        var book = this.books.book(editionName,scrambled)
+        return  pages.map((page) => {
             var deal = book.getDeal(page)
             return {
                 deal: deal, 
                 edition: editionName, 
-                scrambled: scramble, 
+                scrambled: scrambled, 
                 pageNo: page
             }
         })
-        var _this = this
-        newDeals.forEach ((deal) => _this.addDeal(deal))
+
+    }
+    findDeals(editionName:string,scrambled:boolean, pages:Array<PageNumber>):void {
+        if (pages.length == 0) { 
+            return 
+        }
+        var newCurrent = this.length
+        var newDeals = this.lookupDeals(editionName,scrambled,pages)
+        newDeals.forEach (this.addDeal.bind(this))
         this.updateCurrent(newCurrent)
     }
 
@@ -136,16 +139,7 @@ class Application {
     }
 
     get editionNames():Array<string> {
-        return Array.from(this.editions.keys())
-    }
-
-    book(editionName:string,scrambled:boolean):BridgeBook {
-        var edition = this.editions.get(editionName)
-        if (scrambled) {
-            return edition.scrambled
-        } else {
-            return edition.book
-        }
+        return Array.from(this.books.names())
     }
 
     updateCount():void {
