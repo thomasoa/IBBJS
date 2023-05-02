@@ -9,7 +9,7 @@ const defaultSeatMap:SeatMap = (seat:SeatNumber) => C.Seats.all[seat]
 
 function validate_signature(signature:DealSignature):void {
     if (!bridgeSignature.equals(signature)) {
-        throw new Error('Invalid signaturre')
+        throw new TypeError('Invalid signature')
     }
 }
 
@@ -39,7 +39,7 @@ class BridgeBook {
         }
         getDeal(pageNo:PageNumber):Deal {
             if (!this.validPageNumber(pageNo)) {
-                throw Error('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
+                throw RangeError('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
             }
             const numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
             const seatMap = this.seatMap

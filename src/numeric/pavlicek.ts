@@ -119,7 +119,7 @@ class PavlicekStrategy {
     
     private validateSignature(deal:NumericDeal) {
         if (!this.signature.equals(deal.signature)) {
-            throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
+            throw new TypeError('Mismatched signatures for Deal and PavlicekStrategy')
         }
     } 
     

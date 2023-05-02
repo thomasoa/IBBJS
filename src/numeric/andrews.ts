@@ -107,7 +107,7 @@ class AndrewsStrategy {
 
     computePageNumber(deal:NumericDeal):PageNumber {
         if (!this.signature.equals(deal.signature)) {
-            throw new Error('Mismatched signatures for Deal and PavlicekStrategy')
+            throw new TypeError('Mismatched signatures for Deal and PavlicekStrategy')
         }
         const sig=this.signature
         const builders: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);

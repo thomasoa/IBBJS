@@ -103,7 +103,7 @@ class NumericDeal {
 
     constructor(sig:DealSignature,toWhom:number[]) {
         if (toWhom.length != sig.cards) {
-            throw Error(
+            throw TypeError(
                 'Wrong number of cards in deal. Expected' 
                 + sig.cards + ', got ' + toWhom.length
             )
@@ -117,7 +117,7 @@ class NumericDeal {
 
     validateSignature():void {
         if (!this.signature.validHands(this.hands)) {
-            throw new Error('Invalid deal signature')
+            throw new TypeError('Invalid deal signature')
         }
         
     }
