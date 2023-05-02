@@ -24,6 +24,8 @@ body {
     font-size: 14px;
 }
 
+#dealindex a { font-size: 80%;}
+
 A:link {
    color: #003399;
 }
@@ -55,6 +57,7 @@ div.body , div.signature {
     width: 90%;
     margin-left: 5%;
 }
+
 
 div.footer {
     clear: left;
