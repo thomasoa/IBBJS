@@ -17,7 +17,7 @@
     "scripts": {
         "test": "tsc && jest --silent=false",
         "test-coverage": "tsc && jest --silent=false --collect-coverage",
-        "build": "tsc && tsc-alias"
+        "build": "tsc"
     },
     "babel": {
         "env": {
