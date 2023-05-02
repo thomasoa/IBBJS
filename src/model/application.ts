@@ -112,7 +112,8 @@ class Application {
         editionName:string, 
         scrambled:boolean,
         pages:PageNumber[]
-        ):NewCurrentDealEvent[] {
+        ): NewCurrentDealEvent[] 
+    {
         const book = this.books.book(editionName,scrambled)
         return  pages.map((page) => {
             const deal = book.getDeal(page)
@@ -123,7 +124,7 @@ class Application {
                 pageNo: page
             }
         })
-        
+            
     }
     findDeals(editionName:string,scrambled:boolean, pages:Array<PageNumber>):void {
         if (pages.length == 0) { 
@@ -134,63 +135,63 @@ class Application {
         newDeals.forEach (this.addDeal.bind(this))
         this.updateCurrent(newCurrent)
     }
-    
+        
     findDeal(edition:string,scrambled:boolean,page:PageNumber):void {
         this.findDeals(edition,scrambled,[page])
     }
-    
+        
     get editionNames():Array<string> {
         return Array.from(this.books.names())
     }
-    
+        
     updateCount():void {
         this.callbacks.updateDealCount.forEach(
             (callback)=> callback(this.length)
-            )
-        }
-        
-        reset():void {
-            this.deals = new Array<NewCurrentDealEvent>(0)
-            this.updateCount()
-            this.updateCurrent(-1)
-        }
-        
-        listenCurrentDeal(callback:NewCurrentDealCalllback):void {
-            this.callbacks.updateCurrentDeal.push(callback)
-        }
-        
-        listenDealCount(callback:DealCountCallback):void {
-            this.callbacks.updateDealCount.push(callback)
-        }
-        
-        get currentDeal():NewCurrentDealEvent|undefined {
-            if (this.currentIndex>=0) {
-                const deal = this.deals[this.currentIndex]
-                deal.index = this.currentIndex
-                deal.count = this.length
-                return deal
-            }
-            return undefined
-        }
-        
-        private currentDealCallBacks():void {
-            const deal = this.currentDeal
-            this.callbacks.updateCurrentDeal.forEach(
-                (callback) => callback(deal)
-                )
-                
-            }
-            private updateCurrent(currentIndex:number):void {
-                this.currentIndex = currentIndex
-                this.currentDealCallBacks()
-            }
+        )
+    }
             
-            chooseCurrent(currentIndex:number):void {
-                if (currentIndex<0 || currentIndex>=this.length) {
-                    throw new Error('Can only choose deal between 0 and '+(this.length-1))
-                }
-                this.updateCurrent(currentIndex)
-            }
+    reset():void {
+        this.deals = new Array<NewCurrentDealEvent>(0)
+        this.updateCount()
+        this.updateCurrent(-1)
+    }
+            
+    listenCurrentDeal(callback:NewCurrentDealCalllback):void {
+        this.callbacks.updateCurrentDeal.push(callback)
+    }
+            
+    listenDealCount(callback:DealCountCallback):void {
+        this.callbacks.updateDealCount.push(callback)
+    }
+            
+    get currentDeal():NewCurrentDealEvent|undefined {
+        if (this.currentIndex>=0) {
+            const deal = this.deals[this.currentIndex]
+            deal.index = this.currentIndex
+            deal.count = this.length
+            return deal
         }
-        
-        export {Application}
+        return undefined
+    }
+            
+    private currentDealCallBacks():void {
+        const deal = this.currentDeal
+        this.callbacks.updateCurrentDeal.forEach(
+            (callback) => callback(deal)
+        )                
+    }
+
+    private updateCurrent(currentIndex:number):void {
+        this.currentIndex = currentIndex
+        this.currentDealCallBacks()
+    }
+                
+    chooseCurrent(currentIndex:number):void {
+        if (currentIndex<0 || currentIndex>=this.length) {
+            throw new Error('Can only choose deal between 0 and '+(this.length-1))
+        }
+        this.updateCurrent(currentIndex)
+    }
+}
+            
+export {Application}

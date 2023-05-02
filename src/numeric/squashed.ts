@@ -22,44 +22,44 @@ function encode(sortedValues: readonly number[]):bigint {
     
     const binomials:bigint[] = sortedValues.map(
         (value:number, index:number):bigint => choose(value,index+1)
-        )
-        return binomials.reduce(
-            (sum:bigint,current:bigint):bigint => sum+current
-            )
-        }
+    )
+    return binomials.reduce(
+        (sum:bigint,current:bigint):bigint => sum+current
+    )
+}
         
-        /**
-        * Find the largest value k such that (k chooose n)<index
-        * 
-        * @param index 
-        * @param n 
-        * @returns The largest value k
-        */
-        function largestLessThan(index:bigint, n:number): number {
-            var k:number = n-1
-            while (choose(k+1,n)<=index) {
-                k = k+1
-            }
-            return k
-        }
+/**
+ * Find the largest value k such that (k chooose n)<index
+ * 
+ * @param index 
+ * @param n 
+ * @returns The largest value k
+ */
+function largestLessThan(index:bigint, n:number): number {
+    let k = n-1
+    while (choose(k+1,n)<=index) {
+        k = k+1
+    }
+    return k
+}
         
-        /**
-        * Find the set of size n of the given index in the squashed order.
-        * 
-        * @param index - the index
-        * @param n - the size of the sets
-        * @returns a sorted array of distinct natural numbers
-        */
-        function decode(index:bigint, n:number): number[] {
-            // Compute the n-subset of the natural numbers with the
-            // given index.
-            const result = Array(n)
-            while (n>0) {
-                result[n-1]=largestLessThan(index, n)
-                index -= choose(result[n-1],n)
-                n = n-1
-            }
-            return result
-        }
+/**
+ * Find the set of size n of the given index in the squashed order.
+ * 
+ * @param index - the index
+ * @param n - the size of the sets
+ * @returns a sorted array of distinct natural numbers
+ */
+function decode(index:bigint, n:number): number[] {
+    // Compute the n-subset of the natural numbers with the
+    // given index.
+    const result = Array(n)
+    while (n>0) {
+        result[n-1]=largestLessThan(index, n)
+        index -= choose(result[n-1],n)
+        n = n-1
+    }
+    return result
+}
         
-        export {encode, decode}
+export {encode, decode}
