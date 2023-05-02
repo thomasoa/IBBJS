@@ -20,7 +20,7 @@
         "build": "tsc && npm run build:copy",
         "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
         "cleanbuild": "npm run clean && npm run build",
-        "publish": "npm run cleanbuild && sh publish.sh Commit $(git rev-parse HEAD)",
+        "publish": "npm run cleanbuild && sh publish.sh Commit $(git rev-parse HEAD) to $(git config --get remote.origin.url)",
         "clean": "rm -rf dest"
     },
     "babel": {
