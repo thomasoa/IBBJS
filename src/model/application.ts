@@ -1,7 +1,6 @@
 import {BookSet} from "./books.js"
 import {Deal} from "../bridge/deal.js"
 import {PageNumber} from "../numeric/deal.js"
-import { BridgeBook } from "../bridge/book.js"
 
 
 /**
@@ -61,14 +60,14 @@ class Application {
     readonly books:BookSet;
     private deals:Array<NewCurrentDealEvent>;
     readonly callbacks:AppCallbacks; 
-    private currentIndex:number = -1
+    private currentIndex = -1
     
     constructor() {
         this.books = new BookSet()
         this.deals = new Array<NewCurrentDealEvent>()
         this.callbacks = {
             updateCurrentDeal: new Array<NewCurrentDealCalllback>(),
-            updateDealCount: new Array<(count:number)=>any>()
+            updateDealCount: new Array<(count:number)=>void>()
         }
     }
     
@@ -109,10 +108,14 @@ class Application {
         return this.length
     }
     
-    lookupDeals(editionName:string, scrambled:boolean,pages:PageNumber[]):NewCurrentDealEvent[] {
-        var book = this.books.book(editionName,scrambled)
+    lookupDeals(
+        editionName:string, 
+        scrambled:boolean,
+        pages:PageNumber[]
+        ):NewCurrentDealEvent[] {
+        const book = this.books.book(editionName,scrambled)
         return  pages.map((page) => {
-            var deal = book.getDeal(page)
+            const deal = book.getDeal(page)
             return {
                 deal: deal, 
                 edition: editionName, 
@@ -126,8 +129,8 @@ class Application {
         if (pages.length == 0) { 
             return 
         }
-        var newCurrent = this.length
-        var newDeals = this.lookupDeals(editionName,scrambled,pages)
+        const newCurrent = this.length
+        const newDeals = this.lookupDeals(editionName,scrambled,pages)
         newDeals.forEach (this.addDeal.bind(this))
         this.updateCurrent(newCurrent)
     }
@@ -162,7 +165,7 @@ class Application {
         
         get currentDeal():NewCurrentDealEvent|undefined {
             if (this.currentIndex>=0) {
-                var deal = this.deals[this.currentIndex]
+                const deal = this.deals[this.currentIndex]
                 deal.index = this.currentIndex
                 deal.count = this.length
                 return deal
@@ -171,7 +174,7 @@ class Application {
         }
         
         private currentDealCallBacks():void {
-            var deal = this.currentDeal
+            const deal = this.currentDeal
             this.callbacks.updateCurrentDeal.forEach(
                 (callback) => callback(deal)
                 )

@@ -5,13 +5,12 @@
 */
 
 type PascalRow = Array<bigint|undefined>
-type OptPascalRow = PascalRow | undefined 
+//type OptPascalRow = PascalRow | undefined 
 
 export class ChooseCache {
     private rows: Array<PascalRow>;
     
     constructor(size:number) {
-        //this.rows = Array<PascalRow>(size+1)
         this.rows = Array.from({length:size+1},(v,index)=>this.blankRow(index))
     }
     
@@ -21,8 +20,8 @@ export class ChooseCache {
     
     private blankRow(rowNum:number):PascalRow {
         // We only need half the row
-        var columns = Math.floor(rowNum/2)+1
-        var row = new Array<bigint|undefined>(columns)
+        const columns = Math.floor(rowNum/2)+1
+        const row = new Array<bigint|undefined>(columns)
         row[0]=BigInt(1)
         return row
     }
@@ -54,16 +53,16 @@ export class ChooseCache {
     }
 }
 
-var DefaultCache:ChooseCache = new ChooseCache(52);
-for (var k = 0; k<=26; k++) {
+const DefaultCache:ChooseCache = new ChooseCache(52);
+for (let k = 0; k<=26; k++) {
     DefaultCache.choose(52,k)
 }
 
-export var choose = (n:number, k:number):bigint => DefaultCache.choose(n,k);
+export const choose = (n:number, k:number):bigint => DefaultCache.choose(n,k);
 
-export var multinomial = (parts: number[]):bigint => {
-    var sum = 0
-    var product:bigint = BigInt(1)
+export const multinomial = (parts: number[]):bigint => {
+    let sum = 0
+    let product = BigInt(1)
     parts.forEach((k:number):void =>  {
         sum += k
         product *=  choose(sum,k)

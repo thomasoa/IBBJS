@@ -56,19 +56,19 @@ class Card {
 
 function qr(s,o):Rank { return {brief:s, order:o, bit: 1<<(12-o)} }
 
-var Ace = qr('A',0)
-var King = qr('K',1)
-var Queen = qr('Q',2)
-var Jack = qr('J',3)
-var Ten = qr('10',4)
-var Nine = qr('9',5)
-var Eight = qr('8',6)
-var Seven = qr('7',7)
-var Six = qr('6',8)
-var Five = qr('5',9)
-var Four = qr('4',10)
-var Three = qr('3',11)
-var Two = qr('2',12)
+const Ace = qr('A',0)
+const King = qr('K',1)
+const Queen = qr('Q',2)
+const Jack = qr('J',3)
+const Ten = qr('10',4)
+const Nine = qr('9',5)
+const Eight = qr('8',6)
+const Seven = qr('7',7)
+const Six = qr('6',8)
+const Five = qr('5',9)
+const Four = qr('4',10)
+const Three = qr('3',11)
+const Two = qr('2',12)
 const Ranks = {
     ace: Ace,
     king: King,
@@ -87,10 +87,10 @@ const Ranks = {
 }
 
 function make_cards():Array<Card> {
-    var cards = new Array<Card>(52)
-    for (var cardNum=0; cardNum<52; cardNum++) {
-        var suit = Suits.all[Math.floor(cardNum/13)]
-        var rank = Ranks.all[cardNum % 13]
+    const cards = new Array<Card>(52)
+    for (let cardNum=0; cardNum<52; cardNum++) {
+        const suit = Suits.all[Math.floor(cardNum/13)]
+        const rank = Ranks.all[cardNum % 13]
         cards[cardNum] = new Card(suit,rank)
     }
     return cards

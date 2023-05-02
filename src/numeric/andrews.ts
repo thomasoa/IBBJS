@@ -15,9 +15,9 @@ interface SeatFactor {
 }
 
 function computeFactors(cardsPer: readonly number[]): SeatFactor[] {
-    var totalCards:number = 0
-    var totalProduct = BigInt(1)
-    var oldProduct = BigInt(1)
+    let totalCards = 0
+    let totalProduct = BigInt(1)
+    let oldProduct = BigInt(1)
     const result:SeatFactor[] = cardsPer.map(
         (cards:number,seat:number) => {
             totalCards += cards;
@@ -29,13 +29,6 @@ function computeFactors(cardsPer: readonly number[]): SeatFactor[] {
     )
     return result.slice(1).reverse()
 
-}
- 
-
-interface BookStrategy {
-    readonly signature: DealSignature;
-    computePageContent(pageNo:bigint):number[];
-    computePageNumber(deal:number[]):bigint;
 }
 
 function updateSequence(
@@ -49,8 +42,8 @@ function updateSequence(
     // toWhom - the deal we are updating
     // remaining - the current sequence of un-dealt cards
     const newRemaining = Array<number>(remaining.length-sequence.length)
-    var iSeq = 0
-    var iNewRemaining = 0
+    let iSeq = 0
+    let iNewRemaining = 0
     remaining.forEach( (card,i) =>  {
         if (iSeq<sequence.length && sequence[iSeq]==i) {
             toWhom[card] = seat
@@ -118,17 +111,17 @@ class AndrewsStrategy {
         }
         const sig=this.signature
         const builders: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
-        for (var i=1; i<sig.seats; i++) {
+        for (let i=1; i<sig.seats; i++) {
             builders[i-1]=new SequenceBuilder(i,sig.perSeat[i])
         }
         deal.toWhom.forEach((whom,card) => 
             builders.forEach((builder) => builder.nextItem(card,whom))
         )
-        var sum:bigint = BigInt(0)
+        let sum = BigInt(0)
         this.factors.forEach(
             (factor) => {
-                var builder = builders[factor.seat-1]
-                var seqNo = encode(builder.sequence)
+                const builder = builders[factor.seat-1]
+                const seqNo = encode(builder.sequence)
                 sum += seqNo * factor.quotient
             }
         )
@@ -139,21 +132,21 @@ class AndrewsStrategy {
         // Determine what deal is on the given page number
         const sig  = this.signature
         this.signature.assertValidPageNo(pageNo)
-        var toWhom: number[] = Array<number>(sig.cards)
-        for (var card = 0; card<sig.cards; card++) {
+        const toWhom: number[] = Array<number>(sig.cards)
+        for (let card = 0; card<sig.cards; card++) {
             toWhom[card] = 0 // default
         }
 
-        var indices = toWhom.map((val,index) => index)
+        let indices = toWhom.map((val,index) => index)
         // Factors are stored in reverse order by seatts, and with
         // no entry for seat 0 because that seat gets all the remaining
         // cards.
         this.factors.forEach(
             (factor:SeatFactor) => {
 
-                var seatIndex:bigint = pageNo / factor.quotient
+                const seatIndex:bigint = pageNo / factor.quotient
                 pageNo = pageNo % factor.quotient
-                var sequence: number[] = decode(seatIndex,factor.cards)
+                const sequence: number[] = decode(seatIndex,factor.cards)
                 indices = updateSequence(factor.seat,sequence,toWhom,indices)
 
             }

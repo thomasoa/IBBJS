@@ -74,7 +74,7 @@ class DealSignature {
 const bridgeSignature = new DealSignature([13,13,13,13])
 
 function buildHands(signature:DealSignature, toWhom: SeatNumber[]):readonly HandArray[] {
-    var hands = signature.perSeat.map((cards,seat) => new Array<number>(0))
+    const hands = signature.perSeat.map(() => new Array<number>(0))
     toWhom.forEach((seat,card) => {
         if (signature.validSeat(seat)) {
             hands[seat].push(card)
@@ -103,7 +103,10 @@ class NumericDeal {
 
     constructor(sig:DealSignature,toWhom:number[]) {
         if (toWhom.length != sig.cards) {
-            throw Error('Wrong number of cards in deal. Expected' + sig.cards + ', got ' + toWhom.length)
+            throw Error(
+                'Wrong number of cards in deal. Expected' 
+                + sig.cards + ', got ' + toWhom.length
+            )
         }
         this.signature = sig
         this.toWhom = Array.from(toWhom)

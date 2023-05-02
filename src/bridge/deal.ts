@@ -1,8 +1,8 @@
 import * as C from "./constants.js"
-import * as numeric from "../numeric/deal.js"
+//import * as numeric from "../numeric/deal.js"
 
-type CardMap = (card:numeric.CardNumber) => C.Card
-type SeatMap = (seat:numeric.SeatNumber) => C.Seat
+//type CardMap = (card:numeric.CardNumber) => C.Card
+//type SeatMap = (seat:numeric.SeatNumber) => C.Seat
 
 class Holding {
     readonly ranks: Array<C.Rank>
@@ -45,7 +45,7 @@ class Holding {
         holdings: Array<Holding>
         constructor(cards:Array<C.Card>) {
             this.cards = cards
-            var suits = C.Suits.all.map(() => new Array<C.Rank>())
+            const suits = C.Suits.all.map(() => new Array<C.Rank>())
             this.cards.forEach((card)=> {
                 suits[card.suit.order].push(card.rank)
             })
@@ -73,7 +73,7 @@ class Holding {
     }
     
     function buildHands(toWhom:Array<C.Seat>):Array<Hand> {
-        var cards: Array<Array<C.Card>> = Array.from({length:4},()=> new Array<C.Card>(0))
+        const cards: Array<Array<C.Card>> = Array.from({length:4},()=> new Array<C.Card>(0))
         toWhom.forEach((seat:C.Seat,cardNum:number)=>{
             cards[seat.order].push(C.Cards[cardNum])
         })
@@ -97,7 +97,7 @@ class Holding {
         get south():Hand {   return this.hand(C.Seats.south) }
         get west():Hand {   return this.hand(C.Seats.west) }
         
-        eachHand(method: (seat:C.Seat,hand:Hand)=> any):void {
+        eachHand(method: (seat:C.Seat,hand:Hand)=> void):void {
             //var hands=this.hands;
             //C.Seats.all.forEach((seat)=> method(seat,hands[seat.order]))
             this.hands.forEach((hand,index) => method(C.Seats.all[index],hand))

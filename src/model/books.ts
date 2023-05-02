@@ -9,8 +9,8 @@ import {
 
 function scramble(strategy:BookStrategy):BookStrategy {
     // Copied from original Impossible Bridge Book
-    var multiplier = BigInt("13109994191499930367061460371")
-    var translation = BigInt("34563463456363563565356345634")
+    const multiplier = BigInt("13109994191499930367061460371")
+    const translation = BigInt("34563463456363563565356345634")
     return scramble_book(strategy,multiplier,translation)
 }
 
@@ -20,24 +20,24 @@ interface Edition {
 }
 
 function edition(book:BridgeBook):Edition {
-    var scrambledStrat:BookStrategy = scramble(book.strategy)
-    var scrambled = new BridgeBook(scrambledStrat, book.seatMap, book.cardMap)
+    const scrambledStrat:BookStrategy = scramble(book.strategy)
+    const scrambled = new BridgeBook(scrambledStrat, book.seatMap, book.cardMap)
     return {normal: book, scrambled: scrambled }
 }
 
 function pavlicekBook():BridgeBook {
-    var strategy = new PavlicekStrategy(undefined)
+    const strategy = new PavlicekStrategy(undefined)
     return new BridgeBook(strategy,undefined,undefined)
 }
 
 function andrewsBook():BridgeBook {
-    var strategy = new AndrewsStrategy(undefined)
-    var seatMap:SeatMap = (seatNumber) => Seats.all[3-seatNumber]
+    const strategy = new AndrewsStrategy(undefined)
+    const seatMap:SeatMap = (seatNumber) => Seats.all[3-seatNumber]
     return new BridgeBook(strategy,seatMap,undefined)
 }
 
 function build_editions():Map<string,Edition> {
-    var editions = new Map<string,Edition>()
+    const editions = new Map<string,Edition>()
     editions.set("Pavlicek",edition(pavlicekBook()))
     editions.set("Andrews",edition(andrewsBook()))
     return editions
@@ -55,7 +55,7 @@ class BookSet {
     }
 
     book(name:string, scrambled:boolean):BridgeBook {
-        var edition = this.editions.get(name)
+        const edition:Edition = this.editions.get(name)
         if (scrambled) {
             return edition.scrambled
         } else {

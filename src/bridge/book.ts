@@ -1,6 +1,6 @@
 import * as C from "./constants.js"
 import {BookStrategy, PageNumber, SeatNumber,  CardNumber, DealSignature, bridgeSignature} from "../numeric/index.js"
-import {Hand, Deal} from "./deal.js"
+import {Deal} from "./deal.js"
 
 type CardMap = (card:CardNumber) => C.Card
 type SeatMap = (seat:SeatNumber) => C.Seat
@@ -41,14 +41,14 @@ class BridgeBook {
             if (!this.validPageNumber(pageNo)) {
                 throw Error('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
             }
-            var numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
-            var seatMap = this.seatMap
-            var cardMap = this.cardMap
-            var toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
+            const numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
+            const seatMap = this.seatMap
+            const cardMap = this.cardMap
+            const toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
             
             numDeal.toWhom.forEach((seatNum,cardNum)=> {
-                var seat = seatMap(seatNum)
-                var card = cardMap(cardNum)
+                const seat = seatMap(seatNum)
+                const card = cardMap(cardNum)
                 toWhom[card.order] = seat
             })
             
