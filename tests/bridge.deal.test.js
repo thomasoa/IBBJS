@@ -31,45 +31,45 @@ test("Hand construction and holdings", () => {
       "SQ","S10","S9","HA",
       "H8","H7","H6","H5",
       "H4","H3","H2","DK","DJ"].map((s) => CardsByName.get(s))
-   var hand = new d.Hand(cards)
-   expect(hand.has(CardsByName.get('HA'))).toBeTruthy()
-   expect(hand.has(CardsByName.get('SA'))).toBeFalsy()
+      var hand = new d.Hand(cards)
+      expect(hand.has(CardsByName.get('HA'))).toBeTruthy()
+      expect(hand.has(CardsByName.get('SA'))).toBeFalsy()
+      
+      expect(hand.spades.toString()).toBe('Q 10 9')
+      expect(hand.hearts.toString()).toBe("A 8 7 6 5 4 3 2")
+      expect(hand.diamonds.toString()).toBe("K J")
+      expect(hand.clubs.toString()).toBe("-")
+      expect(hand.toString()).toBe('Q109 A8765432 KJ -')
+   })
    
-   expect(hand.spades.toString()).toBe('Q 10 9')
-   expect(hand.hearts.toString()).toBe("A 8 7 6 5 4 3 2")
-   expect(hand.diamonds.toString()).toBe("K J")
-   expect(hand.clubs.toString()).toBe("-")
-   expect(hand.toString()).toBe('Q109 A8765432 KJ -')
-})
-
-test("Hand eachSuit method", ()=>{
-   var cards = [
-      "SQ","S10","S9","HA",
-      "H8","H7","H6","H5",
-      "H4","H3","H2","DK","DJ"].map((s) => CardsByName.get(s))
-   var hand = new d.Hand(cards)
-   var suitMap = new Map()
-   hand.eachSuit((suit,holding)=>{
-      suitMap.set(suit.name,holding.toString())
-   })
-   expect(suitMap.get('spades'))
-   expect(suitMap.get('spades')).toBe('Q 10 9')
-   expect(suitMap.get('hearts')).toBe("A 8 7 6 5 4 3 2")
-   expect(suitMap.get('diamonds')).toBe("K J")
-   expect(suitMap.get('clubs')).toBe("-")
-
-})
-
-test("Deal eachHand",()=>{
-   var toWhom = Array.from({length:52},(v,i)=> Seats.all[Math.floor(i/13)])
-   var deal = new d.Deal(toWhom)
-   var expected = new Map([
-      ["north","AKQJ1098765432 - - -"],
-      ["east","- AKQJ1098765432 - -"],
-      ['south','- - AKQJ1098765432 -'],
-      ['west','- - - AKQJ1098765432']
-   ])
-   deal.eachHand((seat,hand)=>{
-      expect(hand.toString()).toBe(expected.get(seat.name))
-   })
-})
+   test("Hand eachSuit method", ()=>{
+      var cards = [
+         "SQ","S10","S9","HA",
+         "H8","H7","H6","H5",
+         "H4","H3","H2","DK","DJ"].map((s) => CardsByName.get(s))
+         var hand = new d.Hand(cards)
+         var suitMap = new Map()
+         hand.eachSuit((suit,holding)=>{
+            suitMap.set(suit.name,holding.toString())
+         })
+         expect(suitMap.get('spades'))
+         expect(suitMap.get('spades')).toBe('Q 10 9')
+         expect(suitMap.get('hearts')).toBe("A 8 7 6 5 4 3 2")
+         expect(suitMap.get('diamonds')).toBe("K J")
+         expect(suitMap.get('clubs')).toBe("-")
+         
+      })
+      
+      test("Deal eachHand",()=>{
+         var toWhom = Array.from({length:52},(v,i)=> Seats.all[Math.floor(i/13)])
+         var deal = new d.Deal(toWhom)
+         var expected = new Map([
+            ["north","AKQJ1098765432 - - -"],
+            ["east","- AKQJ1098765432 - -"],
+            ['south','- - AKQJ1098765432 -'],
+            ['west','- - - AKQJ1098765432']
+         ])
+         deal.eachHand((seat,hand)=>{
+            expect(hand.toString()).toBe(expected.get(seat.name))
+         })
+      })

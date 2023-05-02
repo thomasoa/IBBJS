@@ -8,16 +8,16 @@ function signature1234() {
 }
 
 test("Pavlicek strategy default signature", 
-  () => {
-    var pBook = new pavlicek.PavlicekStrategy()
-    expect(pBook.signature.perSeat).toEqual([13,13,13,13])
-  }
+() => {
+  var pBook = new pavlicek.PavlicekStrategy()
+  expect(pBook.signature.perSeat).toEqual([13,13,13,13])
+}
 )
 
 test("Pavlicek strategy decode", () => {
-   var pBook = new pavlicek.PavlicekStrategy(signature1234())
-   var deal = pBook.computePageContent(BigInt(0))
-   expect(deal.toWhom).toEqual([0,1,1,2,2,2,3,3,3,3])
+  var pBook = new pavlicek.PavlicekStrategy(signature1234())
+  var deal = pBook.computePageContent(BigInt(0))
+  expect(deal.toWhom).toEqual([0,1,1,2,2,2,3,3,3,3])
 })
 
 test("Pavlicek strategy decode - last page", () => {
@@ -27,14 +27,14 @@ test("Pavlicek strategy decode - last page", () => {
 })
 
 test("Pavlicek strategy: computePageNumber returns original page number",
-  ()=> {
-    // Ensure computing the contents then 
-    var sig = new numDeal.DealSignature([1,2,3,4])
-    var pBook = new pavlicek.PavlicekStrategy(sig)
-    var pageNo = BigInt(755)
-    var deal = pBook.computePageContent(pageNo)    
-    expect(pBook.computePageNumber(deal)).toEqual(pageNo)
-  }
+()=> {
+  // Ensure computing the contents then 
+  var sig = new numDeal.DealSignature([1,2,3,4])
+  var pBook = new pavlicek.PavlicekStrategy(sig)
+  var pageNo = BigInt(755)
+  var deal = pBook.computePageContent(pageNo)    
+  expect(pBook.computePageNumber(deal)).toEqual(pageNo)
+}
 )
 
 test("Pavlicek strategy complete deals ensured unique [2,2,2,2]",() => {
@@ -56,7 +56,7 @@ test('Out of bounds page number',()=>{
   var pBook = new pavlicek.PavlicekStrategy(sig)
   expect(()=> pBook.computePageContent(pBook.lastPage+1)).toThrow()
   expect(()=> pBook.computePageContent(new BigInt(-1))).toThrow()
-
+  
 })
 
 test('Check computePageNumber with unmatching signatures',()=>{

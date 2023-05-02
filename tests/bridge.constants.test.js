@@ -30,7 +30,7 @@ test("Ensure card orders agree with the linear order", ()=>{
     Cards.forEach((card,index) => {
         expect(card.order).toBe(index)
     })
-
+    
 })
 
 test("CardsByName lookup",()=>{

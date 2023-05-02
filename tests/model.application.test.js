@@ -36,35 +36,35 @@ test("Application findDeal callbacks",()=> {
     expect(state.count).toBe(0)
     expect(state.current).toBeUndefined()
     expect(state.deal).toBeUndefined()
-
+    
     app.findDeal("Andrews",false,BigInt(1))
     expect(state.count).toBe(1)
     expect(state.current).toBe(0)
     expect(state.deal.edition).toBe("Andrews")
     expect(state.deal.scrambled).toBeFalsy()
     expect(state.deal.pageNo.toString()).toBe("1")
-
+    
     app.findDeals("Andrews",true,[BigInt(4),BigInt(5)])
     expect(state.count).toBe(3)
     expect(state.current).toBe(1)
     expect(state.deal.edition).toBe("Andrews")
     expect(state.deal.scrambled).toBeTruthy()
     expect(state.deal.pageNo.toString()).toBe("4")
-
+    
     app.nextDeal()
     expect(state.count).toBe(3)
     expect(state.current).toBe(2)
     expect(state.deal.edition).toBe("Andrews")
     expect(state.deal.scrambled).toBeTruthy()
     expect(state.deal.pageNo.toString()).toBe("5")
-
+    
     app.previousDeal()
     expect(state.count).toBe(3)
     expect(state.current).toBe(1)
     expect(state.deal.edition).toBe("Andrews")
     expect(state.deal.scrambled).toBeTruthy()
     expect(state.deal.pageNo.toString()).toBe("4")
-
+    
     state.count = -1
     state.current = -2
     state.deal = -3
