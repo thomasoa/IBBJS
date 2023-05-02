@@ -19,7 +19,8 @@
         "test-coverage": "npm run build && jest --silent=false --collect-coverage",
         "build": "tsc && npm run build:copy",
         "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
-        "cleanbuild": "npm run clean ; npm run build",
+        "cleanbuild": "npm run clean && npm run build",
+        "publish": "npm run cleanbuild && sh publish.sh Commit $(git rev-parse HEAD)",
         "clean": "rm -rf dest"
     },
     "babel": {
