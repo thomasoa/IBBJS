@@ -8,5 +8,10 @@
         "rootDir":"src",
         "module": "es2022",
         "moduleResolution":"nodenext"
-    }
+    },
+    "allowJs":true,
+    "checkJs":true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strict": true
 }

@@ -15,9 +15,10 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
-        "test": "tsc && jest --silent=false",
-        "test-coverage": "tsc && jest --silent=false --collect-coverage",
-        "build": "tsc"
+        "test": "npm run build && jest --silent=false",
+        "test-coverage": "npm run build && jest --silent=false --collect-coverage",
+        "build": "tsc && npm run build:copy"
+        "build:copy": "(cd public_html; tar cf - .) | (cd dest; tar xf -)"
     },
     "babel": {
         "env": {
