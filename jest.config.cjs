@@ -4,5 +4,6 @@ module.exports = {
     "maxWorkers": 1, /* hack for bigint tests? */
     "coveragePathIgnorePatterns": [
         "numeric/random.js",
+        "index.js"
     ]
 };
