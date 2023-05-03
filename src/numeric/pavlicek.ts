@@ -117,14 +117,11 @@ class PavlicekStrategy {
         return new NumericDeal(sig,remaining.toWhom)
     }
     
-    private validateSignature(deal:NumericDeal) {
-        if (!this.signature.equals(deal.signature)) {
-            throw new TypeError('Mismatched signatures for Deal and PavlicekStrategy')
-        }
-    } 
-    
     computePageNumber(deal:NumericDeal):PageNumber {
-        this.validateSignature(deal)
+        this.signature.assertEqual(
+            deal.signature,
+            'Mismatched signatures for Deal and PavlicekStrategy'
+        )
         var range = this.baseRange
         var remaining = new Remaining(deal.signature.perSeat,deal.signature.cards)
         deal.toWhom.forEach((seat,card) => {
