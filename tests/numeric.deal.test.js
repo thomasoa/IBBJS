@@ -12,6 +12,12 @@ test('NumericDeal: throw error when wrong number of cards',() => {
     expect(() => new numDeal.NumericDeal(sig,[0,0,0,1,1])).toThrowError()   
 })
 
+test('DealStrategy: check .pages and .bits',() => {
+    var sig = new numDeal.DealSignature([3,3])
+    expect(sig.pages).toBe(BigInt(20))
+    expect(sig.bits).toBe(5)
+})
+
 test('NumericDeal: throw error when wrong seat number in deal',() => {
     var sig = new numDeal.DealSignature([3,3])
     expect(() => new numDeal.NumericDeal(sig,[2,2,2,2,2,2])).toThrowError()   
