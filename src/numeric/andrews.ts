@@ -105,15 +105,23 @@ class AndrewsStrategy {
     get pages():PageNumber { return this.signature.pages }
     get lastPage():PageNumber { return this.signature.lastPage }
 
-    computePageNumber(deal:NumericDeal):PageNumber {
-        if (!this.signature.equals(deal.signature)) {
-            throw new TypeError('Mismatched signatures for Deal and PavlicekStrategy')
-        }
-        const sig=this.signature
+    private makeSequenceBuilders():readonly SequenceBuilder[] {
+        const sig= this.signature
         const builders: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
         for (let i=1; i<sig.seats; i++) {
             builders[i-1]=new SequenceBuilder(i,sig.perSeat[i])
         }
+        return builders
+
+    }
+
+    computePageNumber(deal:NumericDeal):PageNumber {
+        this.signature.assertEqual(
+            deal.signature, 
+            'Mismatched signatures for Deal and PavlicekStrategy'
+        )
+        const sig=this.signature
+        const builders = this.makeSequenceBuilders()
         deal.toWhom.forEach((whom,card) => 
             builders.forEach((builder) => builder.nextItem(card,whom))
         )
