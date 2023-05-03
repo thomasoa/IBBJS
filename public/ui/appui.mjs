@@ -94,16 +94,26 @@ function initialize() {
   $('#reset').on('click',() => reset())
   $('#firstDeal').on('click',() => firstDeal())
   $('#lastDeal').on('click',() => lastDeal())
+  $('a.powersOf10').on('click', powersOf10)
 
   $('#back').on('click',() => backDeal())
   $('#forward').on('click',() => fowardDeal())
   App.reset()
 }
 
-function submitPages(form,pageNumbers) {
+function determineEdition(form) {
+  /*
+   * Returns object: {name:string, scrambled:boolean}
+   */
+  form = form || $('form#lookup')
   var scramble = form.find('select[name="scramble"]').val()
   var edition = form.find('select[name="edition"]').val()
-  App.findDeals(edition,scramble=='Scrambled',pageNumbers)
+  return {name: edition, scrambled: scramble=='Scrambled'}
+}
+
+function submitPages(pageNumbers,form) {
+  var edition = determineEdition(form)
+  App.findDeals(edition.name,edition.scrambled,pageNumbers)
 }
 
 function submit_pages(form) {
@@ -111,14 +121,31 @@ function submit_pages(form) {
     var pageEntry = form.find('input[name="pageNumbers"]')
     var pageText = $(pageEntry).val()
     var pages = pageText.split(',').map((page)=> BigInt(page))
-    submitPages(form,pages)
+    submitPages(pages,form)
     $(pageEntry).val('')
-    $('#error').hide() } catch (e) {
+    $('#error').hide() 
+  } catch (e) {
       console.error(e)
       $('#error').text(e)
       $('#error').show()
       return false
     }
+  }
+
+  function powersOf(n) {
+    n = BigInt(n)
+    var power = BigInt(1)
+    var result = []
+    while (power<App.lastPage) {
+        result.push(power)
+        power *= n
+    }
+    return result
+  }
+
+  function powersOf10() {
+    submitPages(powersOf(10))
+    return false;
   }
   
   export {initialize, App}
