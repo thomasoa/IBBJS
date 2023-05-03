@@ -102,3 +102,11 @@ test('chooseCurrent usages',()=>{
     expect(()=> app.chooseCurrent(-1)).toThrow()
 
 })
+
+test('Call findPageNumber',()=>{
+    var app = new Application()
+    var page = BigInt(59)**BigInt(12)
+    var dealInfo = app.lookupDeals('Andrews',false, [page])[0]
+    console.log(dealInfo.deal)
+    expect(app.findPageNumber("Andrews",false,dealInfo.deal)).toBe(page)
+})

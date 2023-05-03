@@ -139,7 +139,12 @@ class Application {
     findDeal(edition:string,scrambled:boolean,page:PageNumber):void {
         this.findDeals(edition,scrambled,[page])
     }
-        
+   
+    findPageNumber(edition:string,scrambled:boolean,deal:Deal):PageNumber {
+        const book = this.books.book(edition,scrambled)
+        return book.getPageNumber(deal)
+    }
+
     get editionNames():Array<string> {
         return Array.from(this.books.names())
     }
