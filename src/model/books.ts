@@ -1,17 +1,20 @@
-import {BridgeBook,SimpleBijection ,Deal} from "../bridge/index.js"
-import {Seats, Seat} from "../bridge/constants.js"
+import {BridgeBook,SimpleBijection ,Deal, Seat, Seats} from "../bridge/index.js"
 import {
     BookStrategy, 
     AndrewsStrategy, 
     PavlicekStrategy, 
-    scramble_book
+    scramble_book,
+    MultiplierScrambler,
+    Scrambler,
+    bridgeSignature,
+    ScrambleStrategy,
+    PageNumber
 }  from "../numeric/index.js"
 
-function scramble(strategy:BookStrategy):BookStrategy {
-    // Copied from original Impossible Bridge Book
+function common_scrambler():Scrambler {
     const multiplier = BigInt("13109994191499930367061460371")
     const translation = BigInt("34563463456363563565356345634")
-    return scramble_book(strategy,multiplier,translation)
+    return new MultiplierScrambler(bridgeSignature.pages,multiplier,translation)
 }
 
 interface Edition { 
@@ -19,8 +22,8 @@ interface Edition {
     scrambled: BridgeBook 
 }
 
-function edition(book:BridgeBook):Edition {
-    const scrambledStrat:BookStrategy = scramble(book.strategy)
+function edition(book:BridgeBook,scrambler:Scrambler):Edition {
+    const scrambledStrat:BookStrategy = new ScrambleStrategy(book.strategy,scrambler)
     const scrambled = new BridgeBook(scrambledStrat, book.seatBijection, book.cardBijection)
     return {normal: book, scrambled: scrambled }
 }
@@ -31,24 +34,33 @@ function pavlicekBook():BridgeBook {
 }
 
 function andrewsBook():BridgeBook {
+    // We use a seat map to match the original book
     const strategy = new AndrewsStrategy()
     const seatBijection = new SimpleBijection<Seat>(Seats.all, (seatNumber) => 3-seatNumber)
     
     return new BridgeBook(strategy,seatBijection)
 }
 
-function build_editions():Map<string,Edition> {
+function build_editions(scrambler:Scrambler):Map<string,Edition> {
     const editions = new Map<string,Edition>()
-    editions.set("Pavlicek",edition(pavlicekBook()))
-    editions.set("Andrews",edition(andrewsBook()))
+    editions.set("Pavlicek",edition(pavlicekBook(),scrambler))
+    editions.set("Andrews",edition(andrewsBook(),scrambler))
     return editions
 }
 
+type EditionPage =  {
+    name:string,
+    normal:PageNumber,
+    scrambled:PageNumber
+}
+
 class BookSet {
-    editions: Map<string,Edition>;
+    editions: Map<string,Edition>
+    scrambler: Scrambler
     
     constructor() {
-        this.editions = build_editions()
+        this.scrambler = common_scrambler()
+        this.editions = build_editions(this.scrambler)
     }
     
     names():string[] {
@@ -61,7 +73,7 @@ class BookSet {
         throw new Error('Invalid edition name: '+name)
     }
     
-    book(name:string, scrambled:boolean):BridgeBook {
+    book(name:string, scrambled:boolean=false):BridgeBook {
         const edition:Edition = this.edition(name)
 
         if (scrambled) {
@@ -70,5 +82,28 @@ class BookSet {
                 return edition.normal
         }
     }
+
+    unscramble(pageNo:PageNumber):PageNumber {
+        // Scrambler uses page numbers strting at zero
+        const one = BigInt(1)
+        return this.scrambler.unscramble(pageNo-one)+one
+    }
+
+    pageNumbers(deal:Deal):EditionPage[] {
+        const pages = new Array<EditionPage>()
+        this.editions.forEach((edition,name)=>{
+            const normalPage = edition.normal.getPageNumber(deal)
+            const scramblePage = this.unscramble(normalPage)
+            pages.push({name: name, normal:normalPage, scrambled: scramblePage})
+        })
+        return pages
+    }
 }
+
+/* type EditionPage {
+    name:string,
+    normal:PageNumber,
+    scrambled:PageNumber
+}
+ */
 export {BookSet}
