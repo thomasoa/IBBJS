@@ -98,6 +98,10 @@ class BookSet {
         })
         return pages
     }
+
+    get lastPage():PageNumber {
+        return bridgeSignature.pages
+    }
 }
 
 /* type EditionPage {

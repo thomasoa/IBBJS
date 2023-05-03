@@ -78,6 +78,10 @@ class Application {
     get length() {
         return this.deals.length
     }
+
+    get lastPage():PageNumber {
+        return this.books.lastPage
+    }
     
     nextDeal() {
         if (!this.allowNext) {
