@@ -1,8 +1,9 @@
 //  An entirely numeric version of the book
 import {
-    bridgeSignature,            // constant
+    bridgeSignature,            CardNumber,            // constant
     DealSignature, NumericDeal, // Classes
-    PageNumber                  // typr
+    PageNumber,                  // typr
+    SeatNumber
 } from "./deal.js"
 import {choose} from "./choose.js"
 import {decode, encode} from './squashed.js'
@@ -71,18 +72,18 @@ class SequenceBuilder {
     // of 2 in that sequence.
 
     readonly sequence: Array<number>;
-    readonly seat: number;
+    readonly seat: SeatNumber;
     seqIdx: number;
     afterIndex: number;
 
-    constructor(seat:number, cards: number) {
+    constructor(seat:SeatNumber, cards: number) {
         this.seat = seat
         this.sequence = Array<number>(cards)
         this.seqIdx = 0
         this.afterIndex = 0
     }
 
-    nextItem(card:number, whom:number): void {
+    nextItem(card:CardNumber, whom:SeatNumber): void {
         if (whom == this.seat) {
             this.sequence[this.seqIdx] = this.afterIndex
             this.seqIdx ++
@@ -103,11 +104,12 @@ class AndrewsStrategy {
     }
 
     get pages():PageNumber { return this.signature.pages }
+
     get lastPage():PageNumber { return this.signature.lastPage }
 
     private makeSequenceBuilders():readonly SequenceBuilder[] {
-        const sig= this.signature
-        const builders: Array<SequenceBuilder>=Array<SequenceBuilder>(sig.seats-1);
+        var sig= this.signature
+        const builders: SequenceBuilder[]=Array<SequenceBuilder>(sig.seats-1);
         for (let i=1; i<sig.seats; i++) {
             builders[i-1]=new SequenceBuilder(i,sig.perSeat[i])
         }
@@ -118,9 +120,9 @@ class AndrewsStrategy {
     computePageNumber(deal:NumericDeal):PageNumber {
         this.signature.assertEqual(
             deal.signature, 
-            'Mismatched signatures for Deal and PavlicekStrategy'
+            'Mismatched signatures for Deal and Strategy'
         )
-        const sig=this.signature
+
         const builders = this.makeSequenceBuilders()
         deal.toWhom.forEach((whom,card) => 
             builders.forEach((builder) => builder.nextItem(card,whom))
