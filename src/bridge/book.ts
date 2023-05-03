@@ -1,5 +1,5 @@
 import * as C from "./constants.js"
-import {BookStrategy, PageNumber, SeatNumber,  CardNumber, DealSignature, bridgeSignature} from "../numeric/index.js"
+import {BookStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index.js"
 import {Deal} from "./deal.js"
 
 interface OrderedType {
@@ -82,6 +82,23 @@ class BridgeBook {
             })
             
             return new Deal(toWhom)
+        }
+
+        private numericDeal(deal:Deal):NumericDeal {
+            const toWhom = new Array<SeatNumber>(52)
+            const cardMap = this.cardBijection
+            const seatMap = this.seatBijection
+            deal.eachCard((card:C.Card, seat:C.Seat)=>{
+                const seatNum = seatMap.mapFrom(seat)
+                const cardNum = cardMap.mapFrom(card)
+                toWhom[cardNum] = seatNum
+            })
+            return new NumericDeal(this.strategy.signature, toWhom)
+        }
+
+        getPageNumber(deal:Deal):PageNumber {
+            const numericDeal = this.numericDeal(deal)
+            return this.strategy.computePageNumber(numericDeal)+BigInt(1)
         }
     }
     

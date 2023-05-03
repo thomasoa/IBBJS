@@ -78,4 +78,12 @@ test('Fail on a page out of range',()=>{
     
 })
 
+test('Reverse lookup',()=>{
+    var seatBijection = new Books.SimpleBijection(C.Seats.all,(n)=> 3-n)
+    var book = new Books.BridgeBook(new AndrewsStrategy(),seatBijection)
+    var page = BigInt(53)**BigInt(12)
+    var deal = book.getDeal(page)
+    expect(book.getPageNumber(deal)).toBe(page)
+})
+
 
