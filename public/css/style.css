@@ -76,3 +76,10 @@ div, p, li {
     margin-left: auto;
     margin-right:auto;
 }
+
+select {
+    background-color: transparent;=
+}
+
+
+  
