@@ -63,9 +63,9 @@ function updateCurrentDeal(dealInfo) {
 
   $('#dealIndex').text(dealInfo.index+1)
   var title = getTitle(dealInfo)
-  $('#bookTitle').text(title)
+  $('.bookTitle').text(title)
   $('#error').hide()
-  $('#pageNumber').text(dealInfo.pageNo)
+  $('.pageNumber').text(dealInfo.pageNo)
   updatePreviousNext()
   updateDeal(dealInfo.deal)
   // var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")

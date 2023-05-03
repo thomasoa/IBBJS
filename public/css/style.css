@@ -18,7 +18,7 @@ body {
 }
 
 body {
-    background: #FFFFCC;
+    background: #FFFFAA;
     font-family: "Helvetica Narrow",san-serif;
     line-height: 1.5;
     font-size: 14px;
@@ -78,11 +78,25 @@ div, p, li {
 }
 
 select {
-    background-color: rgba(255,255,255,0.25)
+    background-color: rgba(255,255,255,0.50)
 }
 
 .page {
-    background-image: url("../img/vintage-paper-book-aged.jpg");
+    background: url("../img/vintage-paper-book-aged.jpg") no-repeat;
+    background-size: cover;
     padding: 1em;
 }
   
+.pageHeader, .pageFooter {
+    width:100%;
+    text-align: center;
+    font-size: 70%;
+}
+
+.page .pageHeader {
+    margin-bottom: 2em;
+}
+
+.page .pageFooter {
+    margin-top: 2em;
+}
