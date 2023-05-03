@@ -85,5 +85,3 @@ test('Reverse lookup',()=>{
     var deal = book.getDeal(page)
     expect(book.getPageNumber(deal)).toBe(page)
 })
-
-
