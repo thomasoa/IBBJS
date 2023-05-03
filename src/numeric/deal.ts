@@ -73,8 +73,9 @@ class DealSignature {
         if (this.equals(otherSig)) {
             return
         }
-        throw new TypeError(message)
+        throw new TypeError(message +": Expected " + this.toString() + ", got "+otherSig.toString())
     }
+    
     assertValidPageNo(pageNo:PageNumber):void {
         if (pageNo>=this.pages || pageNo<BigInt(0)) {
             throw new RangeError("Invalid page " + pageNo + " outside range <="+this.pages.toString())
