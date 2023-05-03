@@ -88,6 +88,7 @@ class Holding {
             this.toWhom = toWhom
             this.hands = buildHands(toWhom)
         }
+
         hand(seat:C.Seat):Hand {
             return this.hands[seat.order]
         }
@@ -100,8 +101,11 @@ class Holding {
         eachHand(method: (seat:C.Seat,hand:Hand)=> void):void {
             //var hands=this.hands;
             //C.Seats.all.forEach((seat)=> method(seat,hands[seat.order]))
-            this.hands.forEach((hand,index) => method(C.Seats.all[index],hand))
-            
+            this.hands.forEach((hand,index) => method(C.Seats.all[index],hand))           
+        }
+
+        eachCard(method: (card:C.Card,seat:C.Seat) => void ):void {
+            this.toWhom.forEach((seat:C.Seat, index:number) => method(C.Cards[index],seat))
         }
     }
     
