@@ -33,3 +33,14 @@ test('DealSignature.equal()', ()=>{
     var sigCounts = new numDeal.DealSignature([2,4])
     expect(sig.equals(sigCounts)).toBeFalsy()
 })
+
+test('DealSignatture.assertEqual()',()=>{
+    var sig = new numDeal.DealSignature([3,3])
+    var sigSeats = new numDeal.DealSignature([2,2,2])
+    var sigCounts = new numDeal.DealSignature([2,4])
+
+    expect(() => sig.assertEqual(sigSeats)).toThrowError()
+    expect(() => sig.assertEqual(sigCounts,'msg')).toThrowError()
+
+
+})
