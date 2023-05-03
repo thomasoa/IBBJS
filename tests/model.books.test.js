@@ -8,3 +8,8 @@ test('Ensure books exist for all names',()=>{
     expect(bookSet.book('Pavlicek',false)).toBeDefined()
     expect(bookSet.book('Pavlicek',true)).toBeDefined()
 })
+
+test('Ensure invalid edition name throws exception',()=>{
+    var bookSet = new BookSet()
+    expect(()=> bookSet.book('Dummy',false)).toThrowError()
+})

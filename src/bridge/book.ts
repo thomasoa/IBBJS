@@ -2,10 +2,40 @@ import * as C from "./constants.js"
 import {BookStrategy, PageNumber, SeatNumber,  CardNumber, DealSignature, bridgeSignature} from "../numeric/index.js"
 import {Deal} from "./deal.js"
 
-type CardMap = (card:CardNumber) => C.Card
-type SeatMap = (seat:SeatNumber) => C.Seat
-const defaultCardMap:CardMap = (card:CardNumber) => C.Cards[card]
-const defaultSeatMap:SeatMap = (seat:SeatNumber) => C.Seats.all[seat]
+interface OrderedType {
+    order:number
+}
+
+interface Bijection<T extends OrderedType> {
+    mapTo(num:number):T
+    mapFrom(t:T):number
+}
+
+class SimpleBijection<T extends OrderedType> {
+    instances: readonly T[]
+    reverse: readonly number[]
+
+    constructor(allT:readonly T[], map:(n:number)=> number = (n)=> n) {
+        const instances = new Array<T>(allT.length)
+        const reverse = new Array<number>(allT.length)
+        allT.forEach((t:T,num)=>{
+            instances[num]=allT[map(num)]
+            reverse[map(num)] = num
+        })
+        this.instances = instances
+        this.reverse = reverse
+    }
+
+    mapTo(num:number):T {
+        return this.instances[num]
+    }
+
+    mapFrom(t:T):number {
+        return this.reverse[t.order]
+    }
+}
+const defaultBijectionSeat:Bijection<C.Seat> = new SimpleBijection<C.Seat>(C.Seats.all)
+const defaultBijectionCard:Bijection<C.Card> = new SimpleBijection<C.Card>(C.Cards)
 
 function validate_signature(signature:DealSignature):void {
     if (!bridgeSignature.equals(signature)) {
@@ -15,18 +45,19 @@ function validate_signature(signature:DealSignature):void {
 
 class BridgeBook {
     readonly strategy:BookStrategy
-    readonly seatMap:SeatMap
-    readonly cardMap:CardMap
+    readonly seatBijection:Bijection<C.Seat>
+    readonly cardBijection:Bijection<C.Card>
+
     constructor(
         strategy: BookStrategy,
-        seatMap:SeatMap=defaultSeatMap,
-        cardMap:CardMap=defaultCardMap
+        seatBijection:Bijection<C.Seat>=defaultBijectionSeat,
+        cardBijection:Bijection<C.Card>=defaultBijectionCard
         ) {
             
             validate_signature(strategy.signature)
             this.strategy = strategy
-            this.seatMap = seatMap
-            this.cardMap = cardMap
+            this.seatBijection = seatBijection
+            this.cardBijection = cardBijection
         }
         
         get pages() { return this.strategy.pages}
@@ -40,13 +71,13 @@ class BridgeBook {
                 throw RangeError('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
             }
             const numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
-            const seatMap = this.seatMap
-            const cardMap = this.cardMap
+            const seatMap = this.seatBijection
+            const cardMap = this.cardBijection
             const toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
             
             numDeal.toWhom.forEach((seatNum,cardNum)=> {
-                const seat = seatMap(seatNum)
-                const card = cardMap(cardNum)
+                const seat = seatMap.mapTo(seatNum)
+                const card = cardMap.mapTo(cardNum)
                 toWhom[card.order] = seat
             })
             
@@ -54,4 +85,4 @@ class BridgeBook {
         }
     }
     
-    export {BridgeBook, SeatMap, CardMap, validate_signature}
+    export {BridgeBook, SimpleBijection, validate_signature}

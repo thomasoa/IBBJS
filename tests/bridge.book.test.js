@@ -8,6 +8,28 @@ test("Book constructor",() => {
     expect(book.lastPage.toString()).toEqual("53644737765488792839237440000")
 })
 
+test("Bijection Seat",()=>{
+    var bijection = new Books.SimpleBijection(C.Seats.all, (n)=> (n+2)%4)
+    expect(bijection.mapTo(0)).toBe(C.Seats.south)
+    expect(bijection.mapTo(1)).toBe(C.Seats.west)
+    expect(bijection.mapTo(2)).toBe(C.Seats.north)
+    expect(bijection.mapTo(3)).toBe(C.Seats.east)
+    expect(bijection.mapFrom(C.Seats.south)).toBe(0)
+    expect(bijection.mapFrom(C.Seats.west)).toBe(1)
+    expect(bijection.mapFrom(C.Seats.north)).toBe(2)
+    expect(bijection.mapFrom(C.Seats.east)).toBe(3)
+
+})
+
+test("Bijection Card default",()=>{
+    var bijection = new Books.SimpleBijection(C.Cards)
+    C.Cards.forEach((card,index) =>{
+        expect(bijection.mapTo(index)).toBe(card)
+        expect(bijection.mapFrom(card)).toBe(index)
+    })
+})
+
+
 test("Pavclicek Book generate first deal",() => {
     var book = new Books.BridgeBook(new PavlicekStrategy())
     var firstDeal = book.getDeal(BigInt(1))
@@ -20,8 +42,8 @@ test("Pavclicek Book generate first deal",() => {
 })
 
 test("Andrews Book generate first deal",() => {
-    var seatMap = (seatNum) => C.Seats.all[3-seatNum]
-    var book = new Books.BridgeBook(new AndrewsStrategy(),seatMap)
+    var seatBijection = new Books.SimpleBijection(C.Seats.all,(n)=> 3-n)
+    var book = new Books.BridgeBook(new AndrewsStrategy(),seatBijection)
     var firstDeal = book.getDeal(BigInt(1))
     
     expect(firstDeal.north.toString()).toBe('AKQJ1098765432 - - -')
