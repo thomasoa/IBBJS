@@ -107,6 +107,11 @@ class Holding {
         eachCard(method: (card:C.Card,seat:C.Seat) => void ):void {
             this.toWhom.forEach((seat:C.Seat, index:number) => method(C.Cards[index],seat))
         }
+
+        equals(other:Deal):boolean {
+            return (this.toWhom.length == other.toWhom.length) && 
+                this.toWhom.every((seat,index) => seat == other.toWhom[index])
+        }
     }
     
     export {Holding, Hand, Deal}
