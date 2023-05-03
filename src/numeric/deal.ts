@@ -41,6 +41,10 @@ class DealSignature {
         return this.pages-BigInt(1)
     }
 
+    toString():string {
+        return 'DealSignature('+this.perSeat.toString() + ')'
+    }
+
     validSeat(seatNum:SeatNumber):boolean {
         return seatNum>=0 && seatNum<this.seats
     }

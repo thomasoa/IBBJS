@@ -1,4 +1,4 @@
-const numDeal = require('../dest/numeric/deal.js')
+import * as  numDeal from '../dest/numeric/deal.js'
 
 test('NumericDeal: Check hands for valid deal',() => {
     var sig = new numDeal.DealSignature([3,3])
@@ -38,9 +38,17 @@ test('DealSignatture.assertEqual()',()=>{
     var sig = new numDeal.DealSignature([3,3])
     var sigSeats = new numDeal.DealSignature([2,2,2])
     var sigCounts = new numDeal.DealSignature([2,4])
+    expect(sig.assertEqual(sig))
 
     expect(() => sig.assertEqual(sigSeats)).toThrowError()
     expect(() => sig.assertEqual(sigCounts,'msg')).toThrowError()
 
 
+})
+
+test('DealSignature.toString',()=> {
+    var sig = new numDeal.DealSignature([3,3])
+    expect(sig.toString()).toBe('DealSignature(3,3)')
+    var defSig = new numDeal.DealSignature([13,13,13,13])
+    expect(defSig.toString()).toBe('DealSignature(13,13,13,13)')
 })
