@@ -94,7 +94,8 @@ function initialize() {
   $('#reset').on('click',() => reset())
   $('#firstDeal').on('click',() => firstDeal())
   $('#lastDeal').on('click',() => lastDeal())
-  $('a.powersOf10').on('click', powersOf10)
+  $('a.powersOf10').on('click', powersOf(10))
+  $('a.powersOf2').on('click', powersOf(2))
 
   $('#back').on('click',() => backDeal())
   $('#forward').on('click',() => fowardDeal())
@@ -132,20 +133,18 @@ function submit_pages(form) {
     }
   }
 
-  function powersOf(n) {
+function powersOf(n) {
+  return function() {
     n = BigInt(n)
     var power = BigInt(1)
     var result = []
     while (power<App.lastPage) {
-        result.push(power)
-        power *= n
+      result.push(power)
+      power *= n
     }
-    return result
+    submitPages(result)
+    return false
   }
-
-  function powersOf10() {
-    submitPages(powersOf(10))
-    return false;
-  }
+}
   
   export {initialize, App}
