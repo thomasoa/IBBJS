@@ -109,3 +109,8 @@ test('Call findPageNumber',()=>{
     var dealInfo = app.lookupDeals('Andrews',false, [page])[0]
     expect(app.findPageNumber("Andrews",false,dealInfo.deal)).toBe(page)
 })
+
+test('Application.lastPage',()=>{
+    var app = new Application()
+    expect(app.lastPage).toBe(BigInt('53644737765488792839237440000'))
+})
