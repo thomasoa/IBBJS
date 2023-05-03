@@ -100,3 +100,11 @@ select {
 .page .pageFooter {
     margin-top: 4em;
 }
+
+.page {
+    width: auto;
+    padding-left:2em;
+    padding-right: 2em;
+}
+
+/* .diagram { margin:2em; } */
