@@ -49,13 +49,6 @@ class DealSignature {
         return (hands.length == this.seats) && 
             this.perSeat.every((len,seatNum)=> len == hands[seatNum].length)
     }
-
-    assertValidPageNo(pageNo:PageNumber):void {
-        if (pageNo>=this.pages || pageNo<BigInt(0)) {
-            throw new RangeError("Invalid page " + pageNo + " outside range <="+this.pages.toString())
-        }
-    }
-
     equals(otherSig:DealSignature):boolean {
         if (this===otherSig) {
             return true
@@ -71,6 +64,19 @@ class DealSignature {
         this._bits = this._bits || this.computeBits()
         return this._bits
     }
+
+    assertEqual(otherSig:DealSignature,message="Unmatching deal signature"):void {
+        if (this.equals(otherSig)) {
+            return
+        }
+        throw new TypeError(message)
+    }
+    assertValidPageNo(pageNo:PageNumber):void {
+        if (pageNo>=this.pages || pageNo<BigInt(0)) {
+            throw new RangeError("Invalid page " + pageNo + " outside range <="+this.pages.toString())
+        }
+    }
+
     
     computeBits():number {
         let bits = 0
