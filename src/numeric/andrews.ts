@@ -108,7 +108,7 @@ class AndrewsStrategy {
     get lastPage():PageNumber { return this.signature.lastPage }
 
     private makeSequenceBuilders():readonly SequenceBuilder[] {
-        var sig= this.signature
+        const sig= this.signature
         const builders: SequenceBuilder[]=Array<SequenceBuilder>(sig.seats-1);
         for (let i=1; i<sig.seats; i++) {
             builders[i-1]=new SequenceBuilder(i,sig.perSeat[i])
