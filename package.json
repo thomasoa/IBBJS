@@ -1,4 +1,5 @@
 {
+    "name":"IBBJS",
     "type": "module",
     "outDir": "dest",
     "devDependencies": {
