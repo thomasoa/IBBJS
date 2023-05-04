@@ -1,4 +1,28 @@
-.diagram .header {
+/*
+ * CSS for layout of bridge deals without using tables.
+ * Originally written for my bridge articles.
+ *
+ * Assumes the HTML is of the form:
+ *  <div class='diagram'>
+ *      <div class='header'> ... optional ...</div>
+ *      <div class='hand north'>... north hand ,,,</div>
+ *      <div class='hand west'>... west hand ...</div>
+ *      <div class='hand east'>... east hand ..,</div>
+ *      <div class='hand south'>... south hand...</div>
+ *  </div>
+ * 
+ * Order of hands is important. Where the hands look like:
+ *
+ *   <div class="hand east">
+ *    <div class="holding spades"><span  class="holding">... cards ...</span></div>
+ *    <div class="holding hearts"><span  class="holding">... cards ...</span></div>
+ *    <div class="holding diamonds"><span class="holding">... cards ...</span></div>
+ *    <div class="holding clubs"><span  class="holding">...cards ...</span></div>
+ *   </div>
+ * 
+ */
+ 
+ .diagram .header {
     font-size: smaller;
     margin-left: 0.25em;
     margin-right: 0.25em;
@@ -63,6 +87,7 @@ div.holding {
 
 .diagram .spades:before {
    content: "\2660  ";
+   color: black;
 }
 
 .diagram .hearts:before {
@@ -77,4 +102,5 @@ div.holding {
 
 .diagram .clubs:before {
    content: "\2663  ";
+   color: black;
 }
