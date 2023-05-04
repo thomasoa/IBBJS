@@ -4,6 +4,7 @@ interface LongGCDResult {
     quotients:bigint[]
 }
 
+// File constants
 const zero = BigInt(0)
 const one = BigInt(1)
 
@@ -14,6 +15,7 @@ function abs(value:bigint):bigint {
         return value
     }
 }
+
 export function safe_mod(n1:bigint,n2:bigint): bigint {
     // Computes n1 % n2, but with values r in range
     // 0 <= r < abs(n2)
@@ -26,7 +28,6 @@ export function safe_mod(n1:bigint,n2:bigint): bigint {
         return result
     }
 }
-
 
 export function long_gcd(m:bigint,n:bigint):LongGCDResult {
     
