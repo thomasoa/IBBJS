@@ -8,7 +8,8 @@ it is easy to implement The Impossible Bridge Book entirely in the browser.
 
 For personal education reasons, I am going to try to do the project in TypeScript and compile to Javascript. 
 
-Working with npm, tcm, jest, and VSCode.
+Working with npm, tsc, jest, and VSCode, on a Mac. Some of the npm tasks require Linux or Mac. But the basics,
+build and test, should work.
 
 To run, you will need `npm` installed.
 
