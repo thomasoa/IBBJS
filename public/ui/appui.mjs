@@ -20,6 +20,7 @@ function firstDeal() {
 
 function lastDeal() {
   App.chooseCurrent(App.length-1)
+  return false
 }
 
 function visibility(flag) {
