@@ -3,6 +3,9 @@ TypeScript/JavaScript version of The Impossible Bridge Book.
 
 I deploy this on my [GitHub Pages](https://thomasoa.github.io/impossible/index.html) page.
 
+You can see the original at [my bridge page.](https://bridge.thomasoandrews.com/impossible/) Ancient,
+written to run on the server in Perl.
+
 Now that there is an arbitrary precision integer class built into Javsscript,
 it is easy to implement The Impossible Bridge Book entirely in the browser.
 
