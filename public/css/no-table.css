@@ -12,7 +12,7 @@
 }
 
 .diagram {
-    width: 23em;
+    max-width: 23em;
 }
 
 .diagram  .hand {
