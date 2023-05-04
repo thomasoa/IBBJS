@@ -15,85 +15,86 @@
 <body>
   <h1>The Impossible Bridge Book</h1>
   <h2>JavaScript Edition</h2>
-<div class="container">
- <form name="lookup" id='lookup' onsubmit='return false;'>
-Page Number(s):
- <div>
-  <input type='text' id='pageNo' name='pageNumbers' maxlength='1000'  size='70'></input>
-  </div><div>
-<span class="select">
- <select name="scramble">
-    <option value="">Normal</option>
-    <option value="Scrambled">Scrambled</option>
- </select>
- <select name="edition">
-    <option value="Andrews">Andrews Edition</option>
-    <option value="Pavlicek">Pavlicek Edition</option>
- </select>
-</span>
-<input type="submit" value="Lookup"></input> 
-</div>
+  <div class="container">
+    <form name="lookup" id='lookup' onsubmit='return false;'>
+      Page Number(s):
+      <div>
+        <input type='text' id='pageNo' name='pageNumbers' maxlength='1000' size='70'></input>
+      </div>
+      <div>
+        <span class="select">
+          <select name="scramble">
+            <option value="">Normal</option>
+            <option value="Scrambled">Scrambled</option>
+          </select>
+          <select name="edition">
+            <option value="Andrews">Andrews Edition</option>
+            <option value="Pavlicek">Pavlicek Edition</option>
+          </select>
+        </span>
+        <input type="submit" value="Lookup"></input>
+      </div>
 
-</form>
-<div class='links'>Quick Links: 
-  <a href='#' class='powersOf2'>Powers of 2</a>
-  <a href='#' class='powersOf10'>Powers of 10</a>
-</div>
-<div id='error'></div>
-<div style='display: none;' id='deal'>
-  <h3 id="dealindex"><span id='backwards'><a href='#' id='firstDeal'>« First</a>
-    <a href='#' id='back'>« Previous</a></span>
-    Deal <span id='dealIndex'></span> of <span id='dealCount'></span> 
-    <span id='forwards'><a href='#' id='forward'>Next »</a>
-      <a href="#" id="lastDeal">Last »</a>
-    </span></h3>
-
-  <div class="page">
-    <div class="pageHeader">&mdash; <span class='pageNumber'></span> &mdash;</div>
-    <div class="diagram">
-    <div class="hand north">
-    <div class="holding spades"><span  class="holding"></span></div>
-    <div class="holding hearts"><span  class="holding"></span></div>
-    <div class="holding diamonds"><span class="holding"></span></div>
-    <div class="holding clubs"><span  class="holding"></span></div>
+    </form>
+    <div class='links'>Quick Links:
+      <a href='#' class='powersOf2'>Powers of 2</a>
+      <a href='#' class='powersOf10'>Powers of 10</a>
     </div>
-    <div class="hand west">
-      <div class="holding spades"><span  class="holding"></span></div>
-      <div class="holding hearts"><span  class="holding"></span></div>
-      <div class="holding diamonds"><span class="holding"></span></div>
-      <div class="holding clubs"><span  class="holding"></span></div>
+    <div id='error'></div>
+    <div style='display: none;' id='deal'>
+      <h3 id="dealindex"><span id='backwards'><a href='#' id='firstDeal'>« First</a>
+          <a href='#' id='back'>« Previous</a></span>
+        Deal <span id='dealIndex'></span> of <span id='dealCount'></span>
+        <span id='forwards'><a href='#' id='forward'>Next »</a>
+          <a href="#" id="lastDeal">Last »</a>
+        </span>
+      </h3>
+
+      <div class="page">
+        <div class="pageHeader">&mdash; <span class='pageNumber'></span> &mdash;</div>
+        <div class="diagram">
+          <div class="hand north">
+            <div class="holding spades"><span class="holding"></span></div>
+            <div class="holding hearts"><span class="holding"></span></div>
+            <div class="holding diamonds"><span class="holding"></span></div>
+            <div class="holding clubs"><span class="holding"></span></div>
+          </div>
+          <div class="hand west">
+            <div class="holding spades"><span class="holding"></span></div>
+            <div class="holding hearts"><span class="holding"></span></div>
+            <div class="holding diamonds"><span class="holding"></span></div>
+            <div class="holding clubs"><span class="holding"></span></div>
+          </div>
+          <div class="hand east">
+            <div class="holding spades"><span class="holding"></span></div>
+            <div class="holding hearts"><span class="holding"></span></div>
+            <div class="holding diamonds"><span class="holding"></span></div>
+            <div class="holding clubs"><span class="holding"></span></div>
+          </div>
+          <div class="hand south">
+            <div class="holding spades"><span class="holding"></span></div>
+            <div class="holding hearts"><span class="holding"></span></div>
+            <div class="holding diamonds"><span class="holding"></span></div>
+            <div class="holding clubs"><span class="holding"></span></div>
+          </div>
+          <div class="pageFooter">&mdash; <span class='bookTitle'></span> &mdash;</div>
+        </div>
       </div>
-    <div class="hand east">
-      <div class="holding spades"><span  class="holding"></span></div>
-      <div class="holding hearts"><span  class="holding"></span></div>
-      <div class="holding diamonds"><span class="holding"></span></div>
-      <div class="holding clubs"><span  class="holding"></span></div>
-      </div>
-    <div class="hand south">
-      <div class="holding spades"><span  class="holding"></span></div>
-      <div class="holding hearts"><span  class="holding"></span></div>
-      <div class="holding diamonds"><span class="holding"></span></div>
-      <div class="holding clubs"><span  class="holding"></span></div>
-      </div>
-      <div class="pageFooter">&mdash; <span  class='bookTitle'></span> &mdash;</div>
+      <div><button id='reset'>Reset</button></div>
     </div>
   </div>
-  <div><button id='reset'>Reset</button></div>
-</div>
-</div>
-<div class="footer">
-  <div><a href='https://github.com/thomasoa/IBBJS'>Git repository</a> by Thomas Andrews</div>
-  <div>The <a href='https://bridge.thomasoandrews.com/impossible'>original,</a> written in Perl.</div>
+  <div class="footer">
+    <div><a href='https://github.com/thomasoa/IBBJS'>Git repository</a> by Thomas Andrews</div>
+    <div>The <a href='https://bridge.thomasoandrews.com/impossible'>original,</a> written in Perl.</div>
   </div>
-<script type="module">
+  <script type="module">
 
-      import { initialize } from "./ui/appui.mjs"
+    import { initialize } from "./ui/appui.mjs"
 
-      $(document).ready(() => initialize())
+    $(document).ready(() => initialize())
 
-</script>
+  </script>
 
 </body>
+
 </html>
-
-
