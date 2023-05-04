@@ -19,7 +19,7 @@ test('safe_mod when normal mod might return negative',()=>{
 test('long_gcd with negative values',()=>{
     var result = long_gcd(BigInt(-8),BigInt(-3));
     expect(result.gcd).toBe(BigInt(1))
-    expect(result.quotients).toEqual([BigInt(1),BigInt(1),BigInt(1)])
+    expect(result.quotients).toEqual([BigInt(1),BigInt(1),BigInt(1),BigInt(2)])
 })
 
 test('long_gcd with n divivisble by m',()=>{

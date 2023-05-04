@@ -43,9 +43,7 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
     while (n!=zero) {
         const q = m/n
         const r = m % n
-        if (r!=zero) {
-            quotients.push(q)
-        }
+        quotients.push(q)
         m = n
         n = r
     }
@@ -65,10 +63,11 @@ function buildInverseFromQuotients(quotients:bigint[],modulus:bigint):bigint {
         const p_new = p_1*quotient + p_0
         p_0=p_1 ; p_1=p_new; 
     })
-    if (quotients.length % 2 == 0) {
-        return p_1
+    
+    if (quotients.length % 2 == 1) {
+        return p_0
     } else {
-        return modulus-p_1
+        return p_1-p_0
     } 
 }
 
