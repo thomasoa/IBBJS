@@ -90,7 +90,7 @@ select {
 .pageHeader, .pageFooter {
     width:100%;
     text-align: center;
-    font-size: 70%;
+    font-size: 80%;
 }
 
 .page .pageHeader {
@@ -103,8 +103,7 @@ select {
 
 .page {
     width: auto;
-    padding-left:2em;
-    padding-right: 2em;
+    padding: left 4em;
+    padding-right: 4em;
+    margin-bottom: 2em;
 }
-
-/* .diagram { margin:2em; } */
