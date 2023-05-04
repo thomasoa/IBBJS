@@ -104,10 +104,4 @@ class BookSet {
     }
 }
 
-/* type EditionPage {
-    name:string,
-    normal:PageNumber,
-    scrambled:PageNumber
-}
- */
 export {BookSet}
