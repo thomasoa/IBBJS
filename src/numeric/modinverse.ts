@@ -35,10 +35,6 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
     
     n = safe_mod(n,m)
     
-    if (n==zero) {
-        return {gcd: m, quotients: quotients}
-    }
-    
     while (n!=zero) {
         const q = m/n
         const r = m % n
@@ -49,8 +45,7 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
         m = n
         n = r
     }
-
-    throw new Error("Impossible condition")
+    return {gcd: m, quotients: quotients}
 }
 
 export function modular_inverse(modulus:bigint, unit:bigint):bigint {
