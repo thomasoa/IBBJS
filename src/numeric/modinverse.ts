@@ -55,6 +55,11 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
 function buildInverseFromQuotients(quotients:bigint[],modulus:bigint):bigint {
     // Standard algorithm for contiued fraction expansion
     // Numerators only needed.
+    //
+    // If m/n is a fraction, then the penultimate continued fraction for m/n, p/q,
+    // satisfies np-mq= +/- 1, depending on the parity of the number of terms. So the
+    // inverse with be +/- p. Here we compute the continued fraction numerators only.
+    //
     let p_0=zero, p_1 = one
     quotients.forEach((quotient)=>{
         const p_new = p_1*quotient + p_0
