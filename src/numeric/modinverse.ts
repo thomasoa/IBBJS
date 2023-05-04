@@ -50,7 +50,7 @@ export function long_gcd(m:bigint,n:bigint):LongGCDResult {
     return {gcd: m, quotients: quotients}
 }
 
-function buildInverseFromQuotients(quotients:bigint[],modulus:bigint):bigint {
+function buildInverseFromQuotients(quotients:bigint[]):bigint {
     // Standard algorithm for contiued fraction expansion
     // Numerators only needed.
     //
@@ -82,5 +82,5 @@ export function modular_inverse(modulus:bigint, unit:bigint):bigint {
                     + ' and unit '+ unit 
                     + ' are not relatively prime, gcd='+result.gcd)
     }
-    return buildInverseFromQuotients(result.quotients,modulus)
+    return buildInverseFromQuotients(result.quotients)
 }
