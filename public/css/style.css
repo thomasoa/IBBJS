@@ -103,7 +103,7 @@ select {
 
 .page {
     width: auto;
-    padding: left 4em;
+    padding-left: 4em;
     padding-right: 4em;
     margin-bottom: 2em;
 }
