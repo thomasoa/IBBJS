@@ -1,16 +1,16 @@
 //  An entirely numeric version of the book
 import {
-    bridgeSignature,            CardNumber,            // constant
+    bridgeSignature, CardNumber,            // constant
     DealSignature, NumericDeal, // Classes
     PageNumber,                  // typr
     SeatNumber
 } from "./deal.js"
-import {choose} from "./choose.js"
-import {decode, encode} from './squashed.js'
+import { choose } from "./choose.js"
+import { decode, encode } from './squashed.js'
 
 interface SeatFactor {
     // Represents a factor of the Andrews strategy
-    readonly quotient:bigint;
+    readonly quotient: bigint;
     readonly seat: number;
     readonly cards: number;
 }
@@ -19,13 +19,13 @@ function computeFactors(cardsPer: readonly number[]): SeatFactor[] {
     let totalCards = 0
     let totalProduct = BigInt(1)
     let oldProduct = BigInt(1)
-    const result:SeatFactor[] = cardsPer.map(
-        (cards:number,seat:number) => {
+    const result: SeatFactor[] = cardsPer.map(
+        (cards: number, seat: number) => {
             totalCards += cards;
             oldProduct = totalProduct;
-            totalProduct *= choose(totalCards,cards)
-            
-            return {quotient: oldProduct, seat: seat, cards:cards}
+            totalProduct *= choose(totalCards, cards)
+
+            return { quotient: oldProduct, seat: seat, cards: cards }
         }
     )
     return result.slice(1).reverse()
@@ -33,20 +33,20 @@ function computeFactors(cardsPer: readonly number[]): SeatFactor[] {
 }
 
 function updateSequence(
-    seat:number,
+    seat: number,
     sequence: number[],
-    toWhom:number[],
+    toWhom: number[],
     remaining: number[]
-):number[] {
+): number[] {
     // seat - the seat we are currently populating
     // sequence - the (sorted) subsequence of indices for this seat
     // toWhom - the deal we are updating
     // remaining - the current sequence of un-dealt cards
-    const newRemaining = Array<number>(remaining.length-sequence.length)
+    const newRemaining = Array<number>(remaining.length - sequence.length)
     let iSeq = 0
     let iNewRemaining = 0
-    remaining.forEach( (card,i) =>  {
-        if (iSeq<sequence.length && sequence[iSeq]==i) {
+    remaining.forEach((card, i) => {
+        if (iSeq < sequence.length && sequence[iSeq] == i) {
             toWhom[card] = seat
             iSeq++
         } else {
@@ -76,17 +76,17 @@ class SequenceBuilder {
     seqIdx: number;
     afterIndex: number;
 
-    constructor(seat:SeatNumber, cards: number) {
+    constructor(seat: SeatNumber, cards: number) {
         this.seat = seat
         this.sequence = Array<number>(cards)
         this.seqIdx = 0
         this.afterIndex = 0
     }
 
-    nextItem(card:CardNumber, whom:SeatNumber): void {
+    nextItem(card: CardNumber, whom: SeatNumber): void {
         if (whom == this.seat) {
             this.sequence[this.seqIdx] = this.afterIndex
-            this.seqIdx ++
+            this.seqIdx++
         }
         if (whom <= this.seat) {
             this.afterIndex++
@@ -95,42 +95,42 @@ class SequenceBuilder {
 }
 
 class AndrewsStrategy {
-    readonly signature:DealSignature;
-    readonly factors:SeatFactor[];
-    
-    constructor(signature:DealSignature=bridgeSignature) {
+    readonly signature: DealSignature;
+    readonly factors: SeatFactor[];
+
+    constructor(signature: DealSignature = bridgeSignature) {
         this.signature = signature;
         this.factors = computeFactors(this.signature.perSeat)
     }
 
-    get pages():PageNumber { return this.signature.pages }
+    get pages(): PageNumber { return this.signature.pages }
 
-    get lastPage():PageNumber { return this.signature.lastPage }
+    get lastPage(): PageNumber { return this.signature.lastPage }
 
-    private makeSequenceBuilders():readonly SequenceBuilder[] {
-        const sig= this.signature
-        const builders: SequenceBuilder[]=Array<SequenceBuilder>(sig.seats-1);
-        for (let i=1; i<sig.seats; i++) {
-            builders[i-1]=new SequenceBuilder(i,sig.perSeat[i])
+    private makeSequenceBuilders(): readonly SequenceBuilder[] {
+        const sig = this.signature
+        const builders: SequenceBuilder[] = Array<SequenceBuilder>(sig.seats - 1);
+        for (let i = 1; i < sig.seats; i++) {
+            builders[i - 1] = new SequenceBuilder(i, sig.perSeat[i])
         }
         return builders
 
     }
 
-    computePageNumber(deal:NumericDeal):PageNumber {
+    computePageNumber(deal: NumericDeal): PageNumber {
         this.signature.assertEqual(
-            deal.signature, 
+            deal.signature,
             'Mismatched signatures for Deal and Strategy'
         )
 
         const builders = this.makeSequenceBuilders()
-        deal.toWhom.forEach((whom,card) => 
-            builders.forEach((builder) => builder.nextItem(card,whom))
+        deal.toWhom.forEach((whom, card) =>
+            builders.forEach((builder) => builder.nextItem(card, whom))
         )
         let sum = BigInt(0)
         this.factors.forEach(
             (factor) => {
-                const builder = builders[factor.seat-1]
+                const builder = builders[factor.seat - 1]
                 const seqNo = encode(builder.sequence)
                 sum += seqNo * factor.quotient
             }
@@ -138,32 +138,32 @@ class AndrewsStrategy {
         return sum
     }
 
-    computePageContent(pageNo:bigint): NumericDeal {
+    computePageContent(pageNo: bigint): NumericDeal {
         // Determine what deal is on the given page number
-        const sig  = this.signature
+        const sig = this.signature
         this.signature.assertValidPageNo(pageNo)
         const toWhom: number[] = Array<number>(sig.cards)
-        for (let card = 0; card<sig.cards; card++) {
+        for (let card = 0; card < sig.cards; card++) {
             toWhom[card] = 0 // default
         }
 
-        let indices = toWhom.map((val,index) => index)
+        let indices = toWhom.map((val, index) => index)
         // Factors are stored in reverse order by seatts, and with
         // no entry for seat 0 because that seat gets all the remaining
         // cards.
         this.factors.forEach(
-            (factor:SeatFactor) => {
+            (factor: SeatFactor) => {
 
-                const seatIndex:bigint = pageNo / factor.quotient
+                const seatIndex: bigint = pageNo / factor.quotient
                 pageNo = pageNo % factor.quotient
-                const sequence: number[] = decode(seatIndex,factor.cards)
-                indices = updateSequence(factor.seat,sequence,toWhom,indices)
+                const sequence: number[] = decode(seatIndex, factor.cards)
+                indices = updateSequence(factor.seat, sequence, toWhom, indices)
 
             }
         )
-        return new NumericDeal(this.signature,toWhom)
+        return new NumericDeal(this.signature, toWhom)
     }
 }
 
 
-export {AndrewsStrategy, SequenceBuilder}
+export { AndrewsStrategy, SequenceBuilder }

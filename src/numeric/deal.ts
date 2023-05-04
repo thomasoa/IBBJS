@@ -1,10 +1,10 @@
 // Common numeric deal logic and types
-import { multinomial} from "./choose.js"
+import { multinomial } from "./choose.js"
 
 type SeatNumber = number;
 type CardNumber = number;
 type PageNumber = bigint;
-type HandArray =  readonly CardNumber[]
+type HandArray = readonly CardNumber[]
 
 class DealSignature {
     /** An immutable definition ffor a class of deals
@@ -23,72 +23,72 @@ class DealSignature {
      *    pages   = A very large number - the multinomial of 52 choose (13,13,13,13)   
      */
     readonly perSeat: readonly number[];
-    readonly seats:number;
-    readonly cards:number;
-    readonly pages:bigint;
-    private _bits:number | undefined;
+    readonly seats: number;
+    readonly cards: number;
+    readonly pages: bigint;
+    private _bits: number | undefined;
 
-    constructor(cardsPerSeat:number[]) {
+    constructor(cardsPerSeat: number[]) {
         this.perSeat = Array.from(cardsPerSeat)
         this.seats = cardsPerSeat.length
         this.cards = cardsPerSeat.reduce(
-            (total:number, nextVal:number) => total + nextVal
+            (total: number, nextVal: number) => total + nextVal
         )
         this.pages = multinomial(cardsPerSeat);
     }
 
     get lastPage(): PageNumber {
-        return this.pages-BigInt(1)
+        return this.pages - BigInt(1)
     }
 
-    toString():string {
-        return 'DealSignature('+this.perSeat.toString() + ')'
+    toString(): string {
+        return 'DealSignature(' + this.perSeat.toString() + ')'
     }
 
-    validSeat(seatNum:SeatNumber):boolean {
-        return seatNum>=0 && seatNum<this.seats
+    validSeat(seatNum: SeatNumber): boolean {
+        return seatNum >= 0 && seatNum < this.seats
     }
 
-    validHands(hands:readonly HandArray[]):boolean {
-        return (hands.length == this.seats) && 
-            this.perSeat.every((len,seatNum)=> len == hands[seatNum].length)
+    validHands(hands: readonly HandArray[]): boolean {
+        return (hands.length == this.seats) &&
+            this.perSeat.every((len, seatNum) => len == hands[seatNum].length)
     }
-    equals(otherSig:DealSignature):boolean {
-        if (this===otherSig) {
+    equals(otherSig: DealSignature): boolean {
+        if (this === otherSig) {
             return true
         }
 
         if (this.seats != otherSig.seats) {
             return false
         }
-        return this.perSeat.every((value,index)=> value == otherSig.perSeat[index])
+        return this.perSeat.every((value, index) => value == otherSig.perSeat[index])
     }
 
-    get bits():number {
+    get bits(): number {
         this._bits = this._bits || this.computeBits()
         return this._bits
     }
 
-    assertEqual(otherSig:DealSignature,message="Unmatching deal signature"):void {
+    assertEqual(otherSig: DealSignature, message = "Unmatching deal signature"): void {
         if (this.equals(otherSig)) {
             return
         }
-        throw new TypeError(message +": Expected " + this.toString() + ", got "+otherSig.toString())
+        throw new TypeError(message + ": Expected " + this.toString() + ", got " + otherSig.toString())
     }
-    
-    assertValidPageNo(pageNo:PageNumber):void {
-        if (pageNo>=this.pages || pageNo<BigInt(0)) {
-            throw new RangeError("Invalid page " + pageNo + " outside range <="+this.pages.toString())
+
+    assertValidPageNo(pageNo: PageNumber): void {
+        if (pageNo >= this.pages || pageNo < BigInt(0)) {
+            throw new RangeError("Invalid page " + pageNo + " outside range <=" + this.pages.toString())
         }
     }
 
-    
-    computeBits():number {
+
+    computeBits(): number {
         let bits = 0
         let pages = this.pages
         const two = BigInt(2)
-        while (pages>BigInt(0)) {
-            bits ++
+        while (pages > BigInt(0)) {
+            bits++
             pages /= two
         }
         return bits
@@ -98,11 +98,11 @@ class DealSignature {
 /**
  * A standard bridge signature - four seats, each seat getting 13 cards
  */
-const bridgeSignature = new DealSignature([13,13,13,13])
+const bridgeSignature = new DealSignature([13, 13, 13, 13])
 
-function buildHands(signature:DealSignature, toWhom: SeatNumber[]):readonly HandArray[] {
+function buildHands(signature: DealSignature, toWhom: SeatNumber[]): readonly HandArray[] {
     const hands = signature.perSeat.map(() => new Array<number>(0))
-    toWhom.forEach((seat,card) => {
+    toWhom.forEach((seat, card) => {
         if (signature.validSeat(seat)) {
             hands[seat].push(card)
         } else {
@@ -128,25 +128,25 @@ class NumericDeal {
     readonly toWhom: readonly SeatNumber[];
     readonly hands: readonly HandArray[];
 
-    constructor(sig:DealSignature,toWhom:number[]) {
+    constructor(sig: DealSignature, toWhom: number[]) {
         if (toWhom.length != sig.cards) {
             throw TypeError(
-                'Wrong number of cards in deal. Expected' 
+                'Wrong number of cards in deal. Expected'
                 + sig.cards + ', got ' + toWhom.length
             )
         }
         this.signature = sig
         this.toWhom = Array.from(toWhom)
-        this.hands = buildHands(sig,toWhom)
+        this.hands = buildHands(sig, toWhom)
         this.validateSignature()
 
     }
 
-    validateSignature():void {
+    validateSignature(): void {
         if (!this.signature.validHands(this.hands)) {
             throw new TypeError('Invalid deal signature')
         }
-        
+
     }
 }
 
@@ -158,10 +158,10 @@ class NumericDeal {
  */
 interface BookStrategy {
     readonly signature: DealSignature;
-    readonly pages:PageNumber;
-    readonly lastPage:PageNumber;
-    computePageContent(pageNo:PageNumber):NumericDeal;
-    computePageNumber(deal:NumericDeal):PageNumber;
+    readonly pages: PageNumber;
+    readonly lastPage: PageNumber;
+    computePageContent(pageNo: PageNumber): NumericDeal;
+    computePageNumber(deal: NumericDeal): PageNumber;
 }
 
 export {
