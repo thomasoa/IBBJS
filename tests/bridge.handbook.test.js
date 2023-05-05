@@ -13,5 +13,9 @@ test('First page is the same', ()=>{
     expect(pBook.getHand(BigInt(1)).toString()).toBe('AKQJ1098765432 - - -')
     expect(pBook.getHand(lastPage).toString()).toBe('- - - AKQJ1098765432')
 
+    expect(() => aBook.getHand(BigInt(0))).toThrow()
+    expect(() => pBook.getHand(BigInt(0))).toThrow()
+    expect(() => aBook.getHand(lastPage+BigInt(1))).toThrow()
+    expect(() => pBook.getHand(lastPage+BigInt(1))).toThrow()
 })
 
