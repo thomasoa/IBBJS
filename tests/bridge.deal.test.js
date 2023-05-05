@@ -91,3 +91,8 @@ test("Hand.forHoldings", ()=> {
    expect(hand.clubs.asString()).toBe('-')
 
 })
+
+test("Hand.forHoldings without the right number of suits", ()=> {
+   const holdings = []
+   expect(() => d.Hand.forHoldings(holdings)).toThrow()
+})
