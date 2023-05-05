@@ -1,3 +1,27 @@
+/**
+ * A set of constant describing things related to bridge deals.
+ * 
+ * Types: Seat, Rank, Suit, 
+ * Class: Card
+ * Global: Deck, Seats
+ * 
+ *     Deck.suits.spades:Suit
+ *        ...
+ *     Deck.suit.clubs:Suit
+ * 
+ *     Deck.suits.all:Suit[] - All of the suits
+ * 
+ *     Deck.ranks.ace, Deck.ranks.king, ... Deck.ranks.two
+ *     Deck.ranks.all:Rank[]
+ * 
+ *     Deck.cards: Card[] - All 52 different card values
+ * 
+ *     Deck.card(suit:Suit, rank:Rank):Card - returns the card
+ * 
+ *     Deck.cardByName(name:string):Card - Expects suit first, then rank: 'ST' or 'd10' 
+ * 
+ */
+
 type Seat = {
     name:string;
     letter:string;
