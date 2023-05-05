@@ -7,6 +7,10 @@ test("Ensure the sizes are right", () => {
     expect(Deck.cards.length).toBe(52)
 })
 
+test('cardByName when card does not exist', () => {
+    expect(() => Deck.cardByName('NA')).toThrow()
+})
+
 test("Ensure seat orders are in agreement", () => {
     Seats.all.forEach((seat, index) => {
         expect(seat.order).toBe(index)
