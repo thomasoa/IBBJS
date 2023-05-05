@@ -94,6 +94,84 @@ const Ranks = {
     all: [Ace,King, Queen,Jack,Ten,Nine,Eight,Seven,Six,Five,Four,Three,Two]
 }
 
+interface RankLookupResult {
+    rank:Rank,
+    rest:string
+}
+
+class RankParser { 
+    letter:  string
+    full: string
+    rank:Rank 
+    constructor(text:string, rank:Rank) {
+        this.letter = text.slice(0,1)
+        this.full = text
+        this.rank = rank
+    }
+
+    get length() { return this.full.length }
+
+    apply(text:string):RankLookupResult {
+        if (text.slice(0,this.length) == this.full) {
+            return { rank: this.rank, rest: text.slice(this.length) }
+        }
+    }
+}
+
+function createRankParser(): (text:string) => RankLookupResult {
+    const map = new Map<string,RankParser>()
+
+    const add = (parser:RankParser):void => { 
+        map.set(parser.letter,parser)
+    }
+
+    Ranks.all.forEach((rank) => {
+        add(new RankParser(rank.letter,rank))
+        if (rank.brief != rank.letter) {
+            add(new RankParser(rank.brief,rank))
+        }
+    })
+    
+    return function (text:string): RankLookupResult {
+        const parser = map.get(text.slice(0,1))
+        if (parser) {
+            return parser.apply(text)
+        }
+        throw new Error('Invalid rank ' + text)
+    }
+}
+
+const rankParser = createRankParser()
+
+function rankByText(text:string):Rank {
+    const result = rankParser(text)
+    if (result.rest != "") {
+        throw new Error('Invalid rank: ' + text)
+    }
+    return result.rank
+}
+
+function  ranksByText(text:string) {
+    const ranks = new Array<Rank>()
+    if (text=='-') {
+        return ranks
+    }
+    let lastOrder = -1
+    let rest = text
+    while (rest != '') {
+        const result = rankParser(rest)
+        if (result.rank.order<= lastOrder) {
+            throw new Error('Invalid rank order in ' + text)
+        }
+        ranks.push(result.rank)
+        rest = result.rest
+        lastOrder = result.rank.order
+    }
+    return ranks
+
+}
+
+
 function make_cards():Array<Card> {
     const cards = new Array<Card>(52)
     for (let cardNum=0; cardNum<52; cardNum++) {
@@ -118,7 +196,9 @@ const Deck = {
     cardByName: lookupCardByName,
     cardsByName: (names:string[]):Card[] => {
         return names.map(lookupCardByName)
-    }
+    },
+    rankByText: rankByText,
+    ranksByText: ranksByText
 }
 
 export { /* Suits, Ranks, Cards, */ Suit, CardsByName, Seats, Rank, Card, Seat, Deck}
