@@ -4,3 +4,4 @@ node_modules/*
 coverage/**/*
 *.zip
 dest/**/*
+.DS_Store
