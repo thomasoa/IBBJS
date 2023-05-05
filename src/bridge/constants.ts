@@ -164,7 +164,7 @@ function  ranksByText(text:string) {
             throw new Error('Invalid rank order in ' + text)
         }
         ranks.push(result.rank)
-        rest = result.rest
+        rest = result.rest.trimStart()
         lastOrder = result.rank.order
     }
     return ranks
@@ -184,11 +184,16 @@ function make_cards():Array<Card> {
 const Cards = make_cards()
 const CardsByName = new Map<string,Card>(Cards.map((card)=>[card.short,card]))
 
+function cardBySuitRank(suit: Suit, rank:Rank) {
+    return Cards[suit.order*13+rank.order]
+}
+
 function lookupCardByName (name:string):Card {
     const card: Card|undefined = CardsByName.get(name)
     if (card) { return card }
     throw Error('Invalid card name '+ name)
 }
+
 const Deck = {
     ranks: Ranks,
     suits: Suits,
@@ -198,7 +203,8 @@ const Deck = {
         return names.map(lookupCardByName)
     },
     rankByText: rankByText,
-    ranksByText: ranksByText
+    ranksByText: ranksByText,
+    card: cardBySuitRank
 }
 
 export { /* Suits, Ranks, Cards, */ Suit, CardsByName, Seats, Rank, Card, Seat, Deck}
