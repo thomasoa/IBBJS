@@ -60,18 +60,33 @@ test('rankByText examples',() => {
     expect(Deck.rankByText('2')).toBe(Deck.ranks.two)
 
     expect(() => Deck.rankByText('X')).toThrow()
+    expect(() => Deck.rankByText('1')).toThrow()
+    expect(() => Deck.rankByText('A ')).toThrow()
+    expect(() => Deck.rankByText(' A')).toThrow()
+
 
 })
 
 test('ranksByText examples', () => {
     const ranks = Deck.ranks
     expect(Deck.ranksByText('AJT2')).toEqual([ranks.ace,ranks.jack, ranks.ten, ranks.two])
+    expect(Deck.ranksByText('A J  10 2 ')).toEqual([ranks.ace,ranks.jack, ranks.ten, ranks.two])
     expect(Deck.ranksByText('')).toEqual([])
     expect(Deck.ranksByText('-')).toEqual([])
 
     expect(() => Deck.ranksByText('AA')).toThrow()
     expect(() => Deck.ranksByText('KA')).toThrow()
     expect(() => Deck.ranksByText('AKQJFred')).toThrow()
+    expect(() => Deck.ranksByText('T10')).toThrow()
+    expect(() => Deck.ranksByText('AJ12')).toThrow()
+    expect(() => Deck.ranksByText('AJ 1 02')).toThrow()
     expect(() => Deck.ranksByText('--')).toThrow()
 
+})
+
+test('Deck.card() method',() => {
+    const ranks = Deck.ranks
+    const suits = Deck.suits
+    expect(Deck.card(suits.clubs,ranks.ten).short).toBe('C10')
+    expect(Deck.card(suits.spades,ranks.two).short).toBe('S2')
 })

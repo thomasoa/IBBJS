@@ -13,7 +13,7 @@ class Holding {
         
         get length() { return this.ranks.length }
         
-        asString(divider:string):string {
+        asString(divider:string=''):string {
             if (this.length == 0) {
                 return '-'
             }
@@ -31,6 +31,10 @@ class Holding {
         
         has(rank:Rank):boolean {
             return (this.bits & rank.bit) != 0
+        }
+
+        static forString(text:string):Holding {
+            return new Holding(Deck.ranksByText(text))
         }
         
         
@@ -65,6 +69,20 @@ class Holding {
         
         eachSuit(method: (suit:Suit,holding:Holding) => void):void {
             this.holdings.forEach((holding,index) => method(Deck.suits.all[index],holding))
+        }
+
+        static forHoldings(holdings: Holding[]):Hand {
+            if (holdings.length !=4) {
+                throw new Error('Should be exactly four holdings')
+            }
+            const cards = new Array<Card>()
+            holdings.forEach((h,suitNum) => {
+                const suit = Deck.suits.all[suitNum]
+                h.ranks.forEach( (rank) => {
+                    cards.push(Deck.card(suit,rank))
+                })
+            })
+            return new Hand(cards)
         }
     }
     

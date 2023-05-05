@@ -42,6 +42,14 @@ test("Hand construction and holdings", () => {
    expect(hand.toString()).toBe('Q109 A8765432 KJ -')
 })
 
+test('Holding.forString()', ()=>{
+   const r = Deck.ranks
+   expect(d.Holding.forString('AJT32').ranks).toEqual([r.ace,r.jack, r.ten, r.three, r.two])
+   expect(d.Holding.forString('AJ1032').ranks).toEqual([r.ace,r.jack, r.ten, r.three, r.two])
+   expect(d.Holding.forString('A J 10  3 2').ranks).toEqual([r.ace,r.jack, r.ten, r.three, r.two])
+   
+})
+
 test("Hand eachSuit method", () => {
    var cards = Deck.cardsByName([
       "SQ", "S10", "S9", "HA",
@@ -72,4 +80,14 @@ test("Deal eachHand", () => {
    deal.eachHand((seat, hand) => {
       expect(hand.toString()).toBe(expected.get(seat.name))
    })
+})
+
+test("Hand.forHoldings", ()=> {
+   const holdings = ['AKQJ','1098','765432','-'].map(d.Holding.forString)
+   const hand = d.Hand.forHoldings(holdings)
+   expect(hand.spades.asString()).toBe('AKQJ')
+   expect(hand.hearts.asString()).toBe('1098')
+   expect(hand.diamonds.asString()).toBe('765432')
+   expect(hand.clubs.asString()).toBe('-')
+
 })
