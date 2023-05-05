@@ -28,10 +28,10 @@ type Suit = {
     order:number
 }
 
-const Spades: Suit = {name:'spades',letter:'S', symbol:'S', order:0}
-const Hearts: Suit = {name:'hearts',letter:'H', symbol:'H', order:1}
-const Diamonds: Suit = {name:'diamonds',letter:'D', symbol:'D', order:2}
-const Clubs: Suit = {name:'clubs',letter:'C', symbol:'C',order:3}
+const Spades: Suit = {name:'spades',letter:'S', symbol:'\U+2660', order:0}
+const Hearts: Suit = {name:'hearts',letter:'H', symbol:'\U+2665', order:1}
+const Diamonds: Suit = {name:'diamonds',letter:'D', symbol:'\U+2666', order:2}
+const Clubs: Suit = {name:'clubs',letter:'C', symbol:'\U+2663',order:3}
 
 const Suits = {
     spades: Spades,
