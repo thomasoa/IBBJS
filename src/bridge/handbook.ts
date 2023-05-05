@@ -87,11 +87,12 @@ class PavlicekHandBook {
         const bijection = this.cardBijection
         const sequence = hand.cards.map((c)=> bijection.mapFrom(c))
         const toWhom = new Array<SeatNumber>(52)
-        for (var i=0; i<52; i++) toWhom[i] = 0
+        for (var i=0; i<52; i++) toWhom[i] = 1
         sequence.forEach((cardNum) => {
-            toWhom[cardNum] = 1
+            toWhom[cardNum] = 0
         })
-        return BigInt(1) + this.strategy.computePageNumber(new NumericDeal(this.strategy.signature, toWhom))
+        const deal = new NumericDeal(this.strategy.signature, toWhom)
+        return BigInt(1) + this.strategy.computePageNumber(deal)
     }
 }
 
