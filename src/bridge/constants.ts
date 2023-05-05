@@ -43,20 +43,22 @@ type Rank = {
     brief: string,
     order: number,
     bit: number,
-    letter: string
+    letter: string,
+    summand: number
 }
 
 type Suit = {
     name:string;
     letter:string;
     symbol:string;
-    order:number
+    order:number,
+    summand: number
 }
 
-const Spades: Suit = {name:'spades',letter:'S', symbol:'\U+2660', order:0}
-const Hearts: Suit = {name:'hearts',letter:'H', symbol:'\U+2665', order:1}
-const Diamonds: Suit = {name:'diamonds',letter:'D', symbol:'\U+2666', order:2}
-const Clubs: Suit = {name:'clubs',letter:'C', symbol:'\U+2663',order:3}
+const Spades: Suit = {name:'spades',letter:'S', symbol:'\U+2660', order:0, summand: 0}
+const Hearts: Suit = {name:'hearts',letter:'H', symbol:'\U+2665', order:1, summand:13*1}
+const Diamonds: Suit = {name:'diamonds',letter:'D', symbol:'\U+2666', order:2, summand:13*2}
+const Clubs: Suit = {name:'clubs',letter:'C', symbol:'\U+2663',order:3, summand:13*3}
 
 const Suits = {
     spades: Spades,
@@ -84,7 +86,8 @@ function qr(s:string, o:number ,letter:string|undefined=undefined): Rank {
         brief:s, 
         order:o, 
         bit: 1<<(12-o), 
-        letter: letter || s
+        letter: letter || s,
+        summand: o
     }
 }
 
@@ -197,15 +200,17 @@ function  ranksByText(text:string) {
 }
 
 
-function make_cards():Array<Card> {
+function make_cards():Card[] {
     const cards = new Array<Card>(52)
-    for (let cardNum=0; cardNum<52; cardNum++) {
-        const suit = Suits.all[Math.floor(cardNum/13)]
-        const rank = Ranks.all[cardNum % 13]
-        cards[cardNum] = new Card(suit,rank)
-    }
+    Ranks.all.forEach((rank) => {
+        Suits.all.forEach((suit) => {
+            const index = suit.summand+rank.summand
+            cards[index] = new Card(suit,rank)
+        })
+    })
     return cards
 }
+
 const Cards = make_cards()
 const CardsByName = new Map<string,Card>(Cards.map((card)=>[card.short,card]))
 

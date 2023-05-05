@@ -43,7 +43,7 @@ class Holding {
     class Hand {
         cards: Array<Card>
         holdings: Array<Holding>
-        constructor(cards:Array<Card>) {
+        constructor(cards:Card[]) {
             this.cards = cards
             const suits = Deck.suits.all.map(() => new Array< Rank>())
             this.cards.forEach((card)=> {
@@ -99,7 +99,7 @@ class Holding {
         }
     }
     
-    function buildHands(toWhom:Array<Seat>):Array<Hand> {
+    function buildHands(toWhom:Seat[]):Hand[] {
         const cards: Array<Array<Card>> = Array.from({length:4},()=> new Array<Card>(0))
         toWhom.forEach((seat:Seat,cardNum:number)=>{
             cards[seat.order].push(Deck.cards[cardNum])
@@ -111,7 +111,7 @@ class Holding {
         
         toWhom: Array<Seat>;
         hands: Array<Hand>;
-        constructor(toWhom:Array<Seat>) {
+        constructor(toWhom:Seat[]) {
             this.toWhom = toWhom
             this.hands = buildHands(toWhom)
         }
