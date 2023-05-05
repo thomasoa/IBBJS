@@ -41,10 +41,16 @@ test("CardsByName lookup", () => {
     var spadeThree = Deck.cardByName('S3')
     expect(spadeThree.suit).toBe(Deck.suits.spades)
     expect(spadeThree.rank).toBe(Deck.ranks.three)
+
+    var clubAce = Deck.cardByName('ca')
+    expect(clubAce.suit).toBe(Deck.suits.clubs)
+    expect(clubAce.rank).toBe(Deck.ranks.ace)
+
 })
 
 test('rankByText examples',() => {
     expect(Deck.rankByText('A')).toBe(Deck.ranks.ace)
+    expect(Deck.rankByText('a')).toBe(Deck.ranks.ace)
     expect(Deck.rankByText('K')).toBe(Deck.ranks.king)
     expect(Deck.rankByText('Q')).toBe(Deck.ranks.queen)
     expect(Deck.rankByText('J')).toBe(Deck.ranks.jack)

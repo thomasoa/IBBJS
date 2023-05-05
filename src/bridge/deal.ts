@@ -34,7 +34,7 @@ class Holding {
         }
 
         static forString(text:string):Holding {
-            return new Holding(Deck.ranksByText(text))
+            return new Holding(Deck.ranksByText(text.toUpperCase()))
         }
         
         
@@ -87,6 +87,7 @@ class Holding {
 
 
         static forString(handString:string):Hand {
+            handString = handString.toUpperCase()
             const match = handString.match(
                 /^ *S:?([^SHDC]*)H:?([^SHDC]*)D:?([^SHDC]*)C:?([^SHDC]*)$/
             )

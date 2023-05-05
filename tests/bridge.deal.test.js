@@ -103,7 +103,7 @@ test("Hand.forHoldings without the right number of suits", ()=> {
 })
 
 test('Hand.forString()', ()=> {
-   const hand = d.Hand.forString('SAK H:QJT D98765432 C')
+   const hand = d.Hand.forString('SAK h:qjt D98765432 C')
    expect(hand.spades.toString()).toBe('A K')
    expect(hand.hearts.toString()).toBe('Q J 10')
    expect(hand.diamonds.toString()).toBe('9 8 7 6 5 4 3 2')

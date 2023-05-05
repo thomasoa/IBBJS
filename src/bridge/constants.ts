@@ -144,6 +144,7 @@ function createRankParser(): (text:string) => RankLookupResult {
 const rankParser = createRankParser()
 
 function rankByText(text:string):Rank {
+    text = text.toUpperCase()
     const result = rankParser(text)
     if (result.rest != "") {
         throw new Error('Invalid rank: ' + text)
@@ -189,6 +190,7 @@ function cardBySuitRank(suit: Suit, rank:Rank) {
 }
 
 function lookupCardByName (name:string):Card {
+    name = name.toUpperCase()
     const card: Card|undefined = CardsByName.get(name)
     if (card) { return card }
     throw Error('Invalid card name '+ name)
