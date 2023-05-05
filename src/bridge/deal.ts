@@ -84,6 +84,18 @@ class Holding {
             })
             return new Hand(cards)
         }
+
+
+        static forString(handString:string):Hand {
+            const match = handString.match(
+                /^ *S:?([^SHDC]*)H:?([^SHDC]*)D:?([^SHDC]*)C:?([^SHDC]*)$/
+            )
+            if (match) {
+                const holdings = [match[1],match[2],match[3],match[4]].map((s) => Holding.forString(s.trim()))
+                return Hand.forHoldings(holdings)
+            }
+            throw Error('Invalid hand string: ' + handString)
+        }
     }
     
     function buildHands(toWhom:Array<Seat>):Array<Hand> {
@@ -126,6 +138,7 @@ class Holding {
             return (this.toWhom.length == other.toWhom.length) && 
                 this.toWhom.every((seat,index) => seat == other.toWhom[index])
         }
+
     }
     
     export {Holding, Hand, Deal}
