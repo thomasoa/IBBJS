@@ -93,6 +93,11 @@ test("Hand.forHoldings", ()=> {
 })
 
 test("Hand.forHoldings without the right number of suits", ()=> {
-   const holdings = []
+   const holdings = ['AKQJ','1098','765432'].map(d.Holding.forString)
+   expect(() => d.Hand.forHoldings(holdings)).toThrow()
+})
+
+test("Hand.forHoldings without the right number of suits", ()=> {
+   const holdings = ['AKQJ','1098','765432','-','-'].map(d.Holding.forString)
    expect(() => d.Hand.forHoldings(holdings)).toThrow()
 })
