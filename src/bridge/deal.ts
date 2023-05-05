@@ -1,13 +1,9 @@
-import * as C from "./constants.js"
-//import * as numeric from "../numeric/deal.js"
-
-//type CardMap = (card:numeric.CardNumber) => C.Card
-//type SeatMap = (seat:numeric.SeatNumber) => C.Seat
+import {Deck, Seats, Seat, Card, Rank, Suit} from "./constants.js"
 
 class Holding {
-    readonly ranks: Array<C.Rank>
+    readonly ranks: Array<Rank>
     readonly bits:number
-    constructor(ranks:Array<C.Rank>) {
+    constructor(ranks:Array<Rank>) {
         this.ranks = ranks
         this.bits = ranks.reduce(
             (binary,rank) => rank.bit|binary,
@@ -33,7 +29,7 @@ class Holding {
             return this.asString(' ')
         }
         
-        has(rank:C.Rank):boolean {
+        has(rank:Rank):boolean {
             return (this.bits & rank.bit) != 0
         }
         
@@ -41,25 +37,25 @@ class Holding {
     }
     
     class Hand {
-        cards: Array<C.Card>
+        cards: Array<Card>
         holdings: Array<Holding>
-        constructor(cards:Array<C.Card>) {
+        constructor(cards:Array<Card>) {
             this.cards = cards
-            const suits = C.Suits.all.map(() => new Array<C.Rank>())
+            const suits = Deck.suits.all.map(() => new Array< Rank>())
             this.cards.forEach((card)=> {
                 suits[card.suit.order].push(card.rank)
             })
             this.holdings = suits.map((ranks)=> new Holding(ranks))
         }
-        suit(suit:C.Suit): Holding {
+        suit(suit:Suit): Holding {
             return this.holdings[suit.order]
         }
-        get spades():Holding {return this.suit(C.Suits.spades)}
-        get hearts():Holding {return this.suit(C.Suits.hearts)}
-        get diamonds():Holding {return this.suit(C.Suits.diamonds)}
-        get clubs():Holding {return this.suit(C.Suits.clubs)}
+        get spades():Holding {return this.suit(Deck.suits.spades)}
+        get hearts():Holding {return this.suit(Deck.suits.hearts)}
+        get diamonds():Holding {return this.suit(Deck.suits.diamonds)}
+        get clubs():Holding {return this.suit(Deck.suits.clubs)}
         
-        has(card:C.Card):boolean {
+        has(card:Card):boolean {
             return this.suit(card.suit).has(card.rank)
         }
         
@@ -67,45 +63,45 @@ class Holding {
             return this.holdings.map((h)=> h.asString('')).join(' ')
         }
         
-        eachSuit(method: (suit:C.Suit,holding:Holding) => void):void {
-            this.holdings.forEach((holding,index) => method(C.Suits.all[index],holding))
+        eachSuit(method: (suit:Suit,holding:Holding) => void):void {
+            this.holdings.forEach((holding,index) => method(Deck.suits.all[index],holding))
         }
     }
     
-    function buildHands(toWhom:Array<C.Seat>):Array<Hand> {
-        const cards: Array<Array<C.Card>> = Array.from({length:4},()=> new Array<C.Card>(0))
-        toWhom.forEach((seat:C.Seat,cardNum:number)=>{
-            cards[seat.order].push(C.Cards[cardNum])
+    function buildHands(toWhom:Array<Seat>):Array<Hand> {
+        const cards: Array<Array<Card>> = Array.from({length:4},()=> new Array<Card>(0))
+        toWhom.forEach((seat:Seat,cardNum:number)=>{
+            cards[seat.order].push(Deck.cards[cardNum])
         })
         return cards.map((handCards)=> new Hand(handCards))
     }
     
     class Deal {
         
-        toWhom: Array<C.Seat>;
+        toWhom: Array<Seat>;
         hands: Array<Hand>;
-        constructor(toWhom:Array<C.Seat>) {
+        constructor(toWhom:Array<Seat>) {
             this.toWhom = toWhom
             this.hands = buildHands(toWhom)
         }
 
-        hand(seat:C.Seat):Hand {
+        hand(seat:Seat):Hand {
             return this.hands[seat.order]
         }
         
-        get north():Hand {   return this.hand(C.Seats.north) }
-        get east():Hand {   return this.hand(C.Seats.east) }
-        get south():Hand {   return this.hand(C.Seats.south) }
-        get west():Hand {   return this.hand(C.Seats.west) }
+        get north():Hand {   return this.hand(Seats.north) }
+        get east():Hand {   return this.hand(Seats.east) }
+        get south():Hand {   return this.hand(Seats.south) }
+        get west():Hand {   return this.hand(Seats.west) }
         
-        eachHand(method: (seat:C.Seat,hand:Hand)=> void):void {
+        eachHand(method: (seat:Seat,hand:Hand)=> void):void {
             //var hands=this.hands;
-            //C.Seats.all.forEach((seat)=> method(seat,hands[seat.order]))
-            this.hands.forEach((hand,index) => method(C.Seats.all[index],hand))           
+            //Seats.all.forEach((seat)=> method(seat,hands[seat.order]))
+            this.hands.forEach((hand,index) => method(Seats.all[index],hand))           
         }
 
-        eachCard(method: (card:C.Card,seat:C.Seat) => void ):void {
-            this.toWhom.forEach((seat:C.Seat, index:number) => method(C.Cards[index],seat))
+        eachCard(method: (card:Card,seat:Seat) => void ):void {
+            this.toWhom.forEach((seat:Seat, index:number) => method(Deck.cards[index],seat))
         }
 
         equals(other:Deal):boolean {

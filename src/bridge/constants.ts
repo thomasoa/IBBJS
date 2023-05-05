@@ -98,4 +98,11 @@ function make_cards():Array<Card> {
 const Cards = make_cards()
 const CardsByName = new Map<string,Card>(Cards.map((card)=>[card.short,card]))
 
-export { Suits, Suit, Ranks, Cards, CardsByName, Seats, Rank, Card, Seat}
+const Deck = {
+    ranks: Ranks,
+    suits: Suits,
+    cards: Cards,
+    cardByName: CardsByName
+}
+
+export { /* Suits, Ranks, Cards, */ Suit, CardsByName, Seats, Rank, Card, Seat, Deck}

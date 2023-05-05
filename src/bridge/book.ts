@@ -1,4 +1,4 @@
-import * as C from "./constants.js"
+import {Deck, Seats, Seat, Card}  from "./constants.js"
 import {BookStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index.js"
 import {Deal} from "./deal.js"
 
@@ -34,8 +34,8 @@ class SimpleBijection<T extends OrderedType> {
         return this.reverse[t.order]
     }
 }
-const defaultBijectionSeat:Bijection<C.Seat> = new SimpleBijection<C.Seat>(C.Seats.all)
-const defaultBijectionCard:Bijection<C.Card> = new SimpleBijection<C.Card>(C.Cards)
+const defaultBijectionSeat:Bijection<Seat> = new SimpleBijection<Seat>(Seats.all)
+const defaultBijectionCard:Bijection<Card> = new SimpleBijection<Card>(Deck.cards)
 
 function validate_signature(signature:DealSignature):void {
     if (!bridgeSignature.equals(signature)) {
@@ -45,13 +45,13 @@ function validate_signature(signature:DealSignature):void {
 
 class BridgeBook {
     readonly strategy:BookStrategy
-    readonly seatBijection:Bijection<C.Seat>
-    readonly cardBijection:Bijection<C.Card>
+    readonly seatBijection:Bijection<Seat>
+    readonly cardBijection:Bijection<Card>
 
     constructor(
         strategy: BookStrategy,
-        seatBijection:Bijection<C.Seat>=defaultBijectionSeat,
-        cardBijection:Bijection<C.Card>=defaultBijectionCard
+        seatBijection:Bijection<Seat>=defaultBijectionSeat,
+        cardBijection:Bijection<Card>=defaultBijectionCard
         ) {
             
             validate_signature(strategy.signature)
@@ -73,7 +73,7 @@ class BridgeBook {
             const numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
             const seatMap = this.seatBijection
             const cardMap = this.cardBijection
-            const toWhom : Array<C.Seat> = new Array<C.Seat>(C.Cards.length)
+            const toWhom : Array<Seat> = new Array<Seat>(Deck.cards.length)
             
             numDeal.toWhom.forEach((seatNum,cardNum)=> {
                 const seat = seatMap.mapTo(seatNum)
@@ -88,7 +88,7 @@ class BridgeBook {
             const toWhom = new Array<SeatNumber>(52)
             const cardMap = this.cardBijection
             const seatMap = this.seatBijection
-            deal.eachCard((card:C.Card, seat:C.Seat)=>{
+            deal.eachCard((card:Card, seat:Seat)=>{
                 const seatNum = seatMap.mapFrom(seat)
                 const cardNum = cardMap.mapFrom(card)
                 toWhom[cardNum] = seatNum

@@ -1,5 +1,5 @@
 import * as Books from "../dest/bridge/book.js"
-import * as C from "../dest/bridge/constants.js"
+import {Deck, Seats } from "../dest/bridge/constants.js"
 import { PavlicekStrategy, AndrewsStrategy, DealSignature } from "../dest/numeric/index.js"
 
 test("Book constructor", () => {
@@ -9,21 +9,21 @@ test("Book constructor", () => {
 })
 
 test("Bijection Seat", () => {
-    var bijection = new Books.SimpleBijection(C.Seats.all, (n) => (n + 2) % 4)
-    expect(bijection.mapTo(0)).toBe(C.Seats.south)
-    expect(bijection.mapTo(1)).toBe(C.Seats.west)
-    expect(bijection.mapTo(2)).toBe(C.Seats.north)
-    expect(bijection.mapTo(3)).toBe(C.Seats.east)
-    expect(bijection.mapFrom(C.Seats.south)).toBe(0)
-    expect(bijection.mapFrom(C.Seats.west)).toBe(1)
-    expect(bijection.mapFrom(C.Seats.north)).toBe(2)
-    expect(bijection.mapFrom(C.Seats.east)).toBe(3)
+    var bijection = new Books.SimpleBijection(Seats.all, (n) => (n + 2) % 4)
+    expect(bijection.mapTo(0)).toBe(Seats.south)
+    expect(bijection.mapTo(1)).toBe(Seats.west)
+    expect(bijection.mapTo(2)).toBe(Seats.north)
+    expect(bijection.mapTo(3)).toBe(Seats.east)
+    expect(bijection.mapFrom(Seats.south)).toBe(0)
+    expect(bijection.mapFrom(Seats.west)).toBe(1)
+    expect(bijection.mapFrom(Seats.north)).toBe(2)
+    expect(bijection.mapFrom(Seats.east)).toBe(3)
 
 })
 
 test("Bijection Card default", () => {
-    var bijection = new Books.SimpleBijection(C.Cards)
-    C.Cards.forEach((card, index) => {
+    var bijection = new Books.SimpleBijection(Deck.cards)
+    Deck.cards.forEach((card, index) => {
         expect(bijection.mapTo(index)).toBe(card)
         expect(bijection.mapFrom(card)).toBe(index)
     })
@@ -42,7 +42,7 @@ test("Pavclicek Book generate first deal", () => {
 })
 
 test("Andrews Book generate first deal", () => {
-    var seatBijection = new Books.SimpleBijection(C.Seats.all, (n) => 3 - n)
+    var seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
     var book = new Books.BridgeBook(new AndrewsStrategy(), seatBijection)
     var firstDeal = book.getDeal(BigInt(1))
 
@@ -79,7 +79,7 @@ test('Fail on a page out of range', () => {
 })
 
 test('Reverse lookup', () => {
-    var seatBijection = new Books.SimpleBijection(C.Seats.all, (n) => 3 - n)
+    var seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
     var book = new Books.BridgeBook(new AndrewsStrategy(), seatBijection)
     var page = BigInt(53) ** BigInt(12)
     var deal = book.getDeal(page)
