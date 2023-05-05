@@ -34,7 +34,7 @@ test("Ensure card orders agree with the linear order", () => {
 })
 
 test("CardsByName lookup", () => {
-    var spadeThree = Deck.cardByName.get('S3')
+    var spadeThree = Deck.cardByName('S3')
     expect(spadeThree.suit).toBe(Deck.suits.spades)
     expect(spadeThree.rank).toBe(Deck.ranks.three)
 })

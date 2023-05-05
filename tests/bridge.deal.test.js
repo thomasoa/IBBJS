@@ -27,13 +27,13 @@ test("AK2 Holding", () => {
 })
 
 test("Hand construction and holdings", () => {
-   var cards = [
+   var cards = Deck.cardsByName([
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
-      "H4", "H3", "H2", "DK", "DJ"].map((s) => Deck.cardByName.get(s))
+      "H4", "H3", "H2", "DK", "DJ"])
    var hand = new d.Hand(cards)
-   expect(hand.has(Deck.cardByName.get('HA'))).toBeTruthy()
-   expect(hand.has(Deck.cardByName.get('SA'))).toBeFalsy()
+   expect(hand.has(Deck.cardByName('HA'))).toBeTruthy()
+   expect(hand.has(Deck.cardByName('SA'))).toBeFalsy()
 
    expect(hand.spades.toString()).toBe('Q 10 9')
    expect(hand.hearts.toString()).toBe("A 8 7 6 5 4 3 2")
@@ -43,10 +43,10 @@ test("Hand construction and holdings", () => {
 })
 
 test("Hand eachSuit method", () => {
-   var cards = [
+   var cards = Deck.cardsByName([
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
-      "H4", "H3", "H2", "DK", "DJ"].map((s) => Deck.cardByName.get(s))
+      "H4", "H3", "H2", "DK", "DJ"])
    var hand = new d.Hand(cards)
    var suitMap = new Map()
    hand.eachSuit((suit, holding) => {

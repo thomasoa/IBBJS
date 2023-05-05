@@ -1,3 +1,5 @@
+import { tsNamespaceExportDeclaration } from "@babel/types";
+
 type Seat = {
     name:string;
     letter:string;
@@ -98,11 +100,19 @@ function make_cards():Array<Card> {
 const Cards = make_cards()
 const CardsByName = new Map<string,Card>(Cards.map((card)=>[card.short,card]))
 
+function lookupCardByName (name:string):Card {
+    const card: Card|undefined = CardsByName.get(name)
+    if (card) { return card }
+    throw Error('Invalid card name '+tsNamespaceExportDeclaration)
+}
 const Deck = {
     ranks: Ranks,
     suits: Suits,
     cards: Cards,
-    cardByName: CardsByName
+    cardByName: lookupCardByName,
+    cardsByName: (names:string[]):Card[] => {
+        return names.map(lookupCardByName)
+    }
 }
 
 export { /* Suits, Ranks, Cards, */ Suit, CardsByName, Seats, Rank, Card, Seat, Deck}
