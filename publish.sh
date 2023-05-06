@@ -1,9 +1,11 @@
 #!/bin/sh
 
 repo=$(git config --get remote.origin.url)
+repoURL=$(echo $repo | perl -pe 's/\.git$//;')
 revision=$(git rev-parse HEAD)
 branch=$(git rev-parse --abbrev-ref HEAD)
-echo "{\"repo\":\"$repo\",\"branch\":\"$branch\",\"revision\":\"$revision\"}" > dest/revision.json
+url="$repoURL/commit/$revision"
+echo "{\"repo\":\"$repo\",\"branch\":\"$branch\",\"revision\":\"$url\"}" > dest/revision.json
 exit 0
 
 [ -d ../thomasoa.github.io ] || exit 0
