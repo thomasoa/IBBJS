@@ -95,17 +95,18 @@
     $(document).ready(() => initialize())
 
     function showCommit(revision) {
-        var item = $('#commitURL')
-        var link = item.find('a')
-        link.attr("href",revision['revision'])
-        item.append(' in '+ revision['branch'] + ' branch')
-        item.show()
+      var item = $('#commitURL')
+      var url = revision['url']
+      var commit = revision['revision'].slice(0,7)
+      alert(commit)
+      item.html('<a href="' + url + '">Revision</a> ' + commit + ' in ' + revision['branch'] + ' branch')
+      item.show()
     }
 
     $.ajax('./revision.json', {
-        'dataType': 'json',
-        'success' : (data) => {  showCommit(data) },
-        'error' : (a,msg,c) => { console.log('revision.json does not exist') }
+      'dataType': 'json',
+      'success': (data) => { showCommit(data) },
+      'error': (a, msg, c) => { console.log('revision.json does not exist') }
     })
 
   </script>
