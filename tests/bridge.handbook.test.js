@@ -1,5 +1,7 @@
 import {AndrewsHandBook, PavlicekHandBook} from '../dest/bridge/handbook.js'
 import {Hand} from "../dest/bridge/deal.js"
+import {Deck} from '../dest/bridge/constants.js'
+import {SimpleBijection} from '../dest/bridge/bijection.js'
 
 test('First page is the same', ()=>{
     const aBook = new AndrewsHandBook()
@@ -51,3 +53,11 @@ test('Reverse lookup: Pavlicek', ()=>{
 
 })
 
+test('Bijection', ()=>{
+    const reverse = new SimpleBijection(Deck.cards.all, (num) => 51-num)
+    const aBook = new AndrewsHandBook(reverse)
+    const lastPage = aBook.lastPage
+
+    expect(aBook.getHand(BigInt(1)).toString()).toBe('- - - AKQJ1098765432')
+    expect(aBook.getHand(lastPage).toString()).toBe('AKQJ1098765432 - - -')
+})
