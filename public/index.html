@@ -98,7 +98,6 @@
       var item = $('#commitURL')
       var url = revision['url']
       var commit = revision['revision'].slice(0,7)
-      alert(commit)
       item.html('<a href="' + url + '">Revision</a> ' + commit + ' in ' + revision['branch'] + ' branch')
       item.show()
     }
