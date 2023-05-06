@@ -45,7 +45,7 @@ test('Reverse lookup: Pavlicek', ()=>{
     var last = Hand.forString('s- h- d- cAKQJT98765432')
     expect(pBook.getPageNumber(last)).toBe(pBook.lastPage)
 
-    var page = aBook.pages * BigInt(29)/BigInt(73)
+    var page = pBook.pages * BigInt(29)/BigInt(73)
     var pHand = pBook.getHand(page)
     expect(pBook.getPageNumber(pHand)).toBe(page)
 
