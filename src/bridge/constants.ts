@@ -271,7 +271,7 @@ const Deck = {
     suits: Suits,
     cards: Cards,
     cardByName: lookupCardByName,
-    cardsByNames: (names:string[]):Card[] => {
+    cardsByNames: (...names: string[]):Card[] => {
         return names.map(lookupCardByName)
     },
     rankByText: rankByText,
