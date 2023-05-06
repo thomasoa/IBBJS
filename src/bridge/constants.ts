@@ -62,14 +62,6 @@ const Seats = {
 }
 Object.freeze(Seats)
 
-type Rank = {
-    brief: string,
-    order: number,
-    bit: number,
-    letter: string,
-    summand: number
-}
-
 type Suit = {
     name:string;
     letter:string;
@@ -77,6 +69,25 @@ type Suit = {
     order:number,
     summand: number
 }
+
+class Rank {
+    brief: string
+    order: number
+    bit: number
+    letter: string
+    summand: number
+    constructor(brief:string, order:number,letter:string|undefined=undefined) {
+        this.brief = brief
+        this.order = order 
+        this.bit   = 1<<(12-order)
+        this.letter = letter || brief
+        this.summand = order
+        Object.freeze(this)
+
+    }
+}
+
+
 
 const Spades:  Suit = f({name:'spades',letter:'S', symbol:'\U+2660', order:0, summand: 0})
 const Hearts:  Suit = f({name:'hearts',letter:'H', symbol:'\U+2665', order:1, summand:13*1})
@@ -111,29 +122,19 @@ class Card {
     }
 }
 
-function qr(s:string, o:number ,letter:string|undefined=undefined): Rank { 
-    return f({
-        brief:s, 
-        order:o, 
-        bit: 1<<(12-o), 
-        letter: letter || s,
-        summand: o
-    })
-}
-
-const Ace = qr('A',0)
-const King = qr('K',1)
-const Queen = qr('Q',2)
-const Jack = qr('J',3)
-const Ten = qr('10',4,'T')
-const Nine = qr('9',5)
-const Eight = qr('8',6)
-const Seven = qr('7',7)
-const Six = qr('6',8)
-const Five = qr('5',9)
-const Four = qr('4',10)
-const Three = qr('3',11)
-const Two = qr('2',12)
+const Ace = new Rank('A',0)
+const King = new Rank('K',1)
+const Queen = new Rank('Q',2)
+const Jack = new Rank('J',3)
+const Ten = new Rank('10',4,'T')
+const Nine = new Rank('9',5)
+const Eight = new Rank('8',6)
+const Seven = new Rank('7',7)
+const Six = new Rank('6',8)
+const Five = new Rank('5',9)
+const Four = new Rank('4',10)
+const Three = new Rank('3',11)
+const Two = new Rank('2',12)
 const AllRanks: readonly Rank[] = f([Ace,King, Queen,Jack,Ten,Nine,Eight,Seven,Six,Five,Four,Three,Two])
 
 function ranksFromBits(bits:number): Rank[] {
@@ -258,10 +259,14 @@ function make_cards():Card[] {
 
 const AllCards: readonly Card[]= make_cards()
 const CardsByName = new Map<string,Card>(AllCards.map((card)=>[card.short,card]))
-
 function cardBySuitRank(suit: Suit, rank:Rank) {
     return AllCards[suit.summand+rank.summand]
 }
+
+interface Rank {
+    of(suit:Suit):Card
+}
+Rank.prototype.of = function (suit:Suit):Card { return cardBySuitRank(suit,this)}
 
 function lookupCardByName (name:string):Card {
     name = name.toUpperCase()
