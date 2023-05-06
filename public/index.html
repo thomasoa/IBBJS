@@ -93,6 +93,12 @@
 
     $(document).ready(() => initialize())
 
+    $.ajax('./revision.json', {
+        'dataType': 'json',
+        'success' : (data) => {  console.log(data); },
+        'error' : (a,msg,c) => { console.log('revision.json does not exist') }
+    })
+
   </script>
 
 </body>
