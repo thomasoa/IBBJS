@@ -5,20 +5,28 @@
  * Class: Card
  * Global: Deck, Seats
  * 
- *     Deck.suits.spades:Suit
- *        ...
- *     Deck.suit.clubs:Suit
+ *     Seats.all : Seat[] - Array of all seat objects
+ *     Seats.each         - alias for Seats.all.forEach
+ *     Seats.map          - alias for Seats.all.map
+ *    
+ *     Deck.suits.all : Suit[] - Array of all suits
+ *     Deck.suits.each, Deck.suits.map 
+ *                             - aliases
  * 
- *     Deck.suits.all:Suit[] - All of the suits
+ *     Deck.ranks.all: Rank[] - Array of all ranks
+ *     Deck.ranks.each, Deck.ranks.map 
+ *                            - aliases
  * 
- *     Deck.ranks.ace, Deck.ranks.king, ... Deck.ranks.two
- *     Deck.ranks.all:Rank[]
- * 
- *     Deck.cards: Card[] - All 52 different card values
+ *     Deck.cards.all: Card[] - All 52 different card values
+ *     Deck.cards.each, Deck.cards.map 
  * 
  *     Deck.card(suit:Suit, rank:Rank):Card - returns the card
  * 
  *     Deck.cardByName(name:string):Card - Expects suit first, then rank: 'ST' or 'd10' 
+ * 
+ *     Seats.nprth, Seats.east, Seats.south, Seats.west
+ *     Deck.Ranks.ace, ..., Deck.Ranks.two
+ *     Deck.Suits.spades, ..., Deck.Suits.clubs
  * 
  */
 
