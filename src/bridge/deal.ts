@@ -34,7 +34,7 @@ class Holding {
     }
 
     static forString(text:string):Holding {
-        return new Holding(Deck.ranksByText(text.toUpperCase()))
+        return new Holding(Deck.ranks.parse(text.toUpperCase()))
     }
 
     static fromBits(bits:number):Holding {

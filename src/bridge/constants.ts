@@ -147,26 +147,6 @@ function ranksFromBits(bits:number): Rank[] {
     return ranks
 }
 
-const Ranks = f({
-    ace: Ace,
-    king: King,
-    queen: Queen,
-    jack: Jack,
-    ten: Ten,
-    nine: Nine,
-    eight: Eight,
-    seven: Seven,
-    six: Six,
-    five: Five,
-    four: Four,
-    three: Three,
-    two: Two,
-    all: AllRanks,
-    each: AllRanks.forEach.bind(AllRanks),
-    map: AllRanks.map.bind(AllRanks),
-    fromBits: ranksFromBits
-})
-
 interface RankLookupResult {
     rank:Rank,
     rest:string
@@ -198,7 +178,7 @@ function createRankParser(): (text:string) => RankLookupResult {
         map.set(parser.letter,parser)
     }
 
-    Ranks.all.forEach((rank) => {
+    AllRanks.forEach((rank) => {
         add(new RankParser(rank.letter,rank))
         if (rank.brief != rank.letter) {
             add(new RankParser(rank.brief,rank))
@@ -245,6 +225,27 @@ function  ranksByText(text:string) {
 
 }
 
+const Ranks = f({
+    ace: Ace,
+    king: King,
+    queen: Queen,
+    jack: Jack,
+    ten: Ten,
+    nine: Nine,
+    eight: Eight,
+    seven: Seven,
+    six: Six,
+    five: Five,
+    four: Four,
+    three: Three,
+    two: Two,
+    all: AllRanks,
+    each: AllRanks.forEach.bind(AllRanks),
+    map: AllRanks.map.bind(AllRanks),
+    fromBits: ranksFromBits,
+    byName: rankByText,
+    parse: ranksByText
+})
 
 function make_cards():Card[] {
     const cards = new Array<Card>(52)
@@ -266,6 +267,7 @@ function cardBySuitRank(suit: Suit, rank:Rank) {
 interface Rank {
     of(suit:Suit):Card
 }
+
 Rank.prototype.of = function (suit:Suit):Card { return cardBySuitRank(suit,this)}
 
 function lookupCardByName (name:string):Card {
@@ -275,10 +277,16 @@ function lookupCardByName (name:string):Card {
     throw Error('Invalid card name '+ name)
 }
 
+function lookupCardsByNames(...names:string[]):Card[] {
+    return names.map(lookupCardByName)
+}
+
 const Cards = f({
     all: AllCards,
     each: AllCards.forEach.bind(AllCards),
-    map: AllCards.map.bind(AllCards)
+    map: AllCards.map.bind(AllCards),
+    byName: lookupCardByName,
+    byNames: lookupCardsByNames
 })
 
 
@@ -286,13 +294,8 @@ const Deck = {
     ranks: Ranks,
     suits: Suits,
     cards: Cards,
-    cardByName: lookupCardByName,
-    cardsByNames: (...names: string[]):Card[] => {
-        return names.map(lookupCardByName)
-    },
-    rankByText: rankByText,
-    ranksByText: ranksByText,
-    card: cardBySuitRank
+    card: cardBySuitRank,
+    c: Cards.byName
 }
 Object.freeze(Deck)
 
