@@ -113,3 +113,10 @@ test('Hand.forString()', ()=> {
 test('Hand.forString()', ()=> {
    expect(() => d.Hand.forString('')).toThrow()
 })
+
+test("fromBits constructor", ()=> {
+   const voidH = d.Holding.fromBits(0)
+   expect(voidH.length).toBe(0)
+   const holding = d.Holding.fromBits((1<<12)|(1<<11)|(1<<9))
+   expect(holding.asString()).toBe('AKJ')
+})
