@@ -6,8 +6,6 @@ revision=$(git rev-parse HEAD)
 branch=$(git rev-parse --abbrev-ref HEAD)
 url="$repoURL/commit/$revision"
 echo "{\"repo\":\"$repo\",\"branch\":\"$branch\",\"revision\":\"$url\"}" > dest/revision.json
-exit 0
-
 [ -d ../thomasoa.github.io ] || exit 0
 ( cd dest ; tar cf - .) | (cd ../thomasoa.github.io/impossible; tar xvf -)
 cd ../thomasoa.github.io
