@@ -136,6 +136,16 @@ const Three = qr('3',11)
 const Two = qr('2',12)
 const AllRanks: readonly Rank[] = f([Ace,King, Queen,Jack,Ten,Nine,Eight,Seven,Six,Five,Four,Three,Two])
 
+function ranksFromBits(bits:number): Rank[] {
+    const ranks = new Array<Rank>()
+    AllRanks.forEach((rank) => {
+        if (rank.bit & bits) {
+            ranks.push(rank)
+        }
+    })
+    return ranks
+}
+
 const Ranks = f({
     ace: Ace,
     king: King,
@@ -152,7 +162,8 @@ const Ranks = f({
     two: Two,
     all: AllRanks,
     each: AllRanks.forEach.bind(AllRanks),
-    map: AllRanks.map.bind(AllRanks)
+    map: AllRanks.map.bind(AllRanks),
+    fromBits: ranksFromBits
 })
 
 interface RankLookupResult {
@@ -259,11 +270,11 @@ function lookupCardByName (name:string):Card {
     throw Error('Invalid card name '+ name)
 }
 
-const Cards = {
+const Cards = f({
     all: AllCards,
     each: AllCards.forEach.bind(AllCards),
     map: AllCards.map.bind(AllCards)
-}
+})
 
 
 const Deck = {
