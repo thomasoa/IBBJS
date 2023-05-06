@@ -107,3 +107,7 @@ select {
     padding-right: 4em;
     margin-bottom: 2em;
 }
+
+#commitURL {
+    display: none;
+}

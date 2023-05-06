@@ -86,6 +86,7 @@
   <div class="footer">
     <div><a href='https://github.com/thomasoa/IBBJS'>Git repository</a> by Thomas Andrews</div>
     <div>The <a href='https://bridge.thomasoandrews.com/impossible'>original,</a> written in Perl.</div>
+    <div id='commitURL'><a href='#'>Commit</a></div>
   </div>
   <script type="module">
 
@@ -93,9 +94,15 @@
 
     $(document).ready(() => initialize())
 
+    function showCommit(revision) {
+        var item = $('#commitURL')
+        item.find('a').attr("href",revision['revision'])
+        item.show()
+    }
+
     $.ajax('./revision.json', {
         'dataType': 'json',
-        'success' : (data) => {  console.log(data); },
+        'success' : (data) => {  showCommit(data) },
         'error' : (a,msg,c) => { console.log('revision.json does not exist') }
     })
 
