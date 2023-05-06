@@ -22,8 +22,8 @@ test("Bijection Seat", () => {
 })
 
 test("Bijection Card default", () => {
-    var bijection = new Books.SimpleBijection(Deck.cards)
-    Deck.cards.forEach((card, index) => {
+    var bijection = new Books.SimpleBijection(Deck.cards.all)
+    Deck.cards.each((card, index) => {
         expect(bijection.mapTo(index)).toBe(card)
         expect(bijection.mapFrom(card)).toBe(index)
     })

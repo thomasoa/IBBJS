@@ -33,6 +33,6 @@ class SimpleBijection<T extends OrderedType> {
     }
 }
 const defaultBijectionSeat:Bijection<Seat> = new SimpleBijection<Seat>(Seats.all)
-const defaultBijectionCard:Bijection<Card> = new SimpleBijection<Card>(Deck.cards)
+const defaultBijectionCard:Bijection<Card> = new SimpleBijection<Card>(Deck.cards.all)
 
 export {Bijection, SimpleBijection, defaultBijectionCard, defaultBijectionSeat}

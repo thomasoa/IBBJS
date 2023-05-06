@@ -8,7 +8,7 @@ test("Holding void", () => {
    expect(holding.toString()).toBe('-')
    expect(holding.asString(',')).toBe('-')
    expect(holding.bits).toBe(0)
-   Deck.ranks.all.forEach((rank) => {
+   Deck.ranks.each((rank) => {
       expect(holding.has(rank)).toBeFalsy()
    })
 })
@@ -27,7 +27,7 @@ test("AK2 Holding", () => {
 })
 
 test("Hand construction and holdings", () => {
-   var cards = Deck.cardsByName([
+   var cards = Deck.cardsByNames([
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
       "H4", "H3", "H2", "DK", "DJ"])
@@ -51,7 +51,7 @@ test('Holding.forString()', ()=>{
 })
 
 test("Hand eachSuit method", () => {
-   var cards = Deck.cardsByName([
+   var cards = Deck.cardsByNames([
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
       "H4", "H3", "H2", "DK", "DJ"])

@@ -43,7 +43,7 @@ class BridgeBook {
             const numDeal = this.strategy.computePageContent(pageNo-BigInt(1))
             const seatMap = this.seatBijection
             const cardMap = this.cardBijection
-            const toWhom : Array<Seat> = new Array<Seat>(Deck.cards.length)
+            const toWhom : Array<Seat> = new Array<Seat>(Deck.cards.all.length)
             
             numDeal.toWhom.forEach((seatNum,cardNum)=> {
                 const seat = seatMap.mapTo(seatNum)

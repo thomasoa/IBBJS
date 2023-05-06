@@ -22,6 +22,12 @@
  * 
  */
 
+function f<T>(obj:T): T {
+    Object.freeze(obj)
+    return obj
+}
+
+
 type Seat = {
     name:string;
     letter:string;
@@ -32,13 +38,22 @@ const North = { name:"north",letter:"N", order:0}
 const East = { name:"east",letter:"E", order:1}
 const South = {name:"south", letter:"S", order:2}
 const West = {name:"west", letter:"W", order:3}
+const AllSeats: readonly Seat[] = [North, East, South, West]
+AllSeats.forEach(Object.freeze)
+Object.freeze(AllSeats)
+
 const Seats = {
     north: North,
     east: East,
     south: South,
     west: West,
-    all: new Array<Seat>(North,East,South,West)
+    all:  AllSeats,
+    each: AllSeats.forEach.bind(AllSeats),
+    map: AllSeats.map.bind(AllSeats)
+
 }
+Object.freeze(Seats)
+
 type Rank = {
     brief: string,
     order: number,
@@ -55,18 +70,24 @@ type Suit = {
     summand: number
 }
 
-const Spades: Suit = {name:'spades',letter:'S', symbol:'\U+2660', order:0, summand: 0}
-const Hearts: Suit = {name:'hearts',letter:'H', symbol:'\U+2665', order:1, summand:13*1}
-const Diamonds: Suit = {name:'diamonds',letter:'D', symbol:'\U+2666', order:2, summand:13*2}
-const Clubs: Suit = {name:'clubs',letter:'C', symbol:'\U+2663',order:3, summand:13*3}
+const Spades:  Suit = f({name:'spades',letter:'S', symbol:'\U+2660', order:0, summand: 0})
+const Hearts:  Suit = f({name:'hearts',letter:'H', symbol:'\U+2665', order:1, summand:13*1})
+const Diamonds:  Suit = f({name:'diamonds',letter:'D', symbol:'\U+2666', order:2, summand:13*2})
+const Clubs:  Suit = f({name:'clubs',letter:'C', symbol:'\U+2663',order:3, summand:13*3})
+const AllSuits: readonly Suit[] = [Spades,Hearts,Diamonds,Clubs]
+Object.freeze(AllSuits)
 
 const Suits = {
     spades: Spades,
     hearts: Hearts,
     diamonds: Diamonds,
     clubs: Clubs,
-    all: new Array<Suit>(Spades,Hearts,Diamonds,Clubs)
+    all:  AllSuits as readonly Suit[],
+    each: AllSuits.forEach.bind(AllSuits),
+    map: AllSuits.map.bind(AllSuits)
 }
+Suits.each(Object.freeze)
+Object.freeze(Suits)
 
 class Card {
     suit: Suit;
@@ -78,17 +99,18 @@ class Card {
         this.rank = rank
         this.short = suit.letter+rank.brief
         this.order = rank.order + 13*suit.order
+        Object.freeze(this)
     }
 }
 
 function qr(s:string, o:number ,letter:string|undefined=undefined): Rank { 
-    return {
+    return f({
         brief:s, 
         order:o, 
         bit: 1<<(12-o), 
         letter: letter || s,
         summand: o
-    }
+    })
 }
 
 const Ace = qr('A',0)
@@ -104,7 +126,9 @@ const Five = qr('5',9)
 const Four = qr('4',10)
 const Three = qr('3',11)
 const Two = qr('2',12)
-const Ranks = {
+const AllRanks: readonly Rank[] = f([Ace,King, Queen,Jack,Ten,Nine,Eight,Seven,Six,Five,Four,Three,Two])
+
+const Ranks = f({
     ace: Ace,
     king: King,
     queen: Queen,
@@ -118,8 +142,10 @@ const Ranks = {
     four: Four,
     three: Three,
     two: Two,
-    all: [Ace,King, Queen,Jack,Ten,Nine,Eight,Seven,Six,Five,Four,Three,Two]
-}
+    all: AllRanks,
+    each: AllRanks.forEach.bind(AllRanks),
+    map: AllRanks.map.bind(AllRanks)
+})
 
 interface RankLookupResult {
     rank:Rank,
@@ -202,20 +228,20 @@ function  ranksByText(text:string) {
 
 function make_cards():Card[] {
     const cards = new Array<Card>(52)
-    Ranks.all.forEach((rank) => {
-        Suits.all.forEach((suit) => {
+    Ranks.each((rank) => {
+        Suits.each((suit) => {
             const index = suit.summand+rank.summand
-            cards[index] = new Card(suit,rank)
+            cards[index] = f(new Card(suit,rank))
         })
     })
-    return cards
+    return f(cards)
 }
 
-const Cards = make_cards()
-const CardsByName = new Map<string,Card>(Cards.map((card)=>[card.short,card]))
+const AllCards: readonly Card[]= make_cards()
+const CardsByName = new Map<string,Card>(AllCards.map((card)=>[card.short,card]))
 
 function cardBySuitRank(suit: Suit, rank:Rank) {
-    return Cards[suit.order*13+rank.order]
+    return AllCards[suit.summand+rank.summand]
 }
 
 function lookupCardByName (name:string):Card {
@@ -225,17 +251,28 @@ function lookupCardByName (name:string):Card {
     throw Error('Invalid card name '+ name)
 }
 
+const Cards = {
+    all: AllCards,
+    each: AllCards.forEach.bind(AllCards),
+    map: AllCards.map.bind(AllCards)
+}
+
+
 const Deck = {
     ranks: Ranks,
     suits: Suits,
     cards: Cards,
     cardByName: lookupCardByName,
-    cardsByName: (names:string[]):Card[] => {
+    cardsByNames: (names:string[]):Card[] => {
         return names.map(lookupCardByName)
     },
     rankByText: rankByText,
     ranksByText: ranksByText,
     card: cardBySuitRank
 }
+Object.freeze(Deck)
 
-export { /* Suits, Ranks, Cards, */ Suit, CardsByName, Seats, Rank, Card, Seat, Deck}
+export { 
+    Deck, Seats, /* constants */
+    Suit, Rank, Card, Seat /* types */
+}

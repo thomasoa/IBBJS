@@ -45,7 +45,7 @@ class Holding {
         holdings: Array<Holding>
         constructor(cards:Card[]) {
             this.cards = cards
-            const suits = Deck.suits.all.map(() => new Array< Rank>())
+            const suits = Deck.suits.map(() => new Array< Rank>())
             this.cards.forEach((card)=> {
                 suits[card.suit.order].push(card.rank)
             })
@@ -102,7 +102,7 @@ class Holding {
     function buildHands(toWhom:Seat[]):Hand[] {
         const cards: Array<Array<Card>> = Array.from({length:4},()=> new Array<Card>(0))
         toWhom.forEach((seat:Seat,cardNum:number)=>{
-            cards[seat.order].push(Deck.cards[cardNum])
+            cards[seat.order].push(Deck.cards.all[cardNum])
         })
         return cards.map((handCards)=> new Hand(handCards))
     }
@@ -126,13 +126,11 @@ class Holding {
         get west():Hand {   return this.hand(Seats.west) }
         
         eachHand(method: (seat:Seat,hand:Hand)=> void):void {
-            //var hands=this.hands;
-            //Seats.all.forEach((seat)=> method(seat,hands[seat.order]))
             this.hands.forEach((hand,index) => method(Seats.all[index],hand))           
         }
 
         eachCard(method: (card:Card,seat:Seat) => void ):void {
-            this.toWhom.forEach((seat:Seat, index:number) => method(Deck.cards[index],seat))
+            this.toWhom.forEach((seat:Seat, index:number) => method(Deck.cards.all[index],seat))
         }
 
         equals(other:Deal):boolean {
