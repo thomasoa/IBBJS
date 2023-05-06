@@ -96,7 +96,9 @@
 
     function showCommit(revision) {
         var item = $('#commitURL')
-        item.find('a').attr("href",revision['revision'])
+        var link = item.find('a')
+        link.attr("href",revision['revision'])
+        item.append(' in '+ revision['branch'] + ' branch')
         item.show()
     }
 
