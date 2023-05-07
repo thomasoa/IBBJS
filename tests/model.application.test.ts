@@ -106,20 +106,21 @@ test("Exceptions with nextPage and previousPage", () => {
 })
 
 test('chooseCurrent usages', () => {
-    var app = new Application()
-    var currentEvent:NewCurrentDealEvent|undefined = undefined
+    let app = new Application()
+    let currentEvent:NewCurrentDealEvent|undefined = undefined
     app.listenCurrentDeal((event) => {
         currentEvent = event
     })
+
     app.listenReset(() => { currentEvent = undefined })
     app.reset()
     expect(() => app.chooseCurrent(0)).toThrow()
     expect(() => app.chooseCurrent(-1)).toThrow()
     app.findDeals("Pavlicek", false, [BigInt(1), BigInt(10)])
     app.chooseCurrent(1)
-    expect(currentEvent && currentEvent.pageNo).toBe(BigInt(10))
+    expect(currentEvent && (currentEvent.pageNo)).toBe(BigInt(10))
     app.chooseCurrent(0)
-    expect(currentEvent && currentEvent.pageNo).toBe(BigInt(1))
+    expect(currentEvent && (currentEvent.pageNo)).toBe(BigInt(1))
     expect(() => app.chooseCurrent(2)).toThrow()
     expect(() => app.chooseCurrent(-1)).toThrow()
 
