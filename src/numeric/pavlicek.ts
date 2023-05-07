@@ -137,13 +137,15 @@ class PavlicekDealStrategy {
 
 }
 
+type DealStrategyClass = { new(HandSignature):DealStrategy }
+
 class PavlicekHandStrategy {
     signature: HandSignature
     pStrategy: DealStrategy
 
     constructor(
         sig:HandSignature=bridgeHandSignature, 
-        cls:{ new(HandSignature):DealStrategy } = PavlicekDealStrategy
+        cls:DealStrategyClass = PavlicekDealStrategy
     ) {
         this.signature = sig
         const dSig = new DealSignature([sig.handLength, sig.cards - sig.handLength])
