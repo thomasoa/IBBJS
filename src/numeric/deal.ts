@@ -193,12 +193,12 @@ class NumericDeal {
 }
 
 /**
- * A BookStrategy is a way of converting deals into indexes.
+ * A DealStrategy is a way of converting deals into indexes.
  * 
  * The 'page numbers' start from zero and end at the number of
  * pages minus 1, as computed by the DealSignature.
  */
-interface BookStrategy {
+interface DealStrategy {
     readonly signature: DealSignature;
     readonly pages: PageNumber;
     readonly lastPage: PageNumber;
@@ -221,6 +221,6 @@ const bridgeHandSignature = new HandSignature(13,52)
 export {
     DealSignature, HandSignature, NumericDeal, // classes
     bridgeSignature, bridgeHandSignature,      // constant
-    BookStrategy, HandStrategy,                // interfaces
+    DealStrategy, HandStrategy,                // interfaces
     CardNumber, SeatNumber, PageNumber, HandArray // types
 }

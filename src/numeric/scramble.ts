@@ -1,6 +1,6 @@
 // A crude way to create scrambled deal strategies
 import { modular_inverse, safe_mod} from "./modinverse.js";
-import { BookStrategy, PageNumber, NumericDeal, DealSignature} from "./deal.js";
+import { DealStrategy, PageNumber, NumericDeal, DealSignature} from "./deal.js";
 
 type PageTransform = (pageNo:PageNumber) => PageNumber;
 
@@ -21,10 +21,10 @@ class MultiplierScrambler {
 }
 
 class ScrambleStrategy {
-    base:BookStrategy;
+    base:DealStrategy;
     scrambler:Scrambler;
     
-    constructor(baseStrategy:BookStrategy, scrambler:Scrambler) {
+    constructor(baseStrategy:DealStrategy, scrambler:Scrambler) {
         this.base = baseStrategy
         this.scrambler = scrambler
     }
@@ -44,7 +44,7 @@ class ScrambleStrategy {
     }
 }
 
-function scramble_book(base:BookStrategy,multiplier:bigint,translate:bigint):BookStrategy {
+function scramble_book(base:DealStrategy,multiplier:bigint,translate:bigint):DealStrategy {
     var scrambler = new MultiplierScrambler(base.signature.pages,multiplier,translate)
     return new ScrambleStrategy(base,scrambler)
 }

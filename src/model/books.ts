@@ -1,6 +1,6 @@
 import { BridgeBook, SimpleBijection, Deal, Seat, Seats } from "../bridge/index.js"
 import {
-    BookStrategy,
+    DealStrategy,
     AndrewsDealStrategy,
     PavlicekDealStrategy,
     scramble_book,
@@ -23,7 +23,7 @@ interface Edition {
 }
 
 function edition(book: BridgeBook, scrambler: Scrambler): Edition {
-    const scrambledStrat: BookStrategy = new ScrambleStrategy(book.strategy, scrambler)
+    const scrambledStrat: DealStrategy = new ScrambleStrategy(book.strategy, scrambler)
     const scrambled = new BridgeBook(scrambledStrat, book.seatBijection, book.cardBijection)
     return { normal: book, scrambled: scrambled }
 }

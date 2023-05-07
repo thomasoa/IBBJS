@@ -1,5 +1,5 @@
 import {Deck, Seat, Card}  from "./constants.js"
-import {BookStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index.js"
+import {DealStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index.js"
 import {Bijection, SimpleBijection, defaultBijectionCard, defaultBijectionSeat} from './bijection.js'
 import {Deal} from "./deal.js"
 
@@ -14,12 +14,12 @@ function validate_signature(signature:DealSignature):void {
 }
 
 class BridgeBook {
-    readonly strategy:BookStrategy
+    readonly strategy:DealStrategy
     readonly seatBijection:Bijection<Seat>
     readonly cardBijection:Bijection<Card>
 
     constructor(
-        strategy: BookStrategy,
+        strategy: DealStrategy,
         seatBijection:Bijection<Seat>=defaultBijectionSeat,
         cardBijection:Bijection<Card>=defaultBijectionCard
         ) {
