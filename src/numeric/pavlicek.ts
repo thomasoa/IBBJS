@@ -85,7 +85,7 @@ class Remaining {
     }
 }
 
-class PavlicekStrategy {
+class PavlicekDealStrategy {
     /**
     * Described here: http://www.rpbridge.net/7z68.htm
     */
@@ -120,7 +120,7 @@ class PavlicekStrategy {
     computePageNumber(deal: NumericDeal): PageNumber {
         this.signature.assertEqual(
             deal.signature,
-            'Mismatched signatures for Deal and PavlicekStrategy'
+            'Mismatched signatures for Deal and PavlicekDealStrategy'
         )
         var range = this.baseRange
         var remaining = new Remaining(deal.signature.perSeat, deal.signature.cards)
@@ -139,12 +139,12 @@ class PavlicekStrategy {
 
 class PavlicekHandStrategy {
     signature: HandSignature
-    pStrategy: PavlicekStrategy
+    pStrategy: PavlicekDealStrategy
 
     constructor(sig:HandSignature=bridgeHandSignature) {
         this.signature = sig
         const dSig = new DealSignature([sig.handLength, sig.cards - sig.handLength])
-        this.pStrategy = new PavlicekStrategy(dSig)
+        this.pStrategy = new PavlicekDealStrategy(dSig)
     }
 
     get pages():PageNumber {
@@ -178,4 +178,7 @@ class PavlicekHandStrategy {
     }
 }
 
-export { PavlicekStrategy, PavlicekHandStrategy }
+export {
+    PavlicekDealStrategy, PavlicekHandStrategy,
+    Range, Remaining // For testing only
+}

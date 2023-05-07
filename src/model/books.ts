@@ -2,7 +2,7 @@ import { BridgeBook, SimpleBijection, Deal, Seat, Seats } from "../bridge/index.
 import {
     BookStrategy,
     AndrewsStrategy,
-    PavlicekStrategy,
+    PavlicekDealStrategy,
     scramble_book,
     MultiplierScrambler,
     Scrambler,
@@ -29,7 +29,7 @@ function edition(book: BridgeBook, scrambler: Scrambler): Edition {
 }
 
 function pavlicekBook(): BridgeBook {
-    const strategy = new PavlicekStrategy()
+    const strategy = new PavlicekDealStrategy()
     return new BridgeBook(strategy)
 }
 

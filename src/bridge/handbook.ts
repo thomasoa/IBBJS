@@ -1,4 +1,4 @@
-import {DealSignature, PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekStrategy, SeatNumber, NumericDeal} from "../numeric/index.js"
+import {DealSignature, PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekDealStrategy, SeatNumber, NumericDeal} from "../numeric/index.js"
 import * as squashed from '../numeric/squashed.js'
 import {choose} from "../numeric/choose.js"
 
