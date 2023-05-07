@@ -1,7 +1,7 @@
 import {
-    DealSignature, NumericDeal,        // classes
-    bridgeSignature,                   // constant
-    CardNumber, SeatNumber, PageNumber // types
+    DealSignature, NumericDeal, HandSignature, // classes
+    bridgeSignature, bridgeHandSignature, // constant
+    CardNumber, SeatNumber, PageNumber, HandArray // types
 } from './deal.js'
 
 class Range {
@@ -137,4 +137,45 @@ class PavlicekStrategy {
 
 }
 
-export { PavlicekStrategy }
+class PavlicekHandStrategy {
+    signature: HandSignature
+    pStrategy: PavlicekStrategy
+
+    constructor(sig:HandSignature=bridgeHandSignature) {
+        this.signature = sig
+        const dSig = new DealSignature([sig.handLength, sig.cards - sig.handLength])
+        this.pStrategy = new PavlicekStrategy(dSig)
+    }
+
+    get pages():PageNumber {
+        return this.signature.pages
+    }
+
+    get lastPage():PageNumber {
+        return this.signature.lastPage
+    }
+
+    assertValidPage(pageNo:PageNumber, adjust:PageNumber = BigInt(0)) {
+        this.signature.assertValidPage(pageNo,adjust)
+    }
+
+    computePageContent(pageNo:PageNumber):HandArray {
+        this.assertValidPage(pageNo)
+        const rawDeal:NumericDeal = this.pStrategy.computePageContent(pageNo)
+        return rawDeal.hands[0]
+    }
+
+    computePageNumber(cards:HandArray):PageNumber {
+        var toWhom = new Array<SeatNumber>(this.signature.cards)
+        for (let i=0; i<this.signature.cards; i++) {
+            toWhom[i] = 1
+        }
+        cards.forEach((card) => {
+            toWhom[card] = 0
+        })
+        const deal = new NumericDeal(this.pStrategy.signature,toWhom)
+        return this.pStrategy.computePageNumber(deal)
+    }
+}
+
+export { PavlicekStrategy, PavlicekHandStrategy }

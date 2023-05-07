@@ -1,99 +1,48 @@
-import {DealSignature, PageNumber, PavlicekStrategy, SeatNumber, NumericDeal} from "../numeric/index.js"
+import {DealSignature, PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekStrategy, SeatNumber, NumericDeal} from "../numeric/index.js"
 import * as squashed from '../numeric/squashed.js'
 import {choose} from "../numeric/choose.js"
 
 import {Bijection, defaultBijectionCard} from './bijection.js'
 import {Card} from './constants.js'
 import {Hand} from "./deal.js" 
-    
-interface HandBook {
-    pages: bigint
-    lastPage: bigint
-    getHand(pageNo:PageNumber):Hand
-    getPageNumber(hand:Hand):PageNumber
+
+function assertBridgeHandStrategy(strategy: HandStrategy) {
+    const sig = strategy.signature
+    if (sig.handLength != 13 || sig.cards !=52) {
+        throw new TypeError('Invalid HandStrategy for hand with ' + sig.pages + ' cards from deck of ' + sig.cards)
+    }
 }
 
-class AndrewsHandBook {
+class HandBook {
     readonly cardBijection:Bijection<Card>
-    pages: bigint
-        
-    constructor(bijection:Bijection<Card>=defaultBijectionCard) {
+    readonly strategy: HandStrategy 
+
+    constructor(strategy:HandStrategy, bijection:Bijection<Card> = defaultBijectionCard) {
+        assertBridgeHandStrategy(strategy)
         this.cardBijection = bijection
-        this.pages = choose(52,13)
+        this.strategy = strategy
     }
 
-    get lastPage() {
-        return this.pages
-    }
-
-    assertValidPage(pageNo:PageNumber):void {
-        if (pageNo<BigInt(1) || pageNo > this.pages) {
-            throw new Error('Page out of bounds: '+pageNo)
-        }
-    }
+    get pages() { return this.strategy.pages }
+    get lastPage() { return this.pages }
 
     getHand(pageNo:PageNumber):Hand {
-        this.assertValidPage(pageNo)
+        const pageIndex = pageNo - BigInt(1)
+        console.log(this.strategy)
+        this.strategy.assertValidPage(pageIndex,BigInt(1))
         const bijection = this.cardBijection
-        const cards = squashed.decode(pageNo-BigInt(1),13).map(
+        const numericCards = this.strategy.computePageContent(pageNo-BigInt(1))
+        const cards = numericCards.map(
             (cardNum) => bijection.mapTo(cardNum) 
         )
-        return new Hand(cards)    
-    }
-
-    getPageNumber(hand:Hand):PageNumber {
-        const bijection = this.cardBijection
-        const sequence = hand.cards.map((c)=> bijection.mapFrom(c))
-        return squashed.encode(sequence)+BigInt(1)
-    }
-}
-
-class PavlicekHandBook {
-    strategy:PavlicekStrategy
-    cardBijection:Bijection<Card>
-        
-    constructor(bijection:Bijection<Card>=defaultBijectionCard) {
-        const signature = new DealSignature([13,39])
-        this.strategy = new PavlicekStrategy(signature)
-        this.cardBijection = bijection
-    }
-
-    get pages() {
-        return this.strategy.pages
-    }
-
-    get lastPage() {
-        return this.pages
-    }
-
-    assertValidPage(pageNo:PageNumber):void {
-        if (pageNo<BigInt(1) || pageNo > this.pages) {
-            throw new Error('Page out of bounds: '+pageNo)
-        }
-    }
-
-    getHand(pageNo:PageNumber):Hand {
-        this.assertValidPage(pageNo)
-        const bijection = this.cardBijection
-        const toWhom = this.strategy.computePageContent(pageNo-BigInt(1)).toWhom
-        const cards = new Array<Card>(13) 
-        toWhom.forEach((whom,cardNum) => {
-            if (whom===0) cards.push(bijection.mapTo(cardNum))
-        })
         return new Hand(cards)
     }
 
     getPageNumber(hand:Hand):PageNumber {
         const bijection = this.cardBijection
         const sequence = hand.cards.map((c)=> bijection.mapFrom(c))
-        const toWhom = new Array<SeatNumber>(52)
-        for (var i=0; i<52; i++) toWhom[i] = 1
-        sequence.forEach((cardNum) => {
-            toWhom[cardNum] = 0
-        })
-        const deal = new NumericDeal(this.strategy.signature, toWhom)
-        return BigInt(1) + this.strategy.computePageNumber(deal)
+        return this.strategy.computePageNumber(sequence)+BigInt(1)
     }
 }
 
-export { HandBook, AndrewsHandBook, PavlicekHandBook}
+export { HandBook}

@@ -1,5 +1,5 @@
 // Common numeric deal logic and types
-import { multinomial } from "./choose.js"
+import { multinomial, choose } from "./choose.js"
 
 type SeatNumber = number;
 type CardNumber = number;
@@ -95,6 +95,48 @@ class DealSignature {
     }
 }
 
+class HandSignature {
+    readonly handLength: number
+    readonly cards: number;
+    readonly pages:bigint;
+
+    constructor(handLength:number, deckLength:number) {
+        this.handLength = handLength
+        this.cards = deckLength
+        this.pages = choose(deckLength,handLength)
+    }
+
+    get lastPage():bigint { return this.pages - BigInt(1)}
+
+    assertValidCard(card:CardNumber) {
+        if (card<0 || card>= this.cards) { 
+            throw new TypeError('Invalid card number ' + card +', should be between 0 and '+(this.cards-1))
+        }
+    }
+
+    assertValidPage(pageNo:PageNumber,adjust:PageNumber = BigInt(0)):void {
+        if (pageNo<BigInt(0) || pageNo >= this.pages) {
+            throw new Error('Page out of bounds: '+ (pageNo+adjust))
+        }
+    }
+
+    assertValidHand(numbers:HandArray) {
+        if (numbers.length != this.handLength) {
+            throw new Error('Expected ' + this.handLength + ' cards, got '+ numbers.length)
+        }
+        let last = -1
+        for (let i=0; i< numbers.length; i++ ) {
+            const card = numbers[i]
+            if (card<=last) {
+                throw new TypeError('Expected sorted list of card numbers')
+            }
+            this.assertValidCard(card)
+            last = card
+        }
+        // TODO check cards are distinct
+    }
+}
+
 /**
  * A standard bridge signature - four seats, each seat getting 13 cards
  */
@@ -164,8 +206,21 @@ interface BookStrategy {
     computePageNumber(deal: NumericDeal): PageNumber;
 }
 
+interface HandStrategy {
+    readonly signature: HandSignature
+    readonly pages: PageNumber
+    readonly lastPage: PageNumber
+
+    assertValidPage(pageNo: PageNumber, adjust:PageNumber|undefined)
+    computePageContent(pageNo: PageNumber): HandArray
+    computePageNumber(cards:HandArray):PageNumber
+}
+
+const bridgeHandSignature = new HandSignature(13,52)
+
 export {
-    DealSignature, NumericDeal, //classes
-    bridgeSignature, // constant
-    BookStrategy, CardNumber, SeatNumber, PageNumber, HandArray // types
+    DealSignature, HandSignature, NumericDeal, // classes
+    bridgeSignature, bridgeHandSignature,      // constant
+    BookStrategy, HandStrategy,                // interfaces
+    CardNumber, SeatNumber, PageNumber, HandArray // types
 }

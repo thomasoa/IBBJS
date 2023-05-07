@@ -1,12 +1,14 @@
 //  An entirely numeric version of the book
 import {
-    bridgeSignature, CardNumber,            // constant
-    DealSignature, NumericDeal, // Classes
-    PageNumber,                  // typr
-    SeatNumber
+    bridgeSignature, bridgeHandSignature, // constant
+    DealSignature, HandSignature, NumericDeal, // Classes
+    PageNumber, CardNumber, 
+    SeatNumber, // types
+    HandArray
 } from "./deal.js"
 import { choose } from "./choose.js"
-import { decode, encode } from './squashed.js'
+import * as squashed from './squashed.js'
+import { OpaqueType } from "@babel/types";
 
 interface SeatFactor {
     // Represents a factor of the Andrews strategy
@@ -94,7 +96,7 @@ class SequenceBuilder {
     }
 }
 
-class AndrewsStrategy {
+class AndrewsDealStrategy {
     readonly signature: DealSignature;
     readonly factors: SeatFactor[];
 
@@ -131,7 +133,7 @@ class AndrewsStrategy {
         this.factors.forEach(
             (factor) => {
                 const builder = builders[factor.seat - 1]
-                const seqNo = encode(builder.sequence)
+                const seqNo = squashed.encode(builder.sequence)
                 sum += seqNo * factor.quotient
             }
         )
@@ -156,7 +158,7 @@ class AndrewsStrategy {
 
                 const seatIndex: bigint = pageNo / factor.quotient
                 pageNo = pageNo % factor.quotient
-                const sequence: number[] = decode(seatIndex, factor.cards)
+                const sequence: number[] = squashed.decode(seatIndex, factor.cards)
                 indices = updateSequence(factor.seat, sequence, toWhom, indices)
 
             }
@@ -164,6 +166,39 @@ class AndrewsStrategy {
         return new NumericDeal(this.signature, toWhom)
     }
 }
+const AndrewsStrategy = AndrewsDealStrategy
 
 
-export { AndrewsStrategy, SequenceBuilder }
+class AndrewsHandStrategy {
+    readonly signature: HandSignature
+    constructor(sig:HandSignature = bridgeHandSignature) {
+        this.signature = sig
+    }
+
+    get pages() { return this.signature.pages }
+    get lastPage() { return this.signature.lastPage }
+
+    assertValidPage(pageNo:PageNumber, adjust: PageNumber = BigInt(0)) {
+        this.signature.assertValidPage(pageNo,adjust)
+    }
+
+    computePageContent(pageNo:PageNumber):HandArray {
+        this.assertValidPage(pageNo)
+        const result = squashed.decode(pageNo,this.signature.handLength)
+        console.log(this.signature.handLength , result)
+        return result
+    }
+
+    computePageNumber(cards:HandArray):PageNumber {
+        this.signature.assertValidHand(cards)
+        return squashed.encode(cards)
+    }
+
+}
+
+export { 
+    AndrewsDealStrategy, 
+    AndrewsStrategy,
+    AndrewsHandStrategy,
+    SequenceBuilder /* only for unit tests */
+}

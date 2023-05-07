@@ -67,6 +67,14 @@ test('Check computePageNumber with unmatching signatures', () => {
   expect(() => pBook.computePageNumber(deal)).toThrow()
 })
 
+test('First Hand page is [0,1,2], last is [3,4,5]', ()=>{
+  const sig = new numDeal.HandSignature(3,6)
+  const pBook = new pavlicek.PavlicekHandStrategy(sig)
+
+  expect(pBook.computePageContent(BigInt(0))).toEqual([0,1,2])
+  expect(pBook.computePageContent(pBook.lastPage)).toEqual([3,4,5])
+})
+
 
 
 

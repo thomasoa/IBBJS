@@ -58,3 +58,28 @@ test('DealSignature.toString', () => {
     var defSig = new numDeal.DealSignature([13, 13, 13, 13])
     expect(defSig.toString()).toBe('DealSignature(13,13,13,13)')
 })
+
+test('HandSignature.pages',() => {
+    expect(new numDeal.HandSignature(2,5).pages).toBe(BigInt(10))
+    expect(new numDeal.HandSignature(6,5).pages).toBe(BigInt(0))
+})
+
+test('HandSignature.assertValidPage',() => {
+    const strategy = new numDeal.HandSignature(2,5)
+    expect(strategy.assertValidPage(BigInt(0))).toBeUndefined()
+    expect(strategy.assertValidPage(BigInt(9))).toBeUndefined()
+    expect(() => strategy.assertValidPage(BigInt(10))).toThrow()
+    expect(() => strategy.assertValidPage(BigInt(-1))).toThrow()
+})
+
+test('HandSignature.assertValidHand',() => {
+    const strategy = new numDeal.HandSignature(2,5)
+    expect(strategy.assertValidHand([0,4])).toBeUndefined()
+    expect(() => strategy.assertValidHand([1])).toThrow()
+    expect(() => strategy.assertValidHand([2,3,4])).toThrow()
+    expect(() => strategy.assertValidHand([0,5])).toThrow()
+    expect(() => strategy.assertValidHand([-1,4])).toThrow()
+    expect(() => strategy.assertValidHand([4,0])).toThrow()
+})
+
+
