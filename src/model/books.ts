@@ -1,15 +1,14 @@
-import { BridgeBook, SimpleBijection, Deal, Seat, Seats } from "../bridge/index.js"
+import { BridgeBook, SimpleBijection, Deal, Seat, Seats } from "../bridge/index"
 import {
     DealStrategy,
     AndrewsDealStrategy,
     PavlicekDealStrategy,
-    scramble_book,
     MultiplierScrambler,
     Scrambler,
     bridgeSignature,
     ScrambleStrategy,
     PageNumber
-} from "../numeric/index.js"
+} from "../numeric/index"
 
 function common_scrambler(): Scrambler {
     const multiplier = BigInt("13109994191499930367061460371")

@@ -1,4 +1,4 @@
-import { Application } from "../dest/model/application.js"
+import { Application } from "../src/model/application"
 
 test("Model has editions 'Andrews' and 'Pavlicek'", () => {
     var model = new Application()

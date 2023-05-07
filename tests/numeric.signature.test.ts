@@ -1,5 +1,5 @@
-import * as numDeal from '../dest/numeric/deal.js'
-import * as choose from '../dest/numeric/choose.js'
+import * as numDeal from '../src/numeric/deal'
+import * as choose from '../src/numeric/choose'
 
 
 

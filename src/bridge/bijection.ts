@@ -1,4 +1,4 @@
-import {Deck, Seats, Seat, Card}  from "./constants.js"
+import {Deck, Seats, Seat, Card}  from "./constants"
 
 interface OrderedType {
     order:number

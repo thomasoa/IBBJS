@@ -1,4 +1,4 @@
-import {Deck, Seats, Seat, Card, Rank, Suit} from "./constants.js"
+import {Deck, Seats, Seat, Card, Rank, Suit} from "./constants"
 
 class Holding {
     readonly ranks: Array<Rank>

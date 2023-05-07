@@ -1,6 +1,6 @@
-import * as pavlicek from '../dest/numeric/pavlicek.js'
-import {AndrewsDealStrategy} from '../dest/numeric/andrews.js'
-import * as numDeal from '../dest/numeric/deal.js'
+import * as pavlicek from '../src/numeric/pavlicek'
+import {AndrewsDealStrategy} from '../src/numeric/andrews'
+import * as numDeal from '../src/numeric/deal'
 
 
 function signature1234() {
@@ -55,8 +55,8 @@ test('Out of bounds page number', () => {
   var sig = new numDeal.DealSignature([2, 2, 2, 2]) // 2520 pages
 
   var pBook = new pavlicek.PavlicekDealStrategy(sig)
-  expect(() => pBook.computePageContent(pBook.lastPage + 1)).toThrow()
-  expect(() => pBook.computePageContent(new BigInt(-1))).toThrow()
+  expect(() => pBook.computePageContent(pBook.lastPage + BigInt(1))).toThrow()
+  expect(() => pBook.computePageContent(BigInt(-1))).toThrow()
 
 })
 

@@ -1,4 +1,4 @@
-import { Seats, Deck } from "../dest/bridge/constants.js"
+import { Seats, Deck } from "../src/bridge/constants"
 
 test("Ensure the sizes are right", () => {
     expect(Seats.all.length).toBe(4)

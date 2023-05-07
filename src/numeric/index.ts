@@ -4,10 +4,10 @@ import {
     DealSignature, DealStrategy,  HandStrategy, NumericDeal,
     PageNumber, CardNumber, SeatNumber,
     bridgeSignature
-} from "./deal.js"
-import { AndrewsDealStrategy, AndrewsHandStrategy } from "./andrews.js"
-import { PavlicekDealStrategy, PavlicekHandStrategy } from "./pavlicek.js"
-import { scramble_book, MultiplierScrambler, Scrambler, ScrambleStrategy } from "./scramble.js"
+} from "./deal"
+import { AndrewsDealStrategy, AndrewsHandStrategy } from "./andrews"
+import { PavlicekDealStrategy, PavlicekHandStrategy } from "./pavlicek"
+import { scramble_book, MultiplierScrambler, Scrambler, ScrambleStrategy } from "./scramble"
 
 export {
     DealSignature, NumericDeal,

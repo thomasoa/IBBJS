@@ -1,4 +1,4 @@
-import * as  numDeal from '../dest/numeric/deal.js'
+import * as  numDeal from '../src/numeric/deal'
 
 test('NumericDeal: Check hands for valid deal', () => {
     var sig = new numDeal.DealSignature([3, 3])

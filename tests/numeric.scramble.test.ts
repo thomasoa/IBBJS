@@ -1,6 +1,6 @@
-import { MultiplierScrambler, scramble_book } from '../dest/numeric/scramble.js'
-import { AndrewsDealStrategy } from '../dest/numeric/andrews.js'
-import { DealSignature } from '../dest/numeric/deal.js'
+import { MultiplierScrambler, scramble_book } from '../src/numeric/scramble'
+import { AndrewsDealStrategy } from '../src/numeric/andrews'
+import { DealSignature } from '../src/numeric/deal'
 
 test('Multiplier scrambler', () => {
     var modulus = BigInt(11)

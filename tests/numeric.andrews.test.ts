@@ -1,5 +1,5 @@
-import * as andrews from '../dest/numeric/andrews.js'
-import * as  Deal from '../dest/numeric/deal.js'
+import * as andrews from '../src/numeric/andrews'
+import * as  Deal from '../src/numeric/deal'
 
 function signature1234() {
   // dommon signature for these tests
