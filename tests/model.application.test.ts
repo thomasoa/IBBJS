@@ -1,4 +1,4 @@
-import { Application } from "../dest/model/application.js"
+import { Application, NewCurrentDealEvent } from "../src/model/application"
 
 test("Model has editions 'Andrews' and 'Pavlicek'", () => {
     var model = new Application()
@@ -11,7 +11,7 @@ test("Model has editions 'Andrews' and 'Pavlicek'", () => {
 test('Application throws errors when calling currentDeal() after reset',() => { 
     var app = new Application()
     app.reset()
-    expect(() => app.currentDeal()).toThrow()
+    expect(() => app.currentDeal).toThrow()
 })
 
 test("Application findDeal", () => {
@@ -19,13 +19,14 @@ test("Application findDeal", () => {
     app.findDeal("Andrews", false, BigInt(1))
     var foundDeal = app.deal(0)
     expect(foundDeal.edition).toBe('Andrews')
-    expect(foundDeal.scramble).toBeFalsy()
+    expect(foundDeal.scrambled).toBeFalsy()
     expect(foundDeal.pageNo.toString()).toBe("1")
 })
 
 test("Application findDeal callbacks", () => {
     var app = new Application()
-    var state = { count: 1000, current: 1000, deal: 1 }
+    type State = { count: number, current:number|undefined, deal: NewCurrentDealEvent|undefined}
+    var state: State = { count: 1000, current: 1000, deal: undefined }
     app.listenDealCount((count) => {
         state.count = count
     })
@@ -51,44 +52,52 @@ test("Application findDeal callbacks", () => {
     app.findDeal("Andrews", false, BigInt(1))
     expect(state.count).toBe(1)
     expect(state.current).toBe(0)
-    expect(state.deal.edition).toBe("Andrews")
-    expect(state.deal.scrambled).toBeFalsy()
-    expect(state.deal.pageNo.toString()).toBe("1")
+    expect(state.deal).toBeDefined()
+    expect(state.deal && state.deal.edition).toBe("Andrews")
+    expect(state.deal && state.deal.scrambled).toBeFalsy()
+    expect(state.deal && state.deal.pageNo.toString()).toBe("1")
 
     app.findDeals("Andrews", true, [BigInt(4), BigInt(5)])
     expect(state.count).toBe(3)
     expect(state.current).toBe(1)
-    expect(state.deal.edition).toBe("Andrews")
-    expect(state.deal.scrambled).toBeTruthy()
-    expect(state.deal.pageNo.toString()).toBe("4")
+
+    expect(state.deal && state.deal.edition).toBe("Andrews")
+    expect(state.deal && state.deal.scrambled).toBeTruthy()
+    expect(state.deal && state.deal.pageNo.toString()).toBe("4")
 
     app.nextDeal()
     expect(state.count).toBe(3)
     expect(state.current).toBe(2)
-    expect(state.deal.edition).toBe("Andrews")
-    expect(state.deal.scrambled).toBeTruthy()
-    expect(state.deal.pageNo.toString()).toBe("5")
+    expect(state.deal).toBeDefined()
+    if (state.deal) {
+        expect(state.deal.edition).toBe("Andrews")
+        expect(state.deal.scrambled).toBeTruthy()
+        expect(state.deal.pageNo.toString()).toBe("5")
+    }
 
     app.previousDeal()
     expect(state.count).toBe(3)
     expect(state.current).toBe(1)
-    expect(state.deal.edition).toBe("Andrews")
-    expect(state.deal.scrambled).toBeTruthy()
-    expect(state.deal.pageNo.toString()).toBe("4")
+    expect(state.deal).toBeDefined()
+    if (state.deal) {
+        expect(state.deal.edition).toBe("Andrews")
+        expect(state.deal.scrambled).toBeTruthy()
+        expect(state.deal.pageNo.toString()).toBe("4")
+    }
 
     state.count = -1
     state.current = -2
-    state.deal = -3
+    state.deal = undefined
     app.findDeals("Andrews", false, [])
     expect(state.count).toBe(-1)
     expect(state.current).toBe(-2)
-    expect(state.deal).toBe(-3)
+    expect(state.deal).toBeUndefined()
 })
 
 test("Exceptions with nextPage and previousPage", () => {
     var app = new Application()
     // Empty app at start cannot go to next or previous
-    expect(() => app.nextPage()).toThrow()
+    expect(() => app.nextDeal()).toThrow()
     expect(() => app.previousDeal()).toThrow()
     app.findDeals("Pavlicek", false, [BigInt(10), BigInt(10000)])
     expect(() => app.previousDeal()).toThrow()
@@ -97,18 +106,21 @@ test("Exceptions with nextPage and previousPage", () => {
 })
 
 test('chooseCurrent usages', () => {
-    var app = new Application()
-    var currentEvent = undefined
+    let app = new Application()
+    let currentEvent:NewCurrentDealEvent|undefined = undefined
     app.listenCurrentDeal((event) => {
         currentEvent = event
     })
+
+    app.listenReset(() => { currentEvent = undefined })
+    app.reset()
     expect(() => app.chooseCurrent(0)).toThrow()
     expect(() => app.chooseCurrent(-1)).toThrow()
     app.findDeals("Pavlicek", false, [BigInt(1), BigInt(10)])
     app.chooseCurrent(1)
-    expect(currentEvent.pageNo).toBe(BigInt(10))
+    expect(currentEvent && (currentEvent.pageNo)).toBe(BigInt(10))
     app.chooseCurrent(0)
-    expect(currentEvent.pageNo).toBe(BigInt(1))
+    expect(currentEvent && (currentEvent.pageNo)).toBe(BigInt(1))
     expect(() => app.chooseCurrent(2)).toThrow()
     expect(() => app.chooseCurrent(-1)).toThrow()
 

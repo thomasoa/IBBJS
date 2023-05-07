@@ -5,9 +5,9 @@ import {
     PageNumber, CardNumber, 
     SeatNumber, // types
     HandArray
-} from "./deal.js"
-import { choose } from "./choose.js"
-import * as squashed from './squashed.js'
+} from "./deal"
+import { choose } from "./choose"
+import * as squashed from './squashed'
 import { OpaqueType } from "@babel/types";
 
 interface SeatFactor {

@@ -1,6 +1,6 @@
 // A crude way to create scrambled deal strategies
-import { modular_inverse, safe_mod} from "./modinverse.js";
-import { DealStrategy, PageNumber, NumericDeal, DealSignature} from "./deal.js";
+import { modular_inverse, safe_mod} from "./modinverse";
+import { DealStrategy, PageNumber, NumericDeal, DealSignature} from "./deal";
 
 type PageTransform = (pageNo:PageNumber) => PageNumber;
 

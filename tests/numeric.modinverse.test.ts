@@ -1,4 +1,4 @@
-import { modular_inverse, safe_mod, long_gcd } from '../dest/numeric/modinverse.js'
+import { modular_inverse, safe_mod, long_gcd } from '../src/numeric/modinverse'
 
 function int_mod_inverse(m, n) {
     var value = modular_inverse(BigInt(m), BigInt(n))
@@ -37,7 +37,7 @@ test('Inverse of 3 modulo 7', () => {
 })
 
 test('Expect error when unit is divisible by modulus', () => {
-    expect(() => mod_inverse(7, 14)).toThrow()
+    expect(() => modular_inverse(7, 14)).toThrow()
 })
 
 test('Expect throw when unit is not relatively prime to modulus', () => {

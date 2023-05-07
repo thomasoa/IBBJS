@@ -1,5 +1,5 @@
-import { BookSet } from "../dest/model/books.js"
-import { bridgeSignature } from "../dest/numeric/index.js"
+import { BookSet } from "../src/model/books"
+import { bridgeSignature } from "../src/numeric/index"
 
 test('Ensure books exist for all names', () => {
     var bookSet = new BookSet()

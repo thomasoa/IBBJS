@@ -1,6 +1,6 @@
-import {BookSet} from "./books.js"
-import {Deal} from "../bridge/deal.js"
-import {PageNumber} from "../numeric/deal.js"
+import {BookSet} from "./books"
+import {Deal} from "../bridge/deal"
+import {PageNumber} from "../numeric/deal"
 
 
 /**
@@ -209,4 +209,4 @@ class Application {
     }
 }
             
-export {Application}
+export {Application, NewCurrentDealEvent}

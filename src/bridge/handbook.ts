@@ -1,10 +1,11 @@
-import {DealSignature, PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekDealStrategy, SeatNumber, NumericDeal} from "../numeric/index.js"
-import * as squashed from '../numeric/squashed.js'
-import {choose} from "../numeric/choose.js"
+import { PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekDealStrategy, SeatNumber, NumericDeal} 
+from "../numeric/index"
+import * as squashed from '../numeric/squashed'
+import {choose} from "../numeric/choose"
 
-import {Bijection, defaultBijectionCard} from './bijection.js'
-import {Card} from './constants.js'
-import {Hand} from "./deal.js" 
+import {Bijection, defaultBijectionCard} from './bijection'
+import {Card} from './constants'
+import {Hand} from "./deal" 
 
 function assertBridgeHandStrategy(strategy: HandStrategy) {
     const sig = strategy.signature

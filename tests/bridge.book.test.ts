@@ -1,6 +1,6 @@
-import * as Books from "../dest/bridge/book.js"
-import {Deck, Seats } from "../dest/bridge/constants.js"
-import { PavlicekDealStrategy, AndrewsDealStrategy, DealSignature } from "../dest/numeric/index.js"
+import * as Books from "../src/bridge/book"
+import {Deck, Seats } from "../src/bridge/constants"
+import { PavlicekDealStrategy, AndrewsDealStrategy, DealSignature } from "../src/numeric/index"
 
 test("Book constructor", () => {
     var book = new Books.BridgeBook(new PavlicekDealStrategy())

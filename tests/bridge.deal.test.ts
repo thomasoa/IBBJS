@@ -1,5 +1,5 @@
-import * as d from "../dest/bridge/deal.js"
-import { Deck, Seats} from "../dest/bridge/constants.js"
+import * as d from "../src/bridge/deal"
+import { Deck, Seats} from "../src/bridge/constants"
 
 test("Holding void", () => {
    var holding = new d.Holding(new Array(0))

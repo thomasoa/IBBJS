@@ -2,7 +2,7 @@ import {
     DealSignature, NumericDeal, HandSignature, // classes
     bridgeSignature, bridgeHandSignature, // constant
     CardNumber, SeatNumber, PageNumber, HandArray, DealStrategy // types
-} from './deal.js'
+} from './deal'
 
 class Range {
     /**

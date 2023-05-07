@@ -1,7 +1,7 @@
-import {Deck, Seat, Card}  from "./constants.js"
-import {DealStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index.js"
-import {Bijection, SimpleBijection, defaultBijectionCard, defaultBijectionSeat} from './bijection.js'
-import {Deal} from "./deal.js"
+import {Deck, Seat, Card}  from "./constants"
+import {DealStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index"
+import {Bijection, SimpleBijection, defaultBijectionCard, defaultBijectionSeat} from './bijection'
+import {Deal} from "./deal"
 
 interface OrderedType {
     order:number

@@ -1,6 +1,6 @@
-import {Seats,Deck, Seat, Suit, Rank, Card} from "./constants.js"
-import  {BridgeBook, SimpleBijection} from "./book.js"
-import {Deal, Hand, Holding} from "./deal.js"
+import {Seats,Deck, Seat, Suit, Rank, Card} from "./constants"
+import  {BridgeBook, SimpleBijection} from "./book"
+import {Deal, Hand, Holding} from "./deal"
 
 export {
     Seats,Deck, Seat, Suit, Rank, Card,

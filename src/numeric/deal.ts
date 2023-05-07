@@ -1,5 +1,5 @@
 // Common numeric deal logic and types
-import { multinomial, choose } from "./choose.js"
+import { multinomial, choose } from "./choose"
 
 type SeatNumber = number;
 type CardNumber = number;
