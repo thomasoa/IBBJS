@@ -183,7 +183,6 @@ class AndrewsHandStrategy {
     computePageContent(pageNo:PageNumber):HandArray {
         this.assertValidPage(pageNo)
         const result = squashed.decode(pageNo,this.signature.handLength)
-        console.log(this.signature.handLength , result)
         return result
     }
 
