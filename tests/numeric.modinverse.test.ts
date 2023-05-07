@@ -37,7 +37,7 @@ test('Inverse of 3 modulo 7', () => {
 })
 
 test('Expect error when unit is divisible by modulus', () => {
-    expect(() => modular_inverse(7, 14)).toThrow()
+    expect(() => int_mod_inverse(7, 14)).toThrow()
 })
 
 test('Expect throw when unit is not relatively prime to modulus', () => {
