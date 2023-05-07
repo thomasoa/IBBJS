@@ -209,4 +209,4 @@ class Application {
     }
 }
             
-export {Application}
+export {Application, NewCurrentDealEvent}

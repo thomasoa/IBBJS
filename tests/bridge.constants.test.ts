@@ -103,6 +103,6 @@ test('Rank.of()',()=>{
 
 test('Objects should be frozen', ()=> {
     expect(() => { Seats.all = [] }).toThrow()
-    expect(() => { Seats.north = undefined }).toThrow()
+    expect(() => { Seats.north = { name:'foo', letter:'f', order:999 } }).toThrow()
     expect(() => { Seats.north.order = 10 }).toThrow()
 })
