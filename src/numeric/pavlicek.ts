@@ -137,7 +137,7 @@ class PavlicekDealStrategy {
 
 }
 
-type DealStrategyClass = { new(HandSignature):DealStrategy }
+type DealStrategyClass = new(HandSignature) => DealStrategy 
 
 class PavlicekHandStrategy {
     signature: HandSignature
