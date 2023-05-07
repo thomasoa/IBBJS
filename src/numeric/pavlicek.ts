@@ -137,48 +137,48 @@ class PavlicekDealStrategy {
 
 }
 
-type DealStrategyClass = new(HandSignature) => DealStrategy 
+type DealStrategyClass = new (HandSignature) => DealStrategy
 
 class PavlicekHandStrategy {
     signature: HandSignature
     pStrategy: DealStrategy
 
     constructor(
-        sig:HandSignature=bridgeHandSignature, 
-        cls:DealStrategyClass = PavlicekDealStrategy
+        sig: HandSignature = bridgeHandSignature,
+        cls: DealStrategyClass = PavlicekDealStrategy
     ) {
         this.signature = sig
         const dSig = new DealSignature([sig.handLength, sig.cards - sig.handLength])
         this.pStrategy = new cls(dSig)
     }
 
-    get pages():PageNumber {
+    get pages(): PageNumber {
         return this.signature.pages
     }
 
-    get lastPage():PageNumber {
+    get lastPage(): PageNumber {
         return this.signature.lastPage
     }
 
-    assertValidPage(pageNo:PageNumber, adjust:PageNumber = BigInt(0)) {
-        this.signature.assertValidPage(pageNo,adjust)
+    assertValidPage(pageNo: PageNumber, adjust: PageNumber = BigInt(0)) {
+        this.signature.assertValidPage(pageNo, adjust)
     }
 
-    computePageContent(pageNo:PageNumber):HandArray {
+    computePageContent(pageNo: PageNumber): HandArray {
         this.assertValidPage(pageNo)
-        const rawDeal:NumericDeal = this.pStrategy.computePageContent(pageNo)
+        const rawDeal: NumericDeal = this.pStrategy.computePageContent(pageNo)
         return rawDeal.hands[0]
     }
 
-    computePageNumber(cards:HandArray):PageNumber {
+    computePageNumber(cards: HandArray): PageNumber {
         var toWhom = new Array<SeatNumber>(this.signature.cards)
-        for (let i=0; i<this.signature.cards; i++) {
+        for (let i = 0; i < this.signature.cards; i++) {
             toWhom[i] = 1
         }
         cards.forEach((card) => {
             toWhom[card] = 0
         })
-        const deal = new NumericDeal(this.pStrategy.signature,toWhom)
+        const deal = new NumericDeal(this.pStrategy.signature, toWhom)
         return this.pStrategy.computePageNumber(deal)
     }
 }
