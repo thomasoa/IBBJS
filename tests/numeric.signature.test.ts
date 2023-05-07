@@ -1,7 +1,4 @@
 import * as numDeal from '../src/numeric/deal'
-import * as choose from '../src/numeric/choose'
-
-
 
 test("deal signature constructor",
   () => {
@@ -18,6 +15,11 @@ test("deal signature constructor",
 test("deal signature for four player Texas Hold'em", () => {
   var sig = new numDeal.DealSignature([39 /* undealt*/, 2, 2, 2, 2, 3 /* flop */, 1, 1])
   expect(sig.cards).toBe(52)
-  // console.log(sig.pages.toString())
   expect(sig.pages).toBe(BigInt("41190027540742080000"))
+})
+
+test('HandSignature', ()=>{
+  var sig = new numDeal.HandSignature(3,7)
+  expect(sig.pages).toBe(BigInt(35))
+  expect(sig.lastPage).toBe(BigInt(34))
 })

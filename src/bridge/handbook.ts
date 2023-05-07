@@ -29,7 +29,6 @@ class HandBook {
 
     getHand(pageNo:PageNumber):Hand {
         const pageIndex = pageNo - BigInt(1)
-        console.log(this.strategy)
         this.strategy.assertValidPage(pageIndex,BigInt(1))
         const bijection = this.cardBijection
         const numericCards = this.strategy.computePageContent(pageNo-BigInt(1))
