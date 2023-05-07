@@ -1,5 +1,5 @@
-const pavlicek = require('../dest/numeric/pavlicek.js')
-const numDeal = require('../dest/numeric/deal.js')
+import * as pavlicek from '../dest/numeric/pavlicek.js'
+import * as numDeal from '../dest/numeric/deal.js'
 
 
 function signature1234() {

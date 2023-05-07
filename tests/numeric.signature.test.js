@@ -1,5 +1,5 @@
-const numDeal = require('../dest/numeric/deal.js')
-const choose = require('../dest/numeric/choose.js')
+import * as numDeal from '../dest/numeric/deal.js'
+import * as choose from '../dest/numeric/choose.js'
 
 
 

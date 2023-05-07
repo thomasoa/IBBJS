@@ -1,5 +1,5 @@
-var squashed = require('../dest/numeric/squashed.js')
-var choose = require('../dest/numeric/choose.js')
+import * as squashed from '../dest/numeric/squashed.js'
+import * as choose from '../dest/numeric/choose.js'
 
 test('encode 0,1,2,3,4', () => {
   expect(squashed.encode([0, 1, 2, 3, 4])).toBe(BigInt(0));
