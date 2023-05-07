@@ -1,7 +1,7 @@
 import {
     DealSignature, NumericDeal, HandSignature, // classes
     bridgeSignature, bridgeHandSignature, // constant
-    CardNumber, SeatNumber, PageNumber, HandArray // types
+    CardNumber, SeatNumber, PageNumber, HandArray, DealStrategy // types
 } from './deal.js'
 
 class Range {
@@ -139,12 +139,15 @@ class PavlicekDealStrategy {
 
 class PavlicekHandStrategy {
     signature: HandSignature
-    pStrategy: PavlicekDealStrategy
+    pStrategy: DealStrategy
 
-    constructor(sig:HandSignature=bridgeHandSignature) {
+    constructor(
+        sig:HandSignature=bridgeHandSignature, 
+        cls:{ new(HandSignature):DealStrategy } = PavlicekDealStrategy
+    ) {
         this.signature = sig
         const dSig = new DealSignature([sig.handLength, sig.cards - sig.handLength])
-        this.pStrategy = new PavlicekDealStrategy(dSig)
+        this.pStrategy = new cls(dSig)
     }
 
     get pages():PageNumber {

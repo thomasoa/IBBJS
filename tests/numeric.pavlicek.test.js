@@ -1,4 +1,5 @@
 import * as pavlicek from '../dest/numeric/pavlicek.js'
+import {AndrewsDealStrategy} from '../dest/numeric/andrews.js'
 import * as numDeal from '../dest/numeric/deal.js'
 
 
@@ -73,6 +74,26 @@ test('First Hand page is [0,1,2], last is [3,4,5]', ()=>{
 
   expect(pBook.computePageContent(BigInt(0))).toEqual([0,1,2])
   expect(pBook.computePageContent(pBook.lastPage)).toEqual([3,4,5])
+
+  for (var pageNo = BigInt(0); pageNo<pBook.pages; pageNo++) {
+    var cardsTo = pBook.computePageContent(pageNo)
+    var reversed = pBook.computePageNumber(cardsTo)
+    expect(reversed).toBe(pageNo)
+  }
+})
+
+test('AndrewsDealStrategy with PavlicekHandStrategy',()=> {
+  const sig = new numDeal.HandSignature(3,6)
+  const pBook = new pavlicek.PavlicekHandStrategy(sig, AndrewsDealStrategy)
+
+  expect(pBook.computePageContent(BigInt(0))).toEqual([3,4,5])
+  expect(pBook.computePageContent(pBook.lastPage)).toEqual([0,1,2])
+
+  for (var pageNo = BigInt(0); pageNo<pBook.pages; pageNo++) {
+    var cardsTo = pBook.computePageContent(pageNo)
+    var reversed = pBook.computePageNumber(cardsTo)
+    expect(reversed).toBe(pageNo)
+  }
 })
 
 
