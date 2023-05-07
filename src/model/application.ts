@@ -19,12 +19,14 @@ interface NewCurrentDealEvent {
 /* 
 * Callbacks for two event types.
 */
-type NewCurrentDealCalllback = (dealEvent:NewCurrentDealEvent|undefined)=> void
+type NewCurrentDealCalllback = (dealEvent:NewCurrentDealEvent)=> void
 type DealCountCallback = (count:number)=>void
 
 interface AppCallbacks {
     updateCurrentDeal: Array<NewCurrentDealCalllback>
     updateDealCount: Array<DealCountCallback>
+    applicationReset: Array<() => void >
+    
 }
 
 class Application {
@@ -67,7 +69,8 @@ class Application {
         this.deals = new Array<NewCurrentDealEvent>()
         this.callbacks = {
             updateCurrentDeal: new Array<NewCurrentDealCalllback>(),
-            updateDealCount: new Array<(count:number)=>void>()
+            updateDealCount: new Array<(count:number)=>void>(),
+            applicationReset: new Array<() => void>()
         }
     }
     
@@ -161,8 +164,7 @@ class Application {
             
     reset():void {
         this.deals = new Array<NewCurrentDealEvent>(0)
-        this.updateCount()
-        this.updateCurrent(-1)
+        this.callbacks.applicationReset.forEach((callback => {callback()}))
     }
             
     listenCurrentDeal(callback:NewCurrentDealCalllback):void {
@@ -172,15 +174,19 @@ class Application {
     listenDealCount(callback:DealCountCallback):void {
         this.callbacks.updateDealCount.push(callback)
     }
+
+    listenReset(callback:()=> void) {
+        this.callbacks.applicationReset.push(callback)
+    }
             
-    get currentDeal():NewCurrentDealEvent|undefined {
+    get currentDeal():NewCurrentDealEvent {
         if (this.currentIndex>=0) {
             const deal = this.deals[this.currentIndex]
             deal.index = this.currentIndex
             deal.count = this.length
             return deal
         }
-        return undefined
+        throw new Error('No current deak') 
     }
             
     private currentDealCallBacks():void {

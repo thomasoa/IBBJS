@@ -8,6 +8,12 @@ test("Model has editions 'Andrews' and 'Pavlicek'", () => {
     expect(editions.length).toBe(2)
 })
 
+test('Application throws errors when calling currentDeal() after reset',() => { 
+    var app = new Application()
+    app.reset()
+    expect(() => app.currentDeal()).toThrow()
+})
+
 test("Application findDeal", () => {
     var app = new Application()
     app.findDeal("Andrews", false, BigInt(1))
@@ -32,9 +38,14 @@ test("Application findDeal callbacks", () => {
             state.deal = undefined
         }
     })
+    app.listenReset(() => {
+        state.count = 0
+        state.deal = undefined
+        state.current = -1
+    })
     app.reset()
     expect(state.count).toBe(0)
-    expect(state.current).toBeUndefined()
+    expect(state.current).toBe(-1)
     expect(state.deal).toBeUndefined()
 
     app.findDeal("Andrews", false, BigInt(1))

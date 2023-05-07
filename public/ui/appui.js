@@ -23,6 +23,11 @@ function lastDeal() {
   return false
 }
 
+function onReset() {
+  var dealLoc = $('#deal')
+  dealLoc.hide()
+}
+
 function visibility(flag) {
   return flag ? 'visible' : 'hidden'
 }
@@ -57,10 +62,6 @@ function updateDeal(deal) {
 function updateCurrentDeal(dealInfo) {
   
   var dealLoc = $('#deal')
-  if (dealInfo == undefined) {
-    dealLoc.hide()
-    return
-  } 
 
   $('#dealIndex').text(dealInfo.index+1)
   var title = getTitle(dealInfo)
@@ -87,6 +88,8 @@ function reset() {
 function initialize() {
   App.listenCurrentDeal(updateCurrentDeal)
   App.listenDealCount(updateDealCount)
+  App.listenReset(onReset)
+
   const form = $('#lookup')
   form.submit(() => {
     submit_pages(form)
