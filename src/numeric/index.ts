@@ -5,13 +5,13 @@ import {
     PageNumber, CardNumber, SeatNumber,
     bridgeSignature
 } from "./deal.js"
-import { AndrewsStrategy, AndrewsDealStrategy, AndrewsHandStrategy } from "./andrews.js"
+import { AndrewsDealStrategy, AndrewsHandStrategy } from "./andrews.js"
 import { PavlicekDealStrategy, PavlicekHandStrategy } from "./pavlicek.js"
 import { scramble_book, MultiplierScrambler, Scrambler, ScrambleStrategy } from "./scramble.js"
 
 export {
     DealSignature, NumericDeal,
-    AndrewsStrategy, AndrewsDealStrategy, AndrewsHandStrategy,
+    AndrewsDealStrategy, AndrewsHandStrategy,
     PavlicekDealStrategy, PavlicekHandStrategy,
     MultiplierScrambler, ScrambleStrategy, // Classes
     BookStrategy, HandStrategy, Scrambler, // interface

@@ -1,6 +1,6 @@
 import * as Books from "../dest/bridge/book.js"
 import {Deck, Seats } from "../dest/bridge/constants.js"
-import { PavlicekDealStrategy, AndrewsStrategy, DealSignature } from "../dest/numeric/index.js"
+import { PavlicekDealStrategy, AndrewsDealStrategy, DealSignature } from "../dest/numeric/index.js"
 
 test("Book constructor", () => {
     var book = new Books.BridgeBook(new PavlicekDealStrategy())
@@ -43,7 +43,7 @@ test("Pavclicek Book generate first deal", () => {
 
 test("Andrews Book generate first deal", () => {
     var seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
-    var book = new Books.BridgeBook(new AndrewsStrategy(), seatBijection)
+    var book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
     var firstDeal = book.getDeal(BigInt(1))
 
     expect(firstDeal.north.toString()).toBe('AKQJ1098765432 - - -')
@@ -80,7 +80,7 @@ test('Fail on a page out of range', () => {
 
 test('Reverse lookup', () => {
     var seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
-    var book = new Books.BridgeBook(new AndrewsStrategy(), seatBijection)
+    var book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
     var page = BigInt(53) ** BigInt(12)
     var deal = book.getDeal(page)
     expect(book.getPageNumber(deal)).toBe(page)

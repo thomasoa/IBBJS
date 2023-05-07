@@ -1,7 +1,7 @@
 import { BridgeBook, SimpleBijection, Deal, Seat, Seats } from "../bridge/index.js"
 import {
     BookStrategy,
-    AndrewsStrategy,
+    AndrewsDealStrategy,
     PavlicekDealStrategy,
     scramble_book,
     MultiplierScrambler,
@@ -35,7 +35,7 @@ function pavlicekBook(): BridgeBook {
 
 function andrewsBook(): BridgeBook {
     // We use a seat map to match the original book
-    const strategy = new AndrewsStrategy()
+    const strategy = new AndrewsDealStrategy()
     const seatBijection = new SimpleBijection<Seat>(Seats.all, (seatNumber) => 3 - seatNumber)
 
     return new BridgeBook(strategy, seatBijection)

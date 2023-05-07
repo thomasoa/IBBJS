@@ -166,8 +166,6 @@ class AndrewsDealStrategy {
         return new NumericDeal(this.signature, toWhom)
     }
 }
-const AndrewsStrategy = AndrewsDealStrategy
-
 
 class AndrewsHandStrategy {
     readonly signature: HandSignature
@@ -198,7 +196,6 @@ class AndrewsHandStrategy {
 
 export { 
     AndrewsDealStrategy, 
-    AndrewsStrategy,
     AndrewsHandStrategy,
     SequenceBuilder /* only for unit tests */
 }

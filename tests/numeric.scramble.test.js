@@ -1,5 +1,5 @@
 import { MultiplierScrambler, scramble_book } from '../dest/numeric/scramble.js'
-import { AndrewsStrategy } from '../dest/numeric/andrews.js'
+import { AndrewsDealStrategy } from '../dest/numeric/andrews.js'
 import { DealSignature } from '../dest/numeric/deal.js'
 
 test('Multiplier scrambler', () => {
@@ -31,7 +31,7 @@ test('Multiplier with negative values', () => {
 
 test("Scrambled book complete invertible for signature [2,2,2,2]", () => {
     var sig = new DealSignature([2, 2, 2, 2])
-    var aBook = new AndrewsStrategy(sig)
+    var aBook = new AndrewsDealStrategy(sig)
     var sBook = scramble_book(aBook, BigInt(11 * 17 * 31), BigInt(1001))
     expect(sBook.pages).toBe(aBook.pages)
     expect(sBook.lastPage).toBe(aBook.lastPage)
