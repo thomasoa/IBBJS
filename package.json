@@ -19,7 +19,7 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
-        "build": "tsc && npm run build:copy && npm run build:fiximports && npm run build:revision",
+        "build": "tsc --declaration && npm run build:copy && npm run build:fiximports && npm run build:revision",
         "test": "jest --silent=false",
         "test-coverage": "jest --silent=false --collect-coverage",
         "cleanbuild": "npm run clean && npm run build",
