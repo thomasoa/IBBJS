@@ -14,7 +14,7 @@ class MultiplierScrambler {
     scramble: PageTransform 
     unscramble: PageTransform
     constructor(pages:bigint,multiplier:bigint,translate:bigint) {
-        var inverse = modular_inverse(pages,multiplier)
+        const inverse = modular_inverse(pages,multiplier)
         this.scramble  = (pageNo:PageNumber) => safe_mod(pageNo *multiplier+translate,pages)
         this.unscramble = (pageNo:bigint) => safe_mod((pageNo-translate)*inverse,pages)
     }
@@ -34,18 +34,18 @@ class ScrambleStrategy {
     get lastPage():PageNumber { return this.base.lastPage }
     
     computePageContent(pageNo:PageNumber):NumericDeal {
-        var basePage = this.scrambler.scramble(pageNo)
+        const basePage = this.scrambler.scramble(pageNo)
         return this.base.computePageContent(basePage)
     }
     
     computePageNumber(deal:NumericDeal):PageNumber {
-        var basePage = this.base.computePageNumber(deal)
+        const basePage = this.base.computePageNumber(deal)
         return this.scrambler.unscramble(basePage)
     }
 }
 
 function scramble_book(base:DealStrategy,multiplier:bigint,translate:bigint):DealStrategy {
-    var scrambler = new MultiplierScrambler(base.signature.pages,multiplier,translate)
+    const scrambler = new MultiplierScrambler(base.signature.pages,multiplier,translate)
     return new ScrambleStrategy(base,scrambler)
 }
 

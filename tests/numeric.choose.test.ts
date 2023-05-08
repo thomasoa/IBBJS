@@ -15,6 +15,6 @@ test('52 choose 13,13,13,13', () => {
 })
 
 test('11 choose 5 bigger than cache', () => {
-  var cache = new choose.ChooseCache(10)
+  const cache = new choose.ChooseCache(10)
   expect(cache.choose(11, 5)).toBe(BigInt(462))
 })
