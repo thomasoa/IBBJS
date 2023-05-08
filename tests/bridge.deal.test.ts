@@ -2,7 +2,7 @@ import * as d from "../src/bridge/deal"
 import { Deck, Seats} from "../src/bridge/constants"
 
 test("Holding void", () => {
-   var holding = new d.Holding(new Array(0))
+   const holding = new d.Holding(new Array(0))
    expect(holding.length).toBe(0)
    expect(holding.isVoid()).toBeTruthy()
    expect(holding.toString()).toBe('-')
@@ -14,7 +14,7 @@ test("Holding void", () => {
 })
 
 test("AK2 Holding", () => {
-   var holding = new d.Holding([Deck.ranks.ace, Deck.ranks.king, Deck.ranks.two])
+   const holding = new d.Holding([Deck.ranks.ace, Deck.ranks.king, Deck.ranks.two])
    expect(holding.length).toBe(3)
    expect(holding.isVoid()).toBeFalsy()
    expect(holding.toString()).toBe("A K 2")
@@ -27,11 +27,11 @@ test("AK2 Holding", () => {
 })
 
 test("Hand construction and holdings", () => {
-   var cards = Deck.cards.byNames(
+   const cards = Deck.cards.byNames(
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
       "H4", "H3", "H2", "DK", "DJ")
-   var hand = new d.Hand(cards)
+   const hand = new d.Hand(cards)
    expect(hand.has(Deck.c('HA'))).toBeTruthy()
    expect(hand.has(Deck.c('SA'))).toBeFalsy()
 
@@ -51,12 +51,12 @@ test('Holding.forString()', ()=>{
 })
 
 test("Hand eachSuit method", () => {
-   var cards = Deck.cards.byNames(
+   const cards = Deck.cards.byNames(
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
       "H4", "H3", "H2", "DK", "DJ")
-   var hand = new d.Hand(cards)
-   var suitMap = new Map()
+   const hand = new d.Hand(cards)
+   const suitMap = new Map()
    hand.eachSuit((suit, holding) => {
       suitMap.set(suit.name, holding.toString())
    })
@@ -69,9 +69,9 @@ test("Hand eachSuit method", () => {
 })
 
 test("Deal eachHand", () => {
-   var toWhom = Array.from({ length: 52 }, (v, i) => Seats.all[Math.floor(i / 13)])
-   var deal = new d.Deal(toWhom)
-   var expected = new Map([
+   const toWhom = Array.from({ length: 52 }, (v, i) => Seats.all[Math.floor(i / 13)])
+   const deal = new d.Deal(toWhom)
+   const expected = new Map([
       ["north", "AKQJ1098765432 - - -"],
       ["east", "- AKQJ1098765432 - -"],
       ['south', '- - AKQJ1098765432 -'],
