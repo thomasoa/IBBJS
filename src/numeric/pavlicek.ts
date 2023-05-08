@@ -44,11 +44,11 @@ class Remaining {
     }
 
     private checkedNextRange(range, pageNo, card): Range {
-        var nextStart = range.start
-        for (var seat = 0; seat < this.perSeat.length; seat++) {
-            var cards = this.perSeat[seat]
-            var width: bigint = range.computeWidth(cards, this.total)
-            var nextRange = new Range(nextStart, width)
+        let nextStart = range.start
+        for (let seat = 0; seat < this.perSeat.length; seat++) {
+            const cards = this.perSeat[seat]
+            const width: bigint = range.computeWidth(cards, this.total)
+            const nextRange = new Range(nextStart, width)
             if (nextRange.contains(pageNo)) {
                 this.toWhom[card] = seat
                 this.total--
@@ -73,12 +73,12 @@ class Remaining {
         /**
         * Used when computing a page number from a deal
         */
-        var skip = 0
-        for (var skipSeat: SeatNumber = 0; skipSeat < seat; skipSeat++) {
+        let skip = 0
+        for (let skipSeat: SeatNumber = 0; skipSeat < seat; skipSeat++) {
             skip += this.perSeat[skipSeat]
         }
-        var newStart = range.start + range.computeWidth(skip, this.total)
-        var width = range.computeWidth(this.perSeat[seat], this.total)
+        const newStart = range.start + range.computeWidth(skip, this.total)
+        const width = range.computeWidth(this.perSeat[seat], this.total)
         this.total -= 1
         this.perSeat[seat] -= 1
         return new Range(newStart, width)
@@ -107,11 +107,11 @@ class PavlicekDealStrategy {
 
     computePageContent(pageNo: PageNumber): NumericDeal {
         this.signature.assertValidPageNo(pageNo)
-        var sig: DealSignature = this.signature
-        var remaining = new Remaining(sig.perSeat, sig.cards)
-        var range = this.baseRange
+        const sig: DealSignature = this.signature
+        const remaining = new Remaining(sig.perSeat, sig.cards)
+        let range = this.baseRange
 
-        for (var card: CardNumber = 0; card < sig.cards; card++) {
+        for (let card: CardNumber = 0; card < sig.cards; card++) {
             range = remaining.nextRange(range, pageNo, card)
         }
         return new NumericDeal(sig, remaining.toWhom)
@@ -122,11 +122,12 @@ class PavlicekDealStrategy {
             deal.signature,
             'Mismatched signatures for Deal and PavlicekDealStrategy'
         )
-        var range = this.baseRange
-        var remaining = new Remaining(deal.signature.perSeat, deal.signature.cards)
+        let range = this.baseRange
+        const remaining = new Remaining(deal.signature.perSeat, deal.signature.cards)
         deal.toWhom.forEach((seat, card) => {
             range = remaining.nextCard(card, seat, range)
         })
+
         if (range.width != BigInt(1)) {
             // Shouldn't normally be reached
             throw new Error('Got range width ' + range.width.toString() + ' after decode')
@@ -171,7 +172,7 @@ class PavlicekHandStrategy {
     }
 
     computePageNumber(cards: HandArray): PageNumber {
-        var toWhom = new Array<SeatNumber>(this.signature.cards)
+        const toWhom = new Array<SeatNumber>(this.signature.cards)
         for (let i = 0; i < this.signature.cards; i++) {
             toWhom[i] = 1
         }

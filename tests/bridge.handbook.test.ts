@@ -27,19 +27,19 @@ test('First page and last page in both books are the same', ()=>{
 test('Reverse lookup: Andrews', ()=>{
     const aBook = new HandBook(new AndrewsHandStrategy())
 
-    var first = Hand.forString('sAKQJT98765432 h- d- c-')
+    const first = Hand.forString('sAKQJT98765432 h- d- c-')
     expect(aBook.getPageNumber(first)).toBe(BigInt(1))
 
-    var last = Hand.forString('s- h- d- cAKQJT98765432')
+    const last = Hand.forString('s- h- d- cAKQJT98765432')
     expect(aBook.getPageNumber(last)).toBe(aBook.lastPage)
 
-    var page = aBook.pages * BigInt(29)/BigInt(73)
-    var aHand = aBook.getHand(page)
+    const page = aBook.pages * BigInt(29)/BigInt(73)
+    const aHand = aBook.getHand(page)
     expect(aBook.getPageNumber(aHand)).toBe(page)
 
     const pageNo = aBook.pages *BigInt(33)/BigInt(103)
-    var hand = aBook.getHand(pageNo)
-    var inverse = aBook.getPageNumber(hand)
+    const hand = aBook.getHand(pageNo)
+    const inverse = aBook.getPageNumber(hand)
     expect(inverse).toBe(pageNo)
 
 })
@@ -47,19 +47,19 @@ test('Reverse lookup: Andrews', ()=>{
 test('Reverse lookup: Pavlicek', ()=>{
     const pBook = new HandBook(new PavlicekHandStrategy())
 
-    var first = Hand.forString('sAKQJT98765432 h- d- c-')
+    const first = Hand.forString('sAKQJT98765432 h- d- c-')
     expect(pBook.getPageNumber(first)).toBe(BigInt(1))
 
-    var last = Hand.forString('s- h- d- cAKQJT98765432')
+    const last = Hand.forString('s- h- d- cAKQJT98765432')
     expect(pBook.getPageNumber(last)).toBe(pBook.lastPage)
 
-    var page = pBook.pages * BigInt(29)/BigInt(73)
-    var pHand = pBook.getHand(page)
+    const page = pBook.pages * BigInt(29)/BigInt(73)
+    const pHand = pBook.getHand(page)
     expect(pBook.getPageNumber(pHand)).toBe(page)
 
     const pageNo = pBook.pages *BigInt(33)/BigInt(103)
-    var hand = pBook.getHand(pageNo)
-    var inverse = pBook.getPageNumber(hand)
+    const hand = pBook.getHand(pageNo)
+    const inverse = pBook.getPageNumber(hand)
     expect(inverse).toBe(pageNo)
 
 })

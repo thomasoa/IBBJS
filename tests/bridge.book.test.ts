@@ -3,13 +3,13 @@ import {Deck, Seats } from "../src/bridge/constants"
 import { PavlicekDealStrategy, AndrewsDealStrategy, DealSignature } from "../src/numeric/index"
 
 test("Book constructor", () => {
-    var book = new Books.BridgeBook(new PavlicekDealStrategy())
+    const book = new Books.BridgeBook(new PavlicekDealStrategy())
     expect(book.pages.toString()).toEqual("53644737765488792839237440000")
     expect(book.lastPage.toString()).toEqual("53644737765488792839237440000")
 })
 
 test("Bijection Seat", () => {
-    var bijection = new Books.SimpleBijection(Seats.all, (n) => (n + 2) % 4)
+    const bijection = new Books.SimpleBijection(Seats.all, (n) => (n + 2) % 4)
     expect(bijection.mapTo(0)).toBe(Seats.south)
     expect(bijection.mapTo(1)).toBe(Seats.west)
     expect(bijection.mapTo(2)).toBe(Seats.north)
@@ -22,7 +22,7 @@ test("Bijection Seat", () => {
 })
 
 test("Bijection Card default", () => {
-    var bijection = new Books.SimpleBijection(Deck.cards.all)
+    const bijection = new Books.SimpleBijection(Deck.cards.all)
     Deck.cards.each((card, index) => {
         expect(bijection.mapTo(index)).toBe(card)
         expect(bijection.mapFrom(card)).toBe(index)
@@ -31,8 +31,8 @@ test("Bijection Card default", () => {
 
 
 test("Pavclicek Book generate first deal", () => {
-    var book = new Books.BridgeBook(new PavlicekDealStrategy())
-    var firstDeal = book.getDeal(BigInt(1))
+    const book = new Books.BridgeBook(new PavlicekDealStrategy())
+    const firstDeal = book.getDeal(BigInt(1))
     expect(firstDeal.toWhom).toBeDefined()
     expect(firstDeal.hands).toBeDefined()
     expect(firstDeal.north.toString()).toBe('AKQJ1098765432 - - -')
@@ -42,9 +42,9 @@ test("Pavclicek Book generate first deal", () => {
 })
 
 test("Andrews Book generate first deal", () => {
-    var seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
-    var book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
-    var firstDeal = book.getDeal(BigInt(1))
+    const seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
+    const book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
+    const firstDeal = book.getDeal(BigInt(1))
 
     expect(firstDeal.north.toString()).toBe('AKQJ1098765432 - - -')
     expect(firstDeal.east.toString()).toBe('- AKQJ1098765432 - -')
@@ -54,8 +54,8 @@ test("Andrews Book generate first deal", () => {
 
 
 test("Book generate last deal", () => {
-    var book = new Books.BridgeBook(new PavlicekDealStrategy())
-    var lastDeal = book.getDeal(book.lastPage)
+    const book = new Books.BridgeBook(new PavlicekDealStrategy())
+    const lastDeal = book.getDeal(book.lastPage)
 
     expect(lastDeal.north.toString()).toBe('- - - AKQJ1098765432')
     expect(lastDeal.east.toString()).toBe('- - AKQJ1098765432 -')
@@ -72,16 +72,16 @@ test('validate_strategy throws an error for a strategy with the wrong signature'
 })
 
 test('Fail on a page out of range', () => {
-    var book = new Books.BridgeBook(new PavlicekDealStrategy())
+    const book = new Books.BridgeBook(new PavlicekDealStrategy())
     expect(() => book.getDeal(BigInt(0))).toThrow()
     expect(() => book.getDeal(book.lastPage + BigInt(1))).toThrow()
 
 })
 
 test('Reverse lookup', () => {
-    var seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
-    var book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
-    var page = BigInt(53) ** BigInt(12)
-    var deal = book.getDeal(page)
+    const seatBijection = new Books.SimpleBijection(Seats.all, (n) => 3 - n)
+    const book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
+    const page = BigInt(53) ** BigInt(12)
+    const deal = book.getDeal(page)
     expect(book.getPageNumber(deal)).toBe(page)
 })

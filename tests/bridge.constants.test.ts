@@ -38,11 +38,11 @@ test("Ensure card orders agree with the linear order", () => {
 })
 
 test("Deck.cards.byName lookup", () => {
-    var spadeThree = Deck.cards.byName('S3')
+    const spadeThree = Deck.cards.byName('S3')
     expect(spadeThree.suit).toBe(Deck.suits.spades)
     expect(spadeThree.rank).toBe(Deck.ranks.three)
 
-    var clubAce = Deck.cards.byName('ca')
+    const clubAce = Deck.cards.byName('ca')
     expect(clubAce.suit).toBe(Deck.suits.clubs)
     expect(clubAce.rank).toBe(Deck.ranks.ace)
 

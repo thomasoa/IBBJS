@@ -2,7 +2,7 @@ import { BookSet } from "../src/model/books"
 import { bridgeSignature } from "../src/numeric/index"
 
 test('Ensure books exist for all names', () => {
-    var bookSet = new BookSet()
+    const bookSet = new BookSet()
     expect(bookSet.book('Andrews', false)).toBeDefined()
     expect(bookSet.book('Andrews', true)).toBeDefined()
     expect(bookSet.book('Pavlicek', false)).toBeDefined()
@@ -10,15 +10,15 @@ test('Ensure books exist for all names', () => {
 })
 
 test('Ensure invalid edition name throws exception', () => {
-    var bookSet = new BookSet()
+    const bookSet = new BookSet()
     expect(() => bookSet.book('Dummy', false)).toThrowError()
 })
 
 test('pageNumbers for first page', () => {
-    var bookSet = new BookSet()
-    var andrews = bookSet.book('Andrews')
-    var deal1 = andrews.getDeal(BigInt(1))
-    var editionPages = bookSet.pageNumbers(deal1)
+    const bookSet = new BookSet()
+    const andrews = bookSet.book('Andrews')
+    const deal1 = andrews.getDeal(BigInt(1))
+    const editionPages = bookSet.pageNumbers(deal1)
     expect(editionPages.length).toBe(2)
     editionPages.forEach((edPage) => {
         expect(edPage.normal).toBe(BigInt(1))
@@ -27,11 +27,11 @@ test('pageNumbers for first page', () => {
 })
 
 test('pageNumbers for last page', () => {
-    var bookSet = new BookSet()
-    var andrews = bookSet.book('Andrews')
-    var page = andrews.lastPage
-    var deal = andrews.getDeal(page)
-    var editionPages = bookSet.pageNumbers(deal)
+    const bookSet = new BookSet()
+    const andrews = bookSet.book('Andrews')
+    const page = andrews.lastPage
+    const deal = andrews.getDeal(page)
+    const editionPages = bookSet.pageNumbers(deal)
     expect(editionPages.length).toBe(2)
     editionPages.forEach((edPage) => {
         expect(edPage.normal).toBe(page)
@@ -39,18 +39,18 @@ test('pageNumbers for last page', () => {
 })
 
 test('Try re-lookup', () => {
-    var bookSet = new BookSet()
-    var andrews = bookSet.book('Andrews')
-    var page = BigInt(13) ** BigInt(24)
-    var deal = andrews.getDeal(page)
-    var editionPages = bookSet.pageNumbers(deal)
+    const bookSet = new BookSet()
+    const andrews = bookSet.book('Andrews')
+    const page = BigInt(13) ** BigInt(24)
+    const deal = andrews.getDeal(page)
+    const editionPages = bookSet.pageNumbers(deal)
 
-    var lookup = (book, pageNo) => book.getDeal(pageNo)
+    const lookup = (book, pageNo) => book.getDeal(pageNo)
 
     editionPages.forEach((edPages) => {
-        var nBook = bookSet.book(edPages.name)
+        const nBook = bookSet.book(edPages.name)
         expect(deal.equals(nBook.getDeal(edPages.normal))).toBeTruthy()
-        var pBook = bookSet.book(edPages.name, true)
+        const pBook = bookSet.book(edPages.name, true)
         expect(deal.equals(pBook.getDeal(edPages.scrambled))).toBeTruthy()
 
     })
