@@ -1,4 +1,4 @@
-import * as choose from '../src/numeric/choose'
+import * as choose from "../src/numeric/choose"
 
 test('10 choose 5 = 252', () => {
   expect(choose.choose(10, 5)).toBe(BigInt(252));

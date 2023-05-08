@@ -19,13 +19,14 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
-        "build": "tsc && npm run build:copy && npm run build:revision",
-        "test": "npm run build && jest --silent=false",
-        "test-coverage": "npm run build && jest --silent=false --collect-coverage",
+        "build": "tsc && npm run build:copy && npm run build:fiximports && npm run build:revision",
+        "test": "jest --silent=false",
+        "test-coverage": "jest --silent=false --collect-coverage",
         "cleanbuild": "npm run clean && npm run build",
         "clean": "rm -rf dest",
         "publish": "npm run cleanbuild && npm run publish:script",
         "publish:script": "sh publish.sh Commit $(git rev-parse HEAD) to $(git config --get remote.origin.url)",
+        "build:fiximports": "sh fiximports.sh",
         "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
         "build:revision": "sh getrevision.sh"
     },

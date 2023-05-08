@@ -1,9 +1,9 @@
-import {HandBook} from '../src/bridge/handbook'
+import {HandBook} from "../src/bridge/handbook"
 import {Hand} from "../src/bridge/deal"
-import {Deck} from '../src/bridge/constants'
-import {SimpleBijection} from '../src/bridge/bijection'
-import { AndrewsHandStrategy, PavlicekHandStrategy} from '../src/numeric/index'
-import { HandSignature } from '../src/numeric/deal'
+import {Deck} from "../src/bridge/constants"
+import {SimpleBijection} from "../src/bridge/bijection"
+import { AndrewsHandStrategy, PavlicekHandStrategy} from "../src/numeric/index"
+import { HandSignature } from "../src/numeric/deal"
 
 test('First page and last page in both books are the same', ()=>{
     const aBook = new HandBook(new AndrewsHandStrategy())

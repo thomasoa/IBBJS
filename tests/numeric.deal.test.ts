@@ -1,4 +1,4 @@
-import * as  numDeal from '../src/numeric/deal'
+import * as  numDeal from "../src/numeric/deal"
 
 test('NumericDeal: Check hands for valid deal', () => {
     const sig = new numDeal.DealSignature([3, 3])

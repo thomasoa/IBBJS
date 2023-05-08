@@ -1,4 +1,4 @@
-import { modular_inverse, safe_mod, long_gcd } from '../src/numeric/modinverse'
+import { modular_inverse, safe_mod, long_gcd } from "../src/numeric/modinverse"
 
 function int_mod_inverse(m, n) {
     const value = modular_inverse(BigInt(m), BigInt(n))

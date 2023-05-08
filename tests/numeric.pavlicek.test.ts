@@ -1,6 +1,6 @@
-import * as pavlicek from '../src/numeric/pavlicek'
-import {AndrewsDealStrategy} from '../src/numeric/andrews'
-import * as numDeal from '../src/numeric/deal'
+import * as pavlicek from "../src/numeric/pavlicek"
+import {AndrewsDealStrategy} from "../src/numeric/andrews"
+import * as numDeal from "../src/numeric/deal"
 
 function signature1234() {
   // dommon signature for these tests

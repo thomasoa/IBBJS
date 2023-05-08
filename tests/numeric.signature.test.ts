@@ -1,4 +1,4 @@
-import * as numDeal from '../src/numeric/deal'
+import * as numDeal from "../src/numeric/deal"
 
 test("deal signature constructor",
   () => {

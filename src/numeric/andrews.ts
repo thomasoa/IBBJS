@@ -7,7 +7,7 @@ import {
     HandArray
 } from "./deal"
 import { choose } from "./choose"
-import * as squashed from './squashed'
+import * as squashed from "./squashed"
 import { OpaqueType } from "@babel/types";
 
 interface SeatFactor {

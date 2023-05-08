@@ -1,10 +1,10 @@
 import { PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekDealStrategy, SeatNumber, NumericDeal} 
 from "../numeric/index"
-import * as squashed from '../numeric/squashed'
+import * as squashed from "../numeric/squashed"
 import {choose} from "../numeric/choose"
 
-import {Bijection, defaultBijectionCard} from './bijection'
-import {Card} from './constants'
+import {Bijection, defaultBijectionCard} from "./bijection"
+import {Card} from "./constants"
 import {Hand} from "./deal" 
 
 function assertBridgeHandStrategy(strategy: HandStrategy) {
