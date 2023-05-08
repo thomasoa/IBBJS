@@ -59,6 +59,7 @@ class Remaining {
         }
         throw new Error('Could not find seat for card ' + card + ' and page ' + pageNo)
     }
+
     nextRange(range: Range, pageNo: PageNumber, card: CardNumber): Range {
         /**
         * Used when computing a deal from a page number
