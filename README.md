@@ -16,7 +16,7 @@ platform, because I couldn't get jest and tsc to agree about imports, so I wrote
 
 To run, you will need `npm` installed.
 
-   1. Clone the repository
+   1. Clone the repository with the --recurse-submodules
    2. Run `npm install`
    3. Run `npm run build`
    4. Copy the contents of the `dest/` folder to a directory visible to a browser.

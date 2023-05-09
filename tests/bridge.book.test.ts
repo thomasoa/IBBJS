@@ -1,5 +1,5 @@
 import * as Books from "../src/bridge/book"
-import {Deck, Seats } from "../src/bridge/constants"
+import {Deck, Seats } from "../src/basics/src/bridge/constants"
 import { PavlicekDealStrategy, AndrewsDealStrategy, DealSignature } from "../src/numeric/index"
 
 test("Book constructor", () => {

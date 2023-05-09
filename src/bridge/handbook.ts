@@ -4,7 +4,7 @@ import * as squashed from "../numeric/squashed"
 import {choose} from "../numeric/choose"
 
 import {Bijection, defaultBijectionCard} from "./bijection"
-import {Card} from "./constants"
+import {Card} from "../basics/src/bridge/constants"
 import {Hand} from "./deal" 
 
 function assertBridgeHandStrategy(strategy: HandStrategy) {
