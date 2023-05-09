@@ -1,4 +1,4 @@
-import {Deck, Seats, Seat, Card, Rank, Suit} from "./constants"
+import {Deck, Seats, Seat, Card, Rank, Suit} from "../basics/src/bridge/constants"
 
 class Holding {
     readonly ranks: Array<Rank>
