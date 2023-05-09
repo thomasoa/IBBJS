@@ -30,6 +30,8 @@
  * 
  */
 
+import {UpcaseMap} from "../generic/maps"
+
 function f<T>(obj: T): T {
     Object.freeze(obj)
     return obj
@@ -49,6 +51,11 @@ const West = { name: "west", letter: "W", order: 3 }
 const AllSeats: readonly Seat[] = [North, East, South, West]
 AllSeats.forEach(Object.freeze)
 Object.freeze(AllSeats)
+const SeatNameMap = new UpcaseMap<Seat>()
+AllSeats.forEach((seat:Seat) => {
+    SeatNameMap.set(seat.name, seat)
+    SeatNameMap.set(seat.letter, seat)
+})
 
 const Seats = {
     north: North,
@@ -57,13 +64,15 @@ const Seats = {
     west: West,
     all: AllSeats,
     each: AllSeats.forEach.bind(AllSeats),
-    map: AllSeats.map.bind(AllSeats)
-
+    map: AllSeats.map.bind(AllSeats),
+    byText: SeatNameMap.get.bind(SeatNameMap)
 }
+
 Object.freeze(Seats)
 
 type Suit = {
     name: string;
+    singular: string,
     letter: string;
     symbol: string;
     order: number,
@@ -83,18 +92,22 @@ class Rank {
         this.letter = letter || brief
         this.summand = order
         Object.freeze(this)
-
     }
 }
 
-
-
-const Spades: Suit = f({ name: 'spades', letter: 'S', symbol: '\U+2660', order: 0, summand: 0 })
-const Hearts: Suit = f({ name: 'hearts', letter: 'H', symbol: '\U+2665', order: 1, summand: 13 * 1 })
-const Diamonds: Suit = f({ name: 'diamonds', letter: 'D', symbol: '\U+2666', order: 2, summand: 13 * 2 })
-const Clubs: Suit = f({ name: 'clubs', letter: 'C', symbol: '\U+2663', order: 3, summand: 13 * 3 })
+const Spades: Suit = f({ name: 'spades', singular: 'spade', letter: 'S', symbol: '\U+2660', order: 0, summand: 0 })
+const Hearts: Suit = f({ name: 'hearts', singular: 'heart', letter: 'H', symbol: '\U+2665', order: 1, summand: 13 * 1 })
+const Diamonds: Suit = f({ name: 'diamonds', singular: 'diamond', letter: 'D', symbol: '\U+2666', order: 2, summand: 13 * 2 })
+const Clubs: Suit = f({ name: 'clubs', singular: 'club', letter: 'C', symbol: '\U+2663', order: 3, summand: 13 * 3 })
 const AllSuits: readonly Suit[] = [Spades, Hearts, Diamonds, Clubs]
 Object.freeze(AllSuits)
+
+const SuitNameMap  = new UpcaseMap<Suit>()
+AllSuits.forEach((suit) => {
+    SuitNameMap.set(suit.name,suit)
+    SuitNameMap.set(suit.letter,suit)
+    SuitNameMap.set(suit.singular,suit)
+})
 
 const Suits = {
     spades: Spades,
@@ -103,15 +116,20 @@ const Suits = {
     clubs: Clubs,
     all: AllSuits as readonly Suit[],
     each: AllSuits.forEach.bind(AllSuits),
-    map: AllSuits.map.bind(AllSuits)
+    map: AllSuits.map.bind(AllSuits),
+    byText: SuitNameMap.get.bind(SuitNameMap)
 }
+
 Suits.each(Object.freeze)
 Object.freeze(Suits)
+
+
 
 class Card {
     suit: Suit;
     rank: Rank;
     short: string;
+    shortRS: string;
     order: number;
     constructor(suit: Suit, rank: Rank) {
         this.suit = suit
@@ -173,7 +191,7 @@ class RankParser {
 }
 
 function createRankParser(): (text: string) => RankLookupResult {
-    const map = new Map<string, RankParser>()
+    const map = new UpcaseMap<RankParser>()
 
     const add = (parser: RankParser): void => {
         map.set(parser.letter, parser)
@@ -260,8 +278,18 @@ function make_cards(): Card[] {
 }
 
 const AllCards: readonly Card[] = make_cards()
-const CardsByName = new Map<string, Card>(AllCards.map((card) => [card.short, card]))
-function cardBySuitRank(suit: Suit, rank: Rank) {
+const CardsByName = new UpcaseMap<Card>()
+AllCards.forEach((card:Card) => {
+    const rank = card.rank
+    const suit = card.suit
+    const rankStrings = [rank.brief, rank.letter]
+    rankStrings.forEach((rankStr: string) => {
+        CardsByName.set(suit.letter + rankStr,card)
+        CardsByName.set(rankStr + suit.letter,card)
+    })
+})
+
+function cardBySuitRank(suit: Suit, rank: Rank): Card {
     return AllCards[suit.summand + rank.summand]
 }
 
