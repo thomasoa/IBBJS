@@ -1,6 +1,8 @@
 #!/bin/sh
 
-[ -d dest ] || echo 'Directory dest does not exist' && exit 
+[ -d dest ] || echo 'Directory ./dest does not exist'
+[ -d dest ] || exit
+
 perl -pe '/\.js"/ || s/from "([^"]*)"/from "$1.js"/' -i.bak dest/*/*.js
 find ./dest -name '*.bak' -print | xargs rm 
 
