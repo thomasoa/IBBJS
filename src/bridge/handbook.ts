@@ -1,8 +1,4 @@
-import { PageNumber, AndrewsHandStrategy, HandStrategy, PavlicekDealStrategy, SeatNumber, NumericDeal} 
-from "../numeric/index"
-import * as squashed from "../numeric/squashed"
-import {choose} from "../numeric/choose"
-
+import { PageNumber, HandStrategy} from "../numeric/index"
 import {Bijection, defaultBijectionCard} from "./bijection"
 import {Card} from "../basics/src/bridge/constants"
 import {Hand} from "./deal" 
