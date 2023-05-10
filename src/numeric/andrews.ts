@@ -8,7 +8,6 @@ import {
 } from "./deal"
 import { choose } from "./choose"
 import * as squashed from "./squashed"
-import { OpaqueType } from "@babel/types";
 
 interface SeatFactor {
     // Represents a factor of the Andrews strategy
