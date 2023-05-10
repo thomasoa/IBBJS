@@ -1,5 +1,5 @@
 {
-    "name": "IBBJS",
+    "name": "ibbjs",
     "type": "module",
     "outDir": "dest",
     "devDependencies": {
@@ -22,15 +22,18 @@
         "tsc-alias": "^1.8.5"
     },
     "scripts": {
-        "build": "tsc && npm run build:copy && npm run build:fiximports && npm run build:revision",
+        "build": "tsc && npm run build:copy && npm run build:fiximports && npm run build:browserify && npm run build:revision",
         "test": "jest --silent=false",
         "test-coverage": "jest --silent=false --collect-coverage",
         "cleanbuild": "npm run clean && npm run build",
-        "clean": "rm -rf dest",
+        "clean": "rm -rf dest tree",
         "publish": "npm run cleanbuild && npm run publish:script",
         "publish:script": "sh bin/publish.sh Commit $(git rev-parse HEAD) to $(git config --get remote.origin.url)",
         "build:fiximports": "sh bin/fiximports.sh",
-        "build:copy": "(cd public; tar cf - .) | (cd dest; tar xf -)",
+        "build:browserify": "mkdir -p tree; npx browserify -p esmify -o tree/bundle.js dest/ui/appui.js",
+        "build:copy": "npm run build:copy:public; npm run build:copy:js",
+        "build:copy:public": "(cd public; tar cf - .) | (cd tree; tar xf -)",
+        "build:copy:js": "mkdir  -p dest ; rm -rf dest/ui ; cp -r public/ui dest",
         "build:revision": "sh bin/getrevision.sh"
     },
     "babel": {
