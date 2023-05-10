@@ -151,4 +151,6 @@ function powersOf(n) {
   }
 }
   
-  export {initialize, App}
+$(document).ready(() => initialize())
+
+export {initialize, App}

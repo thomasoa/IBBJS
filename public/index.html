@@ -91,11 +91,8 @@
     <div>The <a href='https://bridge.thomasoandrews.com/impossible'>original,</a> written in Perl.</div>
     <div id='commitURL'><a href='#'>Commit</a></div>
   </div>
-  <script type="module">
-
-    import { initialize } from "./ui/appui.js"
-
-    $(document).ready(() => initialize())
+  <script src='./bundle.js'></script>
+  <script>
 
     function showCommit(revision) {
       var item = $('#commitURL')

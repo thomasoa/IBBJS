@@ -1,7 +1,7 @@
-dest/**/*.js
 *.swp
 node_modules/*
 coverage/**/*
 *.zip
 dest/**/*
+tree/**/*
 .DS_Store
