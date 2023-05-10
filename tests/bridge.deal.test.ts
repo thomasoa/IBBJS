@@ -2,7 +2,7 @@ import * as d from "../src/bridge/deal"
 import { Deck, Seats} from "../src/basics/src/bridge/constants"
 
 test("Holding void", () => {
-   const holding = new d.Holding(new Array(0))
+   const holding = new d.Holding(0)
    expect(holding.length).toBe(0)
    expect(holding.isVoid()).toBeTruthy()
    expect(holding.toString()).toBe('-')
@@ -14,7 +14,7 @@ test("Holding void", () => {
 })
 
 test("AK2 Holding", () => {
-   const holding = new d.Holding([Deck.ranks.ace, Deck.ranks.king, Deck.ranks.two])
+   const holding = d.Holding.fromRanks([Deck.ranks.ace, Deck.ranks.king, Deck.ranks.two])
    expect(holding.length).toBe(3)
    expect(holding.isVoid()).toBeFalsy()
    expect(holding.toString()).toBe("A K 2")
@@ -115,8 +115,8 @@ test('Hand.forString()', ()=> {
 })
 
 test("fromBits constructor", ()=> {
-   const voidH = d.Holding.fromBits(0)
+   const voidH = new d.Holding(0)
    expect(voidH.length).toBe(0)
-   const holding = d.Holding.fromBits((1<<12)|(1<<11)|(1<<9))
+   const holding = new d.Holding((1<<12)|(1<<11)|(1<<9))
    expect(holding.asString()).toBe('AKJ')
 })

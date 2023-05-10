@@ -1,47 +1,4 @@
-import {Deck, Seats, Seat, Card, Rank, Suit} from "../basics/src/bridge/constants"
-
-class Holding {
-    readonly ranks: Array<Rank>
-    readonly bits:number
-    constructor(ranks:Array<Rank>) {
-        this.bits = ranks.reduce(
-            (binary,rank) => rank.bit|binary,
-            0
-        )
-        this.ranks = Deck.ranks.fromBits(this.bits)
-    }
-        
-    get length() { return this.ranks.length }
-        
-    asString(divider:string=''):string {
-        if (this.length == 0) {
-            return '-'
-        }
-            
-        return this.ranks.map((rank)=> rank.brief).join(divider)
-    }
-        
-    isVoid():boolean {
-            return this.length == 0
-    }
-        
-    toString():string {
-            return this.asString(' ')
-    }
-        
-    has(rank:Rank):boolean {
-        return (this.bits & rank.bit) != 0
-    }
-
-    static forString(text:string):Holding {
-        return new Holding(Deck.ranks.parse(text.toUpperCase()))
-    }
-
-    static fromBits(bits:number):Holding {
-        return new Holding(Deck.ranks.fromBits(bits))
-    }
-        
- }
+import {Deck, Seats, Seat, Card, Rank, Suit, Holding} from "../basics/src/index"
     
 class Hand {
     cards: Array<Card>
@@ -52,7 +9,7 @@ class Hand {
         this.cards.forEach((card)=> {
             suits[card.suit.order].push(card.rank)
         })
-        this.holdings = suits.map((ranks)=> new Holding(ranks))
+        this.holdings = suits.map((ranks)=> Holding.fromRanks(ranks))
     }
         
     suit(suit:Suit): Holding {
