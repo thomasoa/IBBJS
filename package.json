@@ -31,7 +31,7 @@
         "build:browserify": "mkdir -p tree; npx browserify -p esmify -o tree/bundle.js dest/appui.js",
         "build:copy": "npm run build:copy:public; npm run build:copy:js",
         "build:copy:public": "mkdir -p tree; (cd public; tar cf - .) | (cd tree; tar xf -)",
-        "build:copy:js": "mkdir  -p dest ; cp src/appui.js dest ; cp -r public/ui dest",
+        "build:copy:js": "mkdir  -p dest ; cp src/appui.js dest",
         "build:revision": "sh bin/getrevision.sh"
     },
     "babel": {
