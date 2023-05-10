@@ -5,3 +5,4 @@ coverage/**/*
 dest/**/*
 tree/**/*
 .DS_Store
+package-lock.json
