@@ -1,15 +1,15 @@
 #!/bin/sh
 
-[ -d dest ] || echo 'Directory ./dest does not exist'
-[ -d dest ] || exit
-
-perl -pe '/\.js"/ || s/from "([^"]*)"/from "$1.js"/' -i.bak dest/*/*.js
-find ./dest -name '*.bak' -print | xargs rm 
+source=./tree
+githubpage=../thomasoa.github.io
+destination=$githubpage/impossible
+[ -d $source ] || echo "Directory $source does not exist"
+[ -d $source ] || exit
 
 [ -d ../thomasoa.github.io ] || exit 0
-( cd dest ; tar cf - .) | (cd ../thomasoa.github.io/impossible; tar xvf -)
-cd ../thomasoa.github.io
-git add .
+( cd $source ; tar cf - .) | (cd $destination ; tar xvf -)
+cd $githubpage
+git add impossible
 git commit -m "IBBJS: $*"
 git push
 
