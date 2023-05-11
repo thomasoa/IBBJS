@@ -1,6 +1,6 @@
 import {HandBook} from "../src/bridge/handbook"
 import {Hand} from "../src/bridge/deal"
-import {Deck} from "../src/basics/src/bridge/constants"
+import {Deck} from "../src/basics/src/index"
 import {SimpleBijection} from "../src/bridge/bijection"
 import { AndrewsHandStrategy, PavlicekHandStrategy} from "../src/numeric/index"
 import { HandSignature } from "../src/numeric/deal"

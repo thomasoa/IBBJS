@@ -1,5 +1,5 @@
 import * as d from "../src/bridge/deal"
-import { Deck, Seats} from "../src/basics/src/bridge/constants"
+import { Deck, Seats} from "../src/basics/src/index"
 
 test("Holding void", () => {
    const holding = new d.Holding(0)

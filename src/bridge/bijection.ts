@@ -1,4 +1,4 @@
-import {Deck, Seats, Seat, Card}  from "../basics/src/bridge/constants"
+import {Deck, Seats, Seat, Card}  from "../basics/src/index"
 
 interface OrderedType {
     order:number

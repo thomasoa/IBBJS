@@ -1,4 +1,4 @@
-import {Deck, Seat, Card}  from "../basics/src/bridge/constants"
+import {Deck, Seat, Card}  from "../basics/src/index"
 import {DealStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index"
 import {Bijection, SimpleBijection, defaultBijectionCard, defaultBijectionSeat} from "./bijection"
 import {Deal} from "./deal"

@@ -1,6 +1,6 @@
 import { PageNumber, HandStrategy} from "../numeric/index"
 import {Bijection, defaultBijectionCard} from "./bijection"
-import {Card} from "../basics/src/bridge/constants"
+import {Card} from "../basics/src/index"
 import {Hand} from "./deal" 
 
 function assertBridgeHandStrategy(strategy: HandStrategy) {
