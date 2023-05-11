@@ -108,6 +108,7 @@
     <div><a href='https://github.com/thomasoa/IBBJS'>Git repository</a> by Thomas Andrews</div>
     <div>The <a href='https://bridge.thomasoandrews.com/impossible'>original,</a> written in Perl.</div>
     <div id='commitURL'><a href='#'>Commit</a></div>
+    <div id='builddate'>&nbsp;</div>
   </div>
   <script src='./bundle.js'></script>
   <script>
@@ -117,6 +118,7 @@
       var url = revision['url']
       var commit = revision['revision'].slice(0,7)
       item.html('<a href="' + url + '">Revision</a> ' + commit + ' in ' + revision['branch'] + ' branch')
+      $('#builddate').text(revision['date'])
       item.show()
     }
 
