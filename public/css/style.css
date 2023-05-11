@@ -89,6 +89,10 @@ select {
     margin-bottom: 2em;
     width: auto;
 }
+
+.page h1, .page h2 {
+    text-align: center;
+}
   
 .pageHeader, .pageFooter {
     width:100%;
@@ -98,10 +102,14 @@ select {
 
 .page .pageHeader {
     margin-bottom: 4em;
+    margin-top:  0;
+    padding-top: 1ex;
 }
 
 .page .pageFooter {
     margin-top: 4em;
+    margin-bottom: 0;
+    padding-bottom: 1ex;
 }
 
 #commitURL {

@@ -24,8 +24,8 @@ function lastDeal() {
 }
 
 function onReset() {
-  var dealLoc = $('#deal')
-  dealLoc.hide()
+  $('#deal').hide()
+  $('#preface').show()
 }
 
 function visibility(flag) {
@@ -50,6 +50,7 @@ function getTitle(dealInfo) {
 }
 
 function updateDeal(deal) {
+  $('#preface').hide()
   deal.eachHand((seat,hand) => {
     var handDiv = $('.diagram .'+seat.name)
     hand.eachSuit((suit,holding) => {
@@ -82,9 +83,8 @@ function updateDealCount(count) {
 
 function reset() {
   App.reset()
-  
-  $('#lookup').find('input[name="pageNumbers"]').val('')
 }
+
 function initialize() {
   App.listenCurrentDeal(updateCurrentDeal)
   App.listenDealCount(updateDealCount)
