@@ -49,14 +49,35 @@ function getTitle(dealInfo) {
   return title
 }
 
+function englishHolding(holding) {
+  if (holding.length == 0) {
+    return 'void'
+  }
+
+  var cards = holding.ranks.map((rank) => rank.name)
+  if (holding.spots > 0) {
+    cards.push(holding.spots.toString() + ' small spots')
+  }
+  if (cards.length == 1) {
+    return cards[0]
+  }
+
+  cards[cards.length-1] = ' and ' + cards[cards.length-1]
+  return cards.join(', ')
+}
+
 function updateDeal(deal) {
   $('#preface').hide()
   deal.eachHand((seat,hand) => {
     var handDiv = $('.diagram .'+seat.name)
     hand.eachSuit((suit,holding) => {
       var hString = holding.toString()
+      var language = suit.singular + ' ' + englishHolding(holding)
+      console.log(hString, language)
       if (hString=='-')  { hString = '\u2014' } // emdash 
-      handDiv.find('.'+suit.name+ ' span.holding').text(hString)
+      var suitSpan = '.'+ suit.name+ ' span.holding'
+      handDiv.find(suitSpan).text(hString)
+      handDiv.find(suitSpan).attr('title',language)
     })
   })
 }
