@@ -77,8 +77,9 @@ div, p, li {
     margin-right:auto;
 }
 
-select {
-    background-color: rgba(255,255,255,0.50)
+select, input {
+    background-color: rgba(255,255,255,0.50);
+    color: black;
 }
 
 .page {
@@ -114,4 +115,14 @@ select {
 
 #commitURL {
     display: none;
+}
+
+.links a { 
+    margin: 0 1em; 
+    color: black; 
+}
+
+.links a:hover { 
+    background-color: rgba(255,255,255,0.50); 
+    color: rgb(0,0,0,0.50); 
 }
