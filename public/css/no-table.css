@@ -68,7 +68,6 @@
     padding-right: 1em;
 }
 
-
 .red {
     color: red;
 }
@@ -83,7 +82,7 @@
     width:2em;
 }
 
-div.holding {
+.holding {
     white-space: nowrap;
 }
 
