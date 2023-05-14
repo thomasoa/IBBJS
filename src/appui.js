@@ -73,7 +73,6 @@ function updateDeal(deal) {
     hand.eachSuit((suit,holding) => {
       var hString = holding.toString()
       var language = suit.singular + ' ' + englishHolding(holding)
-      console.log(hString, language)
       if (hString=='-')  { hString = '\u2014' } // emdash 
       var suitSpan = '.'+ suit.name+ ' span.holding'
       handDiv.find(suitSpan).text(hString)
