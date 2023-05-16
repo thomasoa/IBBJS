@@ -1,4 +1,3 @@
-
 import { Application } from "./model/application.js"
 
 var App = new Application()
@@ -123,6 +122,7 @@ function initialize() {
 
   $('#back').on('click',() => backDeal())
   $('#forward').on('click',() => fowardDeal())
+  
   App.reset()
 }
 
@@ -154,8 +154,8 @@ function submit_pages(form) {
       $('#error').text(e)
       $('#error').show()
       return false
-    }
   }
+}
 
 function powersOf(n) {
   return function() {
@@ -172,5 +172,6 @@ function powersOf(n) {
 }
   
 $(document).ready(() => initialize())
+
 
 export {initialize, App}
