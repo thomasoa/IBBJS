@@ -27,7 +27,7 @@
         "clean": "rm -rf dest tree",
         "publish": "npm run cleanbuild && npm run publish:script",
         "publish:script": "sh bin/publish.sh Commit $(git rev-parse HEAD) to $(git config --get remote.origin.url)",
-        "build:post-compile": "build:browserify && npm run build:copy",
+        "build:post-compile": "npm run build:browserify && npm run build:copy",
         "build:fiximports": "sh bin/fiximports.sh",
         "build:browserify": "npm run build:copy-js && mkdir -p tree && npx browserify -p esmify -o tree/bundle.js dest/appui.js",
         "build:copy": "npm run build:copy:public && npm run build:revision",
