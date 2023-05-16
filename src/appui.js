@@ -85,9 +85,9 @@ function updateCurrentDeal(dealInfo) {
 
   $('#dealIndex').text(dealInfo.index+1)
   var title = getTitle(dealInfo)
-  $('.bookTitle').text(title)
+  dealLoc.find('.bookTitle').text(title)
   $('#error').hide()
-  $('.pageNumber').text(dealInfo.pageNo)
+  dealLoc.find('.pageNumber').text(dealInfo.pageNo)
   updatePreviousNext()
   updateDeal(dealInfo.deal)
   // var hands = dealInfo.deal.hands.map((hand) => hand.toString()).join("\n")
@@ -119,6 +119,7 @@ function initialize() {
   $('#lastDeal').on('click',() => lastDeal())
   $('a.powersOf10').on('click', powersOf(10))
   $('a.powersOf2').on('click', powersOf(2))
+  $('a.multiplesOf1E27').on('click', multiplesOf1E27)
 
   $('#back').on('click',() => backDeal())
   $('#forward').on('click',() => fowardDeal())
@@ -162,7 +163,7 @@ function powersOf(n) {
     n = BigInt(n)
     var power = BigInt(1)
     var result = []
-    while (power<App.lastPage) {
+    while (power<=App.lastPage) {
       result.push(power)
       power *= n
     }
@@ -171,6 +172,18 @@ function powersOf(n) {
   }
 }
   
+function multiplesOf1E27() {
+  var e27 = BigInt('1000000000000000000000000000')
+  var result = []
+  var page = e27
+  while (page<= App.lastPage) {
+    result.push(page)
+    page += e27
+  }
+  submitPages(result)
+  return false
+}
+
 $(document).ready(() => initialize())
 
 
