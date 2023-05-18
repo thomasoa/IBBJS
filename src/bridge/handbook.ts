@@ -31,12 +31,12 @@ class HandBook {
         const cards = numericCards.map(
             (cardNum) => bijection.mapTo(cardNum) 
         )
-        return new Hand(cards)
+        return Hand.byCards(cards)
     }
 
     getPageNumber(hand:Hand):PageNumber {
         const bijection = this.cardBijection
-        const sequence = hand.cards.map((c)=> bijection.mapFrom(c))
+        const sequence = hand.mapCards((c)=> bijection.mapFrom(c))
         return this.strategy.computePageNumber(sequence)+BigInt(1)
     }
 }

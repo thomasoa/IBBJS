@@ -34,11 +34,10 @@ test("Pavclicek Book generate first deal", () => {
     const book = new Books.BridgeBook(new PavlicekDealStrategy())
     const firstDeal = book.getDeal(BigInt(1))
     expect(firstDeal.toWhom).toBeDefined()
-    expect(firstDeal.hands).toBeDefined()
-    expect(firstDeal.north.toString()).toBe('AKQJ1098765432 - - -')
-    expect(firstDeal.east.toString()).toBe('- AKQJ1098765432 - -')
-    expect(firstDeal.south.toString()).toBe('- - AKQJ1098765432 -')
-    expect(firstDeal.west.toString()).toBe('- - - AKQJ1098765432')
+    expect(firstDeal.north.toString()).toBe('SAKQJ1098765432 H- D- C-')
+    expect(firstDeal.east.toString()).toBe('S- HAKQJ1098765432 D- C-')
+    expect(firstDeal.south.toString()).toBe('S- H- DAKQJ1098765432 C-')
+    expect(firstDeal.west.toString()).toBe('S- H- D- CAKQJ1098765432')
 })
 
 test("Andrews Book generate first deal", () => {
@@ -46,10 +45,10 @@ test("Andrews Book generate first deal", () => {
     const book = new Books.BridgeBook(new AndrewsDealStrategy(), seatBijection)
     const firstDeal = book.getDeal(BigInt(1))
 
-    expect(firstDeal.north.toString()).toBe('AKQJ1098765432 - - -')
-    expect(firstDeal.east.toString()).toBe('- AKQJ1098765432 - -')
-    expect(firstDeal.south.toString()).toBe('- - AKQJ1098765432 -')
-    expect(firstDeal.west.toString()).toBe('- - - AKQJ1098765432')
+    expect(firstDeal.north.toString()).toBe('SAKQJ1098765432 H- D- C-')
+    expect(firstDeal.east.toString()).toBe('S- HAKQJ1098765432 D- C-')
+    expect(firstDeal.south.toString()).toBe('S- H- DAKQJ1098765432 C-')
+    expect(firstDeal.west.toString()).toBe('S- H- D- CAKQJ1098765432')
 })
 
 
@@ -57,10 +56,10 @@ test("Book generate last deal", () => {
     const book = new Books.BridgeBook(new PavlicekDealStrategy())
     const lastDeal = book.getDeal(book.lastPage)
 
-    expect(lastDeal.north.toString()).toBe('- - - AKQJ1098765432')
-    expect(lastDeal.east.toString()).toBe('- - AKQJ1098765432 -')
-    expect(lastDeal.south.toString()).toBe('- AKQJ1098765432 - -')
-    expect(lastDeal.west.toString()).toBe('AKQJ1098765432 - - -')
+    expect(lastDeal.north.toString()).toBe('S- H- D- CAKQJ1098765432')
+    expect(lastDeal.east.toString()).toBe('S- H- DAKQJ1098765432 C-')
+    expect(lastDeal.south.toString()).toBe('S- HAKQJ1098765432 D- C-')
+    expect(lastDeal.west.toString()).toBe('SAKQJ1098765432 H- D- C-')
 
 })
 

@@ -1,5 +1,6 @@
 import * as d from "../src/bridge/deal"
-import { Deck, Seats} from "../src/basics/src/index"
+import { Deck, Seats, SuitTuple, Holding} from "../src/basics/src/index"
+import { SuitRecord } from "../src/basics/src/bridge/constants"
 
 test("Holding void", () => {
    const holding = new d.Holding(0)
@@ -31,7 +32,7 @@ test("Hand construction and holdings", () => {
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
       "H4", "H3", "H2", "DK", "DJ")
-   const hand = new d.Hand(cards)
+   const hand = d.Hand.byCards(cards)
    expect(hand.has(Deck.c('HA'))).toBeTruthy()
    expect(hand.has(Deck.c('SA'))).toBeFalsy()
 
@@ -39,7 +40,7 @@ test("Hand construction and holdings", () => {
    expect(hand.hearts.toString()).toBe("A 8 7 6 5 4 3 2")
    expect(hand.diamonds.toString()).toBe("K J")
    expect(hand.clubs.toString()).toBe("-")
-   expect(hand.toString()).toBe('Q109 A8765432 KJ -')
+   expect(hand.toString()).toBe('SQ109 HA8765432 DKJ C-')
 })
 
 test('Holding.forString()', ()=>{
@@ -55,12 +56,12 @@ test("Hand eachSuit method", () => {
       "SQ", "S10", "S9", "HA",
       "H8", "H7", "H6", "H5",
       "H4", "H3", "H2", "DK", "DJ")
-   const hand = new d.Hand(cards)
+   const hand = d.Hand.byCards(cards)
    const suitMap = new Map()
-   hand.eachSuit((suit, holding) => {
+   hand.eachSuit((holding,suit) => {
       suitMap.set(suit.name, holding.toString())
    })
-   expect(suitMap.get('spades'))
+
    expect(suitMap.get('spades')).toBe('Q 10 9')
    expect(suitMap.get('hearts')).toBe("A 8 7 6 5 4 3 2")
    expect(suitMap.get('diamonds')).toBe("K J")
@@ -72,10 +73,10 @@ test("Deal eachHand", () => {
    const toWhom = Array.from({ length: 52 }, (v, i) => Seats.all[Math.floor(i / 13)])
    const deal = new d.Deal(toWhom)
    const expected = new Map([
-      ["north", "AKQJ1098765432 - - -"],
-      ["east", "- AKQJ1098765432 - -"],
-      ['south', '- - AKQJ1098765432 -'],
-      ['west', '- - - AKQJ1098765432']
+      ["north", "SAKQJ1098765432 H- D- C-"],
+      ["east", "S- HAKQJ1098765432 D- C-"],
+      ['south', 'S- H- DAKQJ1098765432 C-'],
+      ['west', 'S- H- D- CAKQJ1098765432']
    ])
    deal.eachHand((seat, hand) => {
       expect(hand.toString()).toBe(expected.get(seat.name))
@@ -83,8 +84,8 @@ test("Deal eachHand", () => {
 })
 
 test("Hand.forHoldings", ()=> {
-   const holdings = ['AKQJ','1098','765432','-'].map(d.Holding.forString)
-   const hand = d.Hand.forHoldings(holdings)
+   const holdings = ['AKQJ','1098','765432','-'].map(d.Holding.forString) as SuitTuple<Holding>
+   const hand = new d.Hand(holdings)
    expect(hand.spades.asString()).toBe('AKQJ')
    expect(hand.hearts.asString()).toBe('1098')
    expect(hand.diamonds.asString()).toBe('765432')
@@ -93,13 +94,13 @@ test("Hand.forHoldings", ()=> {
 })
 
 test("Hand.forHoldings without the right number of suits", ()=> {
-   const holdings = ['AKQJ','1098','765432'].map(d.Holding.forString)
-   expect(() => d.Hand.forHoldings(holdings)).toThrow()
+   const holdings = ['AKQJ','1098','765432'].map(d.Holding.forString) as SuitTuple<Holding>
+   expect(() => new d.Hand(holdings)).toThrow()
 })
 
 test("Hand.forHoldings without the right number of suits", ()=> {
-   const holdings = ['AKQJ','1098','765432','-','-'].map(d.Holding.forString)
-   expect(() => d.Hand.forHoldings(holdings)).toThrow()
+   const holdings = ['AKQJ','1098','765432','-','-'].map(d.Holding.forString) as SuitTuple<Holding>
+   expect(() => new d.Hand(holdings)).toThrow()
 })
 
 test('Hand.forString()', ()=> {

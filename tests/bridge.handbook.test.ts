@@ -13,10 +13,10 @@ test('First page and last page in both books are the same', ()=>{
 
     const lastPage = aBook.lastPage
 
-    expect(aBook.getHand(BigInt(1)).toString()).toBe('AKQJ1098765432 - - -')
-    expect(aBook.getHand(lastPage).toString()).toBe('- - - AKQJ1098765432')
-    expect(pBook.getHand(BigInt(1)).toString()).toBe('AKQJ1098765432 - - -')
-    expect(pBook.getHand(lastPage).toString()).toBe('- - - AKQJ1098765432')
+    expect(aBook.getHand(BigInt(1)).toString()).toBe('SAKQJ1098765432 H- D- C-')
+    expect(aBook.getHand(lastPage).toString()).toBe('S- H- D- CAKQJ1098765432')
+    expect(pBook.getHand(BigInt(1)).toString()).toBe('SAKQJ1098765432 H- D- C-')
+    expect(pBook.getHand(lastPage).toString()).toBe('S- H- D- CAKQJ1098765432')
 
     expect(() => aBook.getHand(BigInt(0))).toThrow()
     expect(() => pBook.getHand(BigInt(0))).toThrow()
@@ -69,8 +69,8 @@ test('Bijection: Andrews', ()=>{
     const aBook = new HandBook(new AndrewsHandStrategy(),reverse)
     const lastPage = aBook.lastPage
 
-    expect(aBook.getHand(BigInt(1)).toString()).toBe('- - - AKQJ1098765432')
-    expect(aBook.getHand(lastPage).toString()).toBe('AKQJ1098765432 - - -')
+    expect(aBook.getHand(BigInt(1)).toString()).toBe('S- H- D- CAKQJ1098765432')
+    expect(aBook.getHand(lastPage).toString()).toBe('SAKQJ1098765432 H- D- C-')
 })
 
 test('Bijection: Pavlicek', ()=>{
@@ -78,8 +78,8 @@ test('Bijection: Pavlicek', ()=>{
     const pBook = new HandBook(new PavlicekHandStrategy(),reverse)
     const lastPage = pBook.lastPage
 
-    expect(pBook.getHand(BigInt(1)).toString()).toBe('- - - AKQJ1098765432')
-    expect(pBook.getHand(lastPage).toString()).toBe('AKQJ1098765432 - - -')
+    expect(pBook.getHand(BigInt(1)).toString()).toBe('S- H- D- CAKQJ1098765432')
+    expect(pBook.getHand(lastPage).toString()).toBe('SAKQJ1098765432 H- D- C-')
 })
 
 test('Error on wrong hand strategy type', ()=> {
