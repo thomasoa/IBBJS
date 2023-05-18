@@ -1,7 +1,6 @@
-import {Deck, Seat, Card}  from "../basics/src/index"
+import {Deck, Seat, Card, FullDeal}  from "../basics/src/index"
 import {DealStrategy, PageNumber, SeatNumber,  NumericDeal, DealSignature, bridgeSignature} from "../numeric/index"
 import {Bijection, SimpleBijection, defaultBijectionCard, defaultBijectionSeat} from "./bijection"
-import {Deal} from "./deal"
 
 interface OrderedType {
     order:number
@@ -36,7 +35,7 @@ class BridgeBook {
         validPageNumber(pageNo:PageNumber) {
             return pageNo>= BigInt(1) && pageNo<= this.lastPage
         }
-        getDeal(pageNo:PageNumber):Deal {
+        getDeal(pageNo:PageNumber):FullDeal {
             if (!this.validPageNumber(pageNo)) {
                 throw RangeError('Invalid page number ' + pageNo + ', must be between 1 and ' + this.lastPage)
             }
@@ -51,10 +50,10 @@ class BridgeBook {
                 toWhom[card.order] = seat
             })
             
-            return new Deal(toWhom)
+            return new FullDeal(toWhom)
         }
 
-        private numericDeal(deal:Deal):NumericDeal {
+        private numericDeal(deal:FullDeal):NumericDeal {
             const toWhom = new Array<SeatNumber>(52)
             const cardMap = this.cardBijection
             const seatMap = this.seatBijection
@@ -66,7 +65,7 @@ class BridgeBook {
             return new NumericDeal(this.strategy.signature, toWhom)
         }
 
-        getPageNumber(deal:Deal):PageNumber {
+        getPageNumber(deal:FullDeal):PageNumber {
             const numericDeal = this.numericDeal(deal)
             return this.strategy.computePageNumber(numericDeal)+BigInt(1)
         }

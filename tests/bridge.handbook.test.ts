@@ -1,6 +1,5 @@
 import {HandBook} from "../src/bridge/handbook"
-import {Hand} from "../src/bridge/deal"
-import {Deck} from "../src/basics/src/index"
+import {Deck, FullHand} from "../src/basics/src/index"
 import {SimpleBijection} from "../src/bridge/bijection"
 import { AndrewsHandStrategy, PavlicekHandStrategy} from "../src/numeric/index"
 import { HandSignature } from "../src/numeric/deal"
@@ -27,10 +26,10 @@ test('First page and last page in both books are the same', ()=>{
 test('Reverse lookup: Andrews', ()=>{
     const aBook = new HandBook(new AndrewsHandStrategy())
 
-    const first = Hand.forString('sAKQJT98765432 h- d- c-')
+    const first = FullHand.forString('sAKQJT98765432 h- d- c-')
     expect(aBook.getPageNumber(first)).toBe(BigInt(1))
 
-    const last = Hand.forString('s- h- d- cAKQJT98765432')
+    const last = FullHand.forString('s- h- d- cAKQJT98765432')
     expect(aBook.getPageNumber(last)).toBe(aBook.lastPage)
 
     const page = aBook.pages * BigInt(29)/BigInt(73)
@@ -47,10 +46,10 @@ test('Reverse lookup: Andrews', ()=>{
 test('Reverse lookup: Pavlicek', ()=>{
     const pBook = new HandBook(new PavlicekHandStrategy())
 
-    const first = Hand.forString('sAKQJT98765432 h- d- c-')
+    const first = FullHand.forString('sAKQJT98765432 h- d- c-')
     expect(pBook.getPageNumber(first)).toBe(BigInt(1))
 
-    const last = Hand.forString('s- h- d- cAKQJT98765432')
+    const last = FullHand.forString('s- h- d- cAKQJT98765432')
     expect(pBook.getPageNumber(last)).toBe(pBook.lastPage)
 
     const page = pBook.pages * BigInt(29)/BigInt(73)

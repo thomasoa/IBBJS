@@ -1,5 +1,5 @@
 import {BookSet} from "./books"
-import {Deal} from "../bridge/deal"
+import {FullDeal} from "../basics/src/index"
 import {PageNumber} from "../numeric/deal"
 
 
@@ -8,7 +8,7 @@ import {PageNumber} from "../numeric/deal"
 * a new CurrentDeal.
 */
 interface NewCurrentDealEvent {
-    deal: Deal,
+    deal: FullDeal,
     edition: string,
     scrambled: boolean,
     pageNo: PageNumber,
@@ -147,7 +147,7 @@ class Application {
         this.findDeals(edition,scrambled,[page])
     }
    
-    findPageNumber(edition:string,scrambled:boolean,deal:Deal):PageNumber {
+    findPageNumber(edition:string,scrambled:boolean,deal:FullDeal):PageNumber {
         const book = this.books.book(edition,scrambled)
         return book.getPageNumber(deal)
     }

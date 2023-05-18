@@ -1,7 +1,6 @@
 import { PageNumber, HandStrategy} from "../numeric/index"
 import {Bijection, defaultBijectionCard} from "./bijection"
-import {Card} from "../basics/src/index"
-import {Hand} from "./deal" 
+import {Card, FullHand} from "../basics/src/index"
 
 function assertBridgeHandStrategy(strategy: HandStrategy) {
     const sig = strategy.signature
@@ -23,7 +22,7 @@ class HandBook {
     get pages() { return this.strategy.pages }
     get lastPage() { return this.pages }
 
-    getHand(pageNo:PageNumber):Hand {
+    getHand(pageNo:PageNumber):FullHand {
         const pageIndex = pageNo - BigInt(1)
         this.strategy.assertValidPage(pageIndex,BigInt(1))
         const bijection = this.cardBijection
@@ -31,10 +30,10 @@ class HandBook {
         const cards = numericCards.map(
             (cardNum) => bijection.mapTo(cardNum) 
         )
-        return Hand.byCards(cards)
+        return FullHand.byCards(cards)
     }
 
-    getPageNumber(hand:Hand):PageNumber {
+    getPageNumber(hand:FullHand):PageNumber {
         const bijection = this.cardBijection
         const sequence = hand.mapCards((c)=> bijection.mapFrom(c))
         return this.strategy.computePageNumber(sequence)+BigInt(1)

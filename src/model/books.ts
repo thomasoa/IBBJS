@@ -1,4 +1,5 @@
-import { BridgeBook, SimpleBijection, Deal, Seat, Seats } from "../bridge/index"
+import { BridgeBook, SimpleBijection } from "../bridge/index"
+import {FullDeal, Seat, Seats} from '../basics/src/index'
 import {
     DealStrategy,
     AndrewsDealStrategy,
@@ -88,7 +89,7 @@ class BookSet {
         return this.scrambler.unscramble(pageNo - one) + one
     }
 
-    pageNumbers(deal: Deal): EditionPage[] {
+    pageNumbers(deal: FullDeal): EditionPage[] {
         const pages = new Array<EditionPage>()
         this.editions.forEach((edition, name) => {
             const normalPage = edition.normal.getPageNumber(deal)
