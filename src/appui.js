@@ -52,7 +52,6 @@ function englishHolding(holding) {
   if (holding.length == 0) {
     return 'void'
   }
-
   var cards = holding.ranks.map((rank) => rank.name)
   if (holding.spots > 0) {
     cards.push(holding.spots.toString() + ' small spots')
@@ -69,7 +68,7 @@ function updateDeal(deal) {
   $('#preface').hide()
   deal.eachHand((seat,hand) => {
     var handDiv = $('.diagram .'+seat.name)
-    hand.eachSuit((suit,holding) => {
+    hand.eachSuit((holding,suit) => {
       var hString = holding.toString()
       var language = suit.singular + ' ' + englishHolding(holding)
       if (hString=='-')  { hString = '\u2014' } // emdash 
