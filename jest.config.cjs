@@ -3,6 +3,7 @@ module.exports = {
     "verbose": true,
     "maxWorkers": 1, /* hack for bigint tests? */
     "coveragePathIgnorePatterns": [
-        "dest/basics/.*", "src/basics/.*", 'index.ts'
-    ]
+        "dest/basics/.*", "src/basics/.*", 'index.ts', 'appui.js'
+    ],
+    "collectCoverageFrom": ["src/**/*"]
 };
