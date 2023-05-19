@@ -3,7 +3,7 @@
 import {
     DealSignature, DealStrategy,  HandStrategy, NumericDeal,
     PageNumber, CardNumber, SeatNumber,
-    bridgeSignature
+    bridgeSignature, bridgeHandSignature
 } from "./deal"
 import { AndrewsDealStrategy, AndrewsHandStrategy } from "./andrews"
 import { PavlicekDealStrategy, PavlicekHandStrategy } from "./pavlicek"
@@ -17,5 +17,5 @@ export {
     DealStrategy, HandStrategy, Scrambler, // interface
     PageNumber, CardNumber, SeatNumber, // Types
     scramble_book, // Function
-    bridgeSignature // constant
+    bridgeSignature, bridgeHandSignature // constant
 }
