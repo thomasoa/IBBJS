@@ -38,7 +38,7 @@
 
 .diagram {
     display: grid;
-    grid-template-areas: "topleft north topright" "west center east" "bottomleft south bottomright";
+    grid-template-areas: "topleft north topright" "west table east" "bottomleft south bottomright";
     padding-top: 2em;
     padding-bottom: 2em;
     margin-left: 3em;
@@ -46,7 +46,7 @@
 }
 
 .diagram  .hand {
-    width: 8em;
+    max-width: 7em;
 }
 
 .diagram .north {
@@ -57,12 +57,30 @@
     grid-area:south;
 }
 
+.diagram .north, .diagram .south {
+    margin-left: 0em;
+}
+
 .diagram  .west {
+    padding-left: 2em;
     grid-area: west;
 }
 
 .diagram  .east {
     grid-area: east;
+}
+
+.diagram .east, .diagram .west, .diagram .table {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.diagram .table {
+    grid-area: table;
+    width: 7em;
+    height: 7em;
+    background-color: green;
+    padding-left: -1em;
 }
 
 .red {
@@ -80,7 +98,8 @@
 }
 
 .holding {
-    white-space: nowrap;
+    white-space: nowrap; 
+    /* text-indent: -1em; */
 }
 
 .diagram .spades:before {
