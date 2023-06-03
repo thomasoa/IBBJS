@@ -9,7 +9,8 @@
         "module": "es2022",
         "moduleResolution": "node",
         "experimentalDecorators": true,
-        "noUncheckedIndexedAccess": true
+        "noUncheckedIndexedAccess": true,
+        "alwaysStrict": true
     },
     "allowJs":true,
     "checkJs":true,
